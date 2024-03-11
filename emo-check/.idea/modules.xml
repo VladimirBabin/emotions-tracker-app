@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/emo-check.iml" filepath="$PROJECT_DIR$/emo-check.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../emo-check-frontend/emo-check-frontend.iml" filepath="$PROJECT_DIR$/../emo-check-frontend/emo-check-frontend.iml" />
+    </modules>
+  </component>
+</project>
