@@ -18,7 +18,7 @@ public class StateController {
         return ResponseEntity.ok(stateService.acceptNewState(stateLogDTO));
     }
 
-    @GetMapping
+    @GetMapping("/statistics/week")
     ResponseEntity<WeeklyStats> getWeeklyStats(@RequestParam("alias") String alias) {
         return ResponseEntity.ok(stateService.getWeeklyStatsForUser(alias));
     }

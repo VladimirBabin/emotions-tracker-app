@@ -23,7 +23,7 @@ public class StateServiceImpl implements StateService {
                 .orElseGet(() -> {
                     log.info("Creating new user with alias {}",
                             stateLogDTO.getUserAlias());
-                    return new User(stateLogDTO.getUserAlias());
+                    return userRepository.save(new User(stateLogDTO.getUserAlias()));
                 });
         StateLog storedLog = new StateLog(null,
                 user,
