@@ -11,16 +11,16 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/state")
 public class StateController {
 
-    private final StateService stateService;
+    private final StateLogService stateLogService;
 
     @PostMapping
     ResponseEntity<StateLog> acceptStateLog(@RequestBody StateLogDTO stateLogDTO) {
-        return ResponseEntity.ok(stateService.acceptNewState(stateLogDTO));
+        return ResponseEntity.ok(stateLogService.acceptNewState(stateLogDTO));
     }
 
     @GetMapping("/statistics/week")
     ResponseEntity<WeeklyStats> getWeeklyStats(@RequestParam("alias") String alias) {
-        return ResponseEntity.ok(stateService.getWeeklyStatsForUser(alias));
+        return ResponseEntity.ok(stateLogService.getWeeklyStatsForUser(alias));
     }
 
 

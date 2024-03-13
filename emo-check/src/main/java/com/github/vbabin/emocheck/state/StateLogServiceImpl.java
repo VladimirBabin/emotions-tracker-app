@@ -13,7 +13,7 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 @Service
-public class StateServiceImpl implements StateService {
+public class StateLogServiceImpl implements StateLogService {
     private final StateLogRepository stateLogRepository;
     private final UserRepository userRepository;
 

@@ -1,7 +1,7 @@
 package com.github.vbabin.emocheck.state;
 
 
-public interface StateService {
+public interface StateLogService {
 
     StateLog acceptNewState(StateLogDTO stateLogDTO);
 
