@@ -23,6 +23,7 @@
 	</properties>
   <modules>
     <module>emo-check</module>
+    <module>alerts</module>
   </modules>
 
 	<dependencies>

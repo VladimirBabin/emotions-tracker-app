@@ -10,6 +10,9 @@
     </parent>
 
     <artifactId>emo-check</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>emo-check</name>
+    <description>Microservice for logging the user's state</description>
 
     <dependencies>
         <dependency>
