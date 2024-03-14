@@ -2,9 +2,11 @@ package com.github.vbabin.emocheck.state;
 
 import lombok.Value;
 
+import java.math.BigDecimal;
+
 @Value
 public class WeeklyStats {
-    int badState;
-    int goodState;
-    int excellentState;
+    BigDecimal badState;
+    BigDecimal goodState;
+    BigDecimal excellentState;
 }

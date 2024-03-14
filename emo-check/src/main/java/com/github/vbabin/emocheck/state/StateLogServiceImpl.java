@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.Period;
 import java.util.List;
@@ -25,13 +26,13 @@ public class StateLogServiceImpl implements StateLogService {
                             stateLogDTO.getUserAlias());
                     return userRepository.save(new User(stateLogDTO.getUserAlias()));
                 });
-        StateLog storedLog = new StateLog(null,
+        StateLog stateLog = new StateLog(null,
                 user,
                 stateLogDTO.getState(),
                 stateLogDTO.getDateTime() == null ?
                 LocalDateTime.now() :
                 stateLogDTO.getDateTime());
-        stateLogRepository.save(storedLog);
+        StateLog storedLog = stateLogRepository.save(stateLog);
 
         // TODO check conditions for the reports
 
@@ -59,14 +60,15 @@ public class StateLogServiceImpl implements StateLogService {
 
         int total = (int) (badStates + goodStates + excellentStates);
 
-        int badPercentage = getPercentage(badStates, total);
-        int goodPercentage = getPercentage(goodStates, total);
-        int excellentPercentage = getPercentage(excellentStates, total);
+        BigDecimal badPercentage = getPercentage(badStates, total);
+        BigDecimal goodPercentage = getPercentage(goodStates, total);
+        BigDecimal excellentPercentage = getPercentage(excellentStates, total);
 
         return new WeeklyStats(badPercentage, goodPercentage, excellentPercentage);
     }
 
-    private static int getPercentage(long states, int total) {
-        return (int) (100 * states / total);
+    private static BigDecimal getPercentage(long states, int total) {
+        return BigDecimal.valueOf(100 * states)
+                .divide(BigDecimal.valueOf(total), 1, 1);
     }
 }
