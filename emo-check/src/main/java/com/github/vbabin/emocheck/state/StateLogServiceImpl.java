@@ -42,7 +42,7 @@ public class StateLogServiceImpl implements StateLogService {
     @Override
     public WeeklyStats getWeeklyStatsForUser(String alias) {
         User user = userRepository.findByAlias(alias)
-                .orElseThrow(() -> new IllegalArgumentException("No user found by alias " + alias));
+                .orElseThrow(() -> new NonExistingUserException("No user found by alias " + alias));
 
         List<StateLog> stateLogs = stateLogRepository
                 .findAllByUserAndDateTimeAfter(user,

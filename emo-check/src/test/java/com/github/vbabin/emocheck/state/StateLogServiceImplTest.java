@@ -13,8 +13,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-import static org.assertj.core.api.BDDAssertions.then;
-import static org.assertj.core.api.BDDAssertions.thenIllegalArgumentException;
+import static org.assertj.core.api.BDDAssertions.*;
 import static org.mockito.AdditionalAnswers.returnsFirstArg;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -106,6 +105,6 @@ class StateLogServiceImplTest {
                 .willReturn(Optional.empty());
 
         // then
-        thenIllegalArgumentException().isThrownBy(() -> stateLogService.getWeeklyStatsForUser("john_doe"));
+        thenExceptionOfType(NonExistingUserException.class).isThrownBy(() -> stateLogService.getWeeklyStatsForUser("john_doe"));
     }
 }
