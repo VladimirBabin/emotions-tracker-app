@@ -4,14 +4,16 @@ class WeeklyStatsComponent extends React.Component {
 
     render() {
         return (
+            <>
+            <h5>Last week statistics:</h5>
             <div>
-                <h3>Last week statistics:</h3>
                     <ul>
                         <li>Bad: {this.props.weeklyStats.badState}%</li>
                         <li>Good: {this.props.weeklyStats.goodState}%</li>
                         <li>Excellent: {this.props.weeklyStats.excellentState}%</li>
                     </ul>
             </div>
+            </>
         )
     }
 }

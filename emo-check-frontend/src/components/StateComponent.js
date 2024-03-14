@@ -3,6 +3,7 @@ import ApiClient from "../services/ApiClient";
 import WeeklyStatsComponent from "./WeeklyStatsComponent"
 import {WeeklyStats} from "./WeeklyStatsComponent";
 import RadioButton from "../custom-classes/RadioButton";
+import Button from 'react-bootstrap/Button';
 
 class StateComponent extends React.Component {
 
@@ -35,7 +36,9 @@ class StateComponent extends React.Component {
             .then(res => {
                 if (res.ok) {
                     this.updateMessage("New state was successfully logged");
-                    this.state.userLogged = true;
+                    this.setState({
+                        userLogged: true
+                    });
                     this.updateWeeklyStats(this.state.user);
                 } else {
                     this.updateMessage("Error: server error or not available");
@@ -76,7 +79,6 @@ class StateComponent extends React.Component {
                                onChange={this.handleChange}/>
                         <br/>
                         <br/>
-                        <br/>
                         <div align="center">Select your current state:</div>
                         <br/>
                         <div className="radiobutton-div">
@@ -109,7 +111,11 @@ class StateComponent extends React.Component {
                     </div>
 
                 </form>
-                <h4>{this.state.message}</h4>
+                <br/>
+                <div>
+                    {this.state.message}
+                </div>
+                <br/>
                 {this.state.userLogged &&
                 <WeeklyStatsComponent weeklyStats={this.state.weeklyStats}/>}
             </div>
