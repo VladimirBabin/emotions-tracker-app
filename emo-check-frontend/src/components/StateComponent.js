@@ -2,6 +2,7 @@ import * as React from "react";
 import ApiClient from "../services/ApiClient";
 import WeeklyStatsComponent from "./WeeklyStatsComponent"
 import {WeeklyStats} from "./WeeklyStatsComponent";
+import RadioButton from "../custom-classes/RadioButton";
 
 class StateComponent extends React.Component {
 
@@ -75,29 +76,38 @@ class StateComponent extends React.Component {
                                onChange={this.handleChange}/>
                         <br/>
                         <br/>
-                        Select your current state:
                         <br/>
-                        <label>Bad
-                            <input name="state"
-                                   type="radio"
-                                   value="BAD"
-                                   onChange={this.handleChange} />
-                        </label>
-                        <label> Good
-                            <input name="state"
-                                   type="radio"
-                                   value="GOOD"
-                                   onChange={this.handleChange}/>
-                        </label>
-                        <label> Excellent
-                            <input name="state"
-                                   type="radio"
-                                   value="EXCELLENT"
-                                   onChange={this.handleChange}/>
-                        </label>
+                        <div align="center">Select your current state:</div>
+                        <br/>
+                        <div className="radiobutton-div">
+                            <RadioButton
+                                id="bad-state"
+                                text="Bad"
+                                onChange={this.handleChange}
+                                value="BAD"
+                                styleColor="cornflowerblue"
+                            />
+                            <RadioButton
+                                id="good-state"
+                                text="Good"
+                                onChange={this.handleChange}
+                                value="GOOD"
+                                styleColor="lightgreen"
+                            />
+                            <RadioButton
+                                id="excellent-state"
+                                text="Excellent"
+                                onChange={this.handleChange}
+                                value="EXCELLENT"
+                                styleColor="seagreen"
+                            />
+                        </div>
                     </label>
                     <br/>
-                    <input type="submit" value="Submit"/>
+                    <div align="center">
+                        <input type="submit" value="Submit"/>
+                    </div>
+
                 </form>
                 <h4>{this.state.message}</h4>
                 {this.state.userLogged &&
