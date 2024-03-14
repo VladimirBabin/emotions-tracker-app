@@ -3,7 +3,6 @@ import ApiClient from "../services/ApiClient";
 import WeeklyStatsComponent from "./WeeklyStatsComponent"
 import {WeeklyStats} from "./WeeklyStatsComponent";
 import RadioButton from "../custom-classes/RadioButton";
-import Button from 'react-bootstrap/Button';
 
 class StateComponent extends React.Component {
 
@@ -67,6 +66,7 @@ class StateComponent extends React.Component {
     render() {
         return (
             <div className="display-column">
+                <br/>
                 <div>
                     <h2>Welcome to emotions tracker</h2>
                 </div>
