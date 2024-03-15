@@ -13,6 +13,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import static org.assertj.core.api.BDDAssertions.*;
 import static org.mockito.AdditionalAnswers.returnsFirstArg;
@@ -44,7 +45,8 @@ class StateLogServiceImplTest {
     @Test
     void checkNewStateLog() {
         // given
-        StateLogDTO stateLogDTO = new StateLogDTO("john_doe", State.GOOD, LocalDateTime.now());
+        Set<Emotion> emotions = Set.of(Emotion.HAPPY, Emotion.CONTENT);
+        StateLogDTO stateLogDTO = new StateLogDTO("john_doe", State.GOOD, emotions, LocalDateTime.now());
         given(stateLogRepository.save(any()))
                 .will(returnsFirstArg());
 
@@ -55,6 +57,7 @@ class StateLogServiceImplTest {
         BDDAssertions.then(stateLog.getState()).isEqualTo(State.GOOD);
         verify(userRepository).save(new User("john_doe"));
         verify(stateLogRepository).save(stateLog);
+        // TODO add logic for emotions
     }
 
     @Test
@@ -63,7 +66,8 @@ class StateLogServiceImplTest {
         User existingUser = new User(1L, "john_doe");
         given(userRepository.findByAlias("john_doe"))
                 .willReturn(Optional.of(existingUser));
-        StateLogDTO stateLogDTO = new StateLogDTO("john_doe", State.BAD, LocalDateTime.now());
+        Set<Emotion> emotions = Set.of(Emotion.HAPPY, Emotion.CONTENT);
+        StateLogDTO stateLogDTO = new StateLogDTO("john_doe", State.BAD, emotions, LocalDateTime.now());
         given(stateLogRepository.save(any()))
                 .will(returnsFirstArg());
 
@@ -75,6 +79,7 @@ class StateLogServiceImplTest {
         BDDAssertions.then(stateLog.getUser()).isEqualTo(existingUser);
         verify(userRepository, never()).save(any());
         verify(stateLogRepository).save(stateLog);
+        // TODO add logic for emotions
     }
 
     @Test
@@ -85,9 +90,9 @@ class StateLogServiceImplTest {
                 .willReturn(Optional.of(existingUser));
         given(stateLogRepository.findAllByUserAndDateTimeAfter(eq(existingUser), any(LocalDateTime.class)))
                 .willReturn(List.of(
-                        new StateLog(null, null, State.BAD, null),
-                        new StateLog(null, null, State.GOOD, null),
-                        new StateLog(null, null, State.EXCELLENT, null)
+                        new StateLog(null, null, State.BAD,null, null),
+                        new StateLog(null, null, State.GOOD,null, null),
+                        new StateLog(null, null, State.EXCELLENT,null, null)
                 ));
 
         // when
@@ -97,6 +102,7 @@ class StateLogServiceImplTest {
         then(statsForUser.getBadState()).isEqualTo(BigDecimal.valueOf(33.3));
         then(statsForUser.getGoodState()).isEqualTo(BigDecimal.valueOf(33.3));
         then(statsForUser.getExcellentState()).isEqualTo(BigDecimal.valueOf(33.3));
+        // TODO add logic for emotions
     }
 
     @Test

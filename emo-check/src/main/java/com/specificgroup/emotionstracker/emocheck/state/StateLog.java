@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Entity
 @Data
@@ -21,5 +22,8 @@ public class StateLog {
     @JoinColumn(name = "USER_ID")
     private User user;
     private State state;
+
+    @ElementCollection(targetClass = Emotion.class)
+    private Set<Emotion> emotions;
     private LocalDateTime dateTime;
 }

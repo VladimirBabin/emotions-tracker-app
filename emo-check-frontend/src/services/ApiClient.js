@@ -12,7 +12,18 @@ class ApiClient {
 
     static sendState(user: string,
                      state: string,
+                     emotions: [],
                      dateTime: Datetime): Promise<Response> {
+        console.log(
+            JSON.stringify(
+                {
+                    userAlias: user,
+                    state: state,
+                    emotions: emotions,
+                    dateTime: dateTime
+                }
+            )
+        )
         return fetch(ApiClient.SERVER_URL + ApiClient.POST_STATE,
             {
                 method: 'POST',
@@ -23,6 +34,7 @@ class ApiClient {
                     {
                         userAlias: user,
                         state: state,
+                        emotions: emotions,
                         dateTime: dateTime
                     }
                 )

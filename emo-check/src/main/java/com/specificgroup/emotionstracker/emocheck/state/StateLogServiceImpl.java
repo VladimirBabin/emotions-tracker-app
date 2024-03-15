@@ -30,6 +30,7 @@ public class StateLogServiceImpl implements StateLogService {
         StateLog stateLog = new StateLog(null,
                 user,
                 stateLogDTO.getState(),
+                stateLogDTO.getEmotions(),
                 stateLogDTO.getDateTime() == null ?
                 LocalDateTime.now() :
                 stateLogDTO.getDateTime());

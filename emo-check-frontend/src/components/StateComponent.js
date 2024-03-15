@@ -15,24 +15,32 @@ class StateComponent extends React.Component {
             state: '',
             dateTime: '',
             weeklyStats: WeeklyStats,
-            userLogged: false
+            userLogged: false,
+            emotions: []
         };
         this.handleSubmitResult = this.handleSubmitResult.bind(this);
-        this.handleChange = this.handleChange.bind(this);
+        this.handleSetChange = this.handleSetChange.bind(this);
+        this.handleCheckbox = this.handleCheckbox.bind(this);
     }
 
 
-    handleChange(event) {
+    handleSetChange(event) {
         const name = event.target.name;
         this.setState({
             [name]: event.target.value
         });
     }
 
+    handleCheckbox(event) {
+        const value = event.target.value;
+        this.state.emotions.push(value);
+    }
+
     handleSubmitResult(event) {
         event.preventDefault();
         ApiClient.sendState(this.state.user,
             this.state.state,
+            this.state.emotions,
             this.state.dateTime)
             .then(res => {
                 if (res.ok) {
@@ -74,7 +82,7 @@ class StateComponent extends React.Component {
                         <input type="text" maxLength="12"
                                name="user"
                                value={this.state.user}
-                               onChange={this.handleChange}/>
+                               onChange={this.handleSetChange}/>
                         <br/>
                         <br/>
                         <div className="state-div">
@@ -84,31 +92,31 @@ class StateComponent extends React.Component {
                             <div className="radiobutton-div">
                                 <RadioButton
                                     text="Awful"
-                                    onChange={this.handleChange}
+                                    onChange={this.handleSetChange}
                                     value="AWFUL"
                                     styleColor="indigo"
                                 />
                                 <RadioButton
                                     text="Bad"
-                                    onChange={this.handleChange}
+                                    onChange={this.handleSetChange}
                                     value="BAD"
                                     styleColor="cornflowerblue"
                                 />
                                 <RadioButton
                                     text="Ok"
-                                    onChange={this.handleChange}
+                                    onChange={this.handleSetChange}
                                     value="OK"
                                     styleColor="yellowgreen"
                                 />
                                 <RadioButton
                                     text="Good"
-                                    onChange={this.handleChange}
+                                    onChange={this.handleSetChange}
                                     value="GOOD"
                                     styleColor="mediumseagreen"
                                 />
                                 <RadioButton
                                     text="Excellent"
-                                    onChange={this.handleChange}
+                                    onChange={this.handleSetChange}
                                     value="EXCELLENT"
                                     styleColor="seagreen"
                                 />
@@ -121,37 +129,37 @@ class StateComponent extends React.Component {
                             <div className="checkbox-div">
                                 <Checkbox
                                     text="Happy"
-                                    onChange={this.handleChange}
+                                    onChange={this.handleCheckbox}
                                     value="HAPPY"
                                     styleColor="yellow"
                                 />
                                 <Checkbox
                                     text="Indifferent"
-                                    onChange={this.handleChange}
+                                    onChange={this.handleCheckbox}
                                     value="INDIFFERENT"
                                     styleColor="skyblue"
                                 />
                                 <Checkbox
                                     text="Sad"
-                                    onChange={this.handleChange}
+                                    onChange={this.handleCheckbox}
                                     value="SAD"
                                     styleColor="rebeccapurple"
                                 />
                                 <Checkbox
                                     text="Excited"
-                                    onChange={this.handleChange}
+                                    onChange={this.handleCheckbox}
                                     value="EXCITED"
                                     styleColor="deeppink"
                                 />
                                 <Checkbox
                                     text="Peaceful"
-                                    onChange={this.handleChange}
+                                    onChange={this.handleCheckbox}
                                     value="PEACEFUL"
                                     styleColor="darkolivegreen"
                                 />
                                 <Checkbox
                                     text="Anxious"
-                                    onChange={this.handleChange}
+                                    onChange={this.handleCheckbox}
                                     value="ANXIOUS"
                                     styleColor="cyan"
                                 />
@@ -159,37 +167,37 @@ class StateComponent extends React.Component {
                             <div className="checkbox-div">
                                 <Checkbox
                                     text="Satisfied"
-                                    onChange={this.handleChange}
+                                    onChange={this.handleCheckbox}
                                     value="SATISFIED"
                                     styleColor="lightpink"
                                 />
                                 <Checkbox
                                     text="Content"
-                                    onChange={this.handleChange}
+                                    onChange={this.handleCheckbox}
                                     value="CONTENT"
                                     styleColor="indianred"
                                 />
                                 <Checkbox
                                     text="Drained"
-                                    onChange={this.handleChange}
+                                    onChange={this.handleCheckbox}
                                     value="DRAINED"
                                     styleColor="black"
                                 />
                                 <Checkbox
                                     text="Passionate"
-                                    onChange={this.handleChange}
+                                    onChange={this.handleCheckbox}
                                     value="PASSIONATE"
                                     styleColor="darkorange"
                                 />
                                 <Checkbox
                                     text="Stressed"
-                                    onChange={this.handleChange}
+                                    onChange={this.handleCheckbox}
                                     value="STRESSED"
                                     styleColor="powderblue"
                                 />
                                 <Checkbox
                                     text="Angry"
-                                    onChange={this.handleChange}
+                                    onChange={this.handleCheckbox}
                                     value="ANGRY"
                                     styleColor="crimson"
                                 />
@@ -197,37 +205,37 @@ class StateComponent extends React.Component {
                             <div className="checkbox-div">
                                 <Checkbox
                                     text="Tired"
-                                    onChange={this.handleChange}
+                                    onChange={this.handleCheckbox}
                                     value="TIRED"
                                     styleColor="brown"
                                 />
                                 <Checkbox
                                     text="Hopeful"
-                                    onChange={this.handleChange}
+                                    onChange={this.handleCheckbox}
                                     value="HOPEFUL"
                                     styleColor="olive"
                                 />
                                 <Checkbox
                                     text="Irritated"
-                                    onChange={this.handleChange}
+                                    onChange={this.handleCheckbox}
                                     value="IRRITATED"
                                     styleColor="peru"
                                 />
                                 <Checkbox
                                     text="Surprised"
-                                    onChange={this.handleChange}
+                                    onChange={this.handleCheckbox}
                                     value="SURPRISED"
                                     styleColor="sandybrown"
                                 />
                                 <Checkbox
                                     text="Scared"
-                                    onChange={this.handleChange}
+                                    onChange={this.handleCheckbox}
                                     value="SCARED"
                                     styleColor="dimgrey"
                                 />
                                 <Checkbox
                                     text="Jealous"
-                                    onChange={this.handleChange}
+                                    onChange={this.handleCheckbox}
                                     value="JEALOUS"
                                     styleColor="darkorange"
                                 />

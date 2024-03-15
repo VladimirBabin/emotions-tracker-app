@@ -15,6 +15,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 import static org.assertj.core.api.BDDAssertions.then;
 import static org.mockito.BDDMockito.given;
@@ -44,8 +45,9 @@ class StateLogControllerTest {
         // given
         User existingUser = new User(1L, "john_doe");
         LocalDateTime dateTime = LocalDateTime.now();
-        StateLogDTO stateLogDTO = new StateLogDTO("john_doe", State.GOOD, dateTime);
-        StateLog expectedStateLog = new StateLog(1L, existingUser, State.GOOD, dateTime);
+        Set<Emotion> emotions = Set.of(Emotion.CONTENT, Emotion.HAPPY);
+        StateLogDTO stateLogDTO = new StateLogDTO("john_doe", State.GOOD, emotions, dateTime);
+        StateLog expectedStateLog = new StateLog(1L, existingUser, State.GOOD, emotions, dateTime);
         given(stateLogService.acceptNewState(stateLogDTO))
                 .willReturn(expectedStateLog);
 
@@ -63,7 +65,7 @@ class StateLogControllerTest {
     @Test
     void postInvalidStateLog() throws Exception {
         // given
-        StateLogDTO stateLogDTO = new StateLogDTO("", null, LocalDateTime.now());
+        StateLogDTO stateLogDTO = new StateLogDTO("", null, null, LocalDateTime.now());
 
         // when
         MockHttpServletResponse response = mvc.perform(

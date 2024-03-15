@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Value;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Value
 public class StateLogDTO {
@@ -12,5 +13,6 @@ public class StateLogDTO {
     String userAlias;
     @NotNull
     State state;
+    Set<Emotion> emotions;
     LocalDateTime dateTime;
 }
