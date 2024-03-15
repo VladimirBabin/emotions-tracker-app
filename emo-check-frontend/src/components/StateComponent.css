@@ -1,0 +1,43 @@
+.display-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.states {
+    width: 420px;
+}
+
+.radiobutton-div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.checkbox-div {
+    display: inline-table;
+    justify-content: center;
+    align-items: center;
+    margin-left: 2.5%;
+    margin-bottom: 2%;
+    width: 30%;
+    min-width: 120px;
+}
+
+.state-div {
+    border-style: solid;
+    border-radius: 5px;
+    border-width: 1px;
+    margin-bottom: 5px;
+    width: 100%;
+    min-width: 400px;
+    alignment: right;
+}
+
+.state-div .state-title {
+    margin-top: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    color: or;
+}

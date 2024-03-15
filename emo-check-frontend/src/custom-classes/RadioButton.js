@@ -1,12 +1,12 @@
+import './RadioButton.css'
 
-const RadioButton = ({ id, text, onChange, value, styleColor }) => {
+const RadioButton = ({ text, onChange, value, styleColor }) => {
     return (
-        <label htmlFor={id} className="radiobutton-label">
+        <label className="radiobutton-label">
             <input
                 className="radiobutton-input"
                 type="radio"
                 name="state"
-                id={id}
                 value={value}
                 onChange={onChange}
 

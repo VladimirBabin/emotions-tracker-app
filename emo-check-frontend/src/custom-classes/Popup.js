@@ -1,6 +1,6 @@
 import * as React from 'react';
 import './Popup.css'
-import StateComponent from "./StateComponent";
+import StateComponent from "../components/StateComponent";
 
 function Popup (props) {
     return (props.trigger) ? (

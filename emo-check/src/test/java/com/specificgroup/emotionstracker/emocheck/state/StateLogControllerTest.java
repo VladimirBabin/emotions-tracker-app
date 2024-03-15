@@ -78,8 +78,8 @@ class StateLogControllerTest {
     @Test
     void checkGettingWeeklyStatsForExistingUser() throws Exception {
         // given
-        BigDecimal oneThird = BigDecimal.valueOf(33.3);
-        WeeklyStats stats = new WeeklyStats(oneThird, oneThird , oneThird);
+        BigDecimal oneFifth = BigDecimal.valueOf(20);
+        WeeklyStats stats = new WeeklyStats(oneFifth, oneFifth , oneFifth, oneFifth, oneFifth);
         given(stateLogService.getWeeklyStatsForUser("john_doe"))
                 .willReturn(stats);
 

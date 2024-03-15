@@ -55,17 +55,21 @@ public class StateLogServiceImpl implements StateLogService {
     }
 
     private WeeklyStats countStatsForUser(List<StateLog> stateLogs) {
+        long awfulStates = stateLogs.stream().filter(l -> l.getState().equals(State.AWFUL)).count();
         long badStates = stateLogs.stream().filter(l -> l.getState().equals(State.BAD)).count();
+        long okStates = stateLogs.stream().filter(l -> l.getState().equals(State.OK)).count();
         long goodStates = stateLogs.stream().filter(l -> l.getState().equals(State.GOOD)).count();
         long excellentStates = stateLogs.stream().filter(l -> l.getState().equals(State.EXCELLENT)).count();
 
-        int total = (int) (badStates + goodStates + excellentStates);
+        int total = (int) (awfulStates + badStates + okStates + goodStates + excellentStates);
 
+        BigDecimal awfulPercentage = getPercentage(awfulStates, total);
         BigDecimal badPercentage = getPercentage(badStates, total);
+        BigDecimal okPercentage = getPercentage(okStates, total);
         BigDecimal goodPercentage = getPercentage(goodStates, total);
         BigDecimal excellentPercentage = getPercentage(excellentStates, total);
 
-        return new WeeklyStats(badPercentage, goodPercentage, excellentPercentage);
+        return new WeeklyStats(awfulPercentage, badPercentage, okPercentage, goodPercentage, excellentPercentage);
     }
 
     private static BigDecimal getPercentage(long states, int total) {

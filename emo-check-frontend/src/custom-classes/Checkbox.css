@@ -1,0 +1,22 @@
+.checkbox-input {
+    visibility: hidden;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+}
+
+.custom-checkbox {
+    height: 17px;
+    width: 17px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: inline-block;
+}
+
+.checkbox-input:checked + .custom-checkbox {
+    border: 2px solid #261ba4;
+}

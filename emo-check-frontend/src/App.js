@@ -1,6 +1,5 @@
 import React from 'react';
-import './App.css';
-import Popup from "./components/Popup";
+import Popup from "./custom-classes/Popup";
 import { useState } from 'react';
 
 function App() {
@@ -15,9 +14,9 @@ function App() {
                 </div>
                 <button className="new-log" onClick={() => setButtonPopup(true)}>+</button>
             </main>
-
-            <Popup trigger={buttonPopup} setTrigger={setButtonPopup}>
-            </Popup>
+            <div className="popup-div">
+                <Popup trigger={buttonPopup} setTrigger={setButtonPopup}/>
+            </div>
         </div>
     );
 }
