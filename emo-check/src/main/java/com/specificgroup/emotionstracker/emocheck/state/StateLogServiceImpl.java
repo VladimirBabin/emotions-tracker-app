@@ -1,8 +1,8 @@
-package com.specificgroup.emotionstracker.emocheck.state
-
--group.emotions-tracker.emocheck.state;
+package com.specificgroup.emotionstracker.emocheck.state;
 
 
+import com.specificgroup.emotionstracker.emocheck.user.User;
+import com.specificgroup.emotionstracker.emocheck.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

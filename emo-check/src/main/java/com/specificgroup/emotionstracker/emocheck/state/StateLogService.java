@@ -1,5 +1,4 @@
-package com.specificgroup.emotionstracker.emocheck.state-group.emotions-tracker.emocheck.state;
-
+package com.specificgroup.emotionstracker.emocheck.state;
 
 public interface StateLogService {
 

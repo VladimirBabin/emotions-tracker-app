@@ -66,10 +66,6 @@ class StateComponent extends React.Component {
     render() {
         return (
             <div className="display-column">
-                <br/>
-                <div>
-                    <h2>Welcome to emotions tracker</h2>
-                </div>
                 <form onSubmit={this.handleSubmitResult}>
                     <label className="states">
                         Your name:
