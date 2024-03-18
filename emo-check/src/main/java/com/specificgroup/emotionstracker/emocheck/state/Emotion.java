@@ -25,4 +25,8 @@ public enum Emotion {
     }
 
     private boolean alertTriggering;
+
+    public boolean isAlertTriggering() {
+        return alertTriggering;
+    }
 }

@@ -34,11 +34,15 @@ class StateLogServiceImplTest {
     @Mock
     private UserRepository userRepository;
 
+    @Mock
+    private StateLogEventPublisher stateLogEventPublisher;
+
     @BeforeEach
     void setUp() {
         stateLogService = new StateLogServiceImpl(
                 stateLogRepository,
-                userRepository
+                userRepository,
+                stateLogEventPublisher
         );
     }
 

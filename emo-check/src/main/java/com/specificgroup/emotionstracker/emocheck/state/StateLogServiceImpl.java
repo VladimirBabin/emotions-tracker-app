@@ -19,6 +19,8 @@ public class StateLogServiceImpl implements StateLogService {
     private final StateLogRepository stateLogRepository;
     private final UserRepository userRepository;
 
+    private final StateLogEventPublisher stateLogEventPublisher;
+
     @Override
     public StateLog acceptNewState(StateLogDTO stateLogDTO) {
         User user = userRepository.findByAlias(stateLogDTO.getUserAlias())
@@ -34,9 +36,12 @@ public class StateLogServiceImpl implements StateLogService {
                 stateLogDTO.getDateTime() == null ?
                 LocalDateTime.now() :
                 stateLogDTO.getDateTime());
+
+        // storing the state log
         StateLog storedLog = stateLogRepository.save(stateLog);
 
-        // TODO check conditions for the reports
+        // publishing an event of logged state to notify subscribers
+        stateLogEventPublisher.stateLogged(stateLog);
 
         return storedLog;
     }
