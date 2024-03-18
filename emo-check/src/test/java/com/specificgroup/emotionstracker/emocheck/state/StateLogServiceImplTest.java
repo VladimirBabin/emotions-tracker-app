@@ -47,12 +47,13 @@ class StateLogServiceImplTest {
     }
 
     @Test
-    void checkNewStateLog() {
+    void whenNewStateByNewUserLoggedThenUserStateAndEmotionsPersistedAndEventPublished() {
         // given
         Set<Emotion> emotions = Set.of(Emotion.HAPPY, Emotion.CONTENT);
         StateLogDTO stateLogDTO = new StateLogDTO("john_doe", State.GOOD, emotions, LocalDateTime.now());
         given(stateLogRepository.save(any()))
                 .will(returnsFirstArg());
+
 
         // when
         StateLog stateLog = stateLogService.acceptNewState(stateLogDTO);
@@ -61,11 +62,11 @@ class StateLogServiceImplTest {
         BDDAssertions.then(stateLog.getState()).isEqualTo(State.GOOD);
         verify(userRepository).save(new User("john_doe"));
         verify(stateLogRepository).save(stateLog);
-        // TODO add logic for emotions
+        verify(stateLogEventPublisher).stateLogged(stateLog);
     }
 
     @Test
-    void checkNewStateLogWithExistingUser() {
+    void whenNewStateByExistingUserLoggedThenUserFoundAndStateAndEmotionsPersistedAndEventPublished() {
         // given
         User existingUser = new User(1L, "john_doe");
         given(userRepository.findByAlias("john_doe"))
@@ -83,11 +84,11 @@ class StateLogServiceImplTest {
         BDDAssertions.then(stateLog.getUser()).isEqualTo(existingUser);
         verify(userRepository, never()).save(any());
         verify(stateLogRepository).save(stateLog);
-        // TODO add logic for emotions
+        verify(stateLogEventPublisher).stateLogged(stateLog);
     }
 
     @Test
-    void checkGettingWeeklyStatsForExistingUser() {
+    void whenWeeklyStatsQueriedForExistingUserThenFound() {
         // given
         User existingUser = new User(1L, "john_doe");
         given(userRepository.findByAlias("john_doe"))
@@ -106,11 +107,10 @@ class StateLogServiceImplTest {
         then(statsForUser.getBadState()).isEqualTo(BigDecimal.valueOf(33.3));
         then(statsForUser.getGoodState()).isEqualTo(BigDecimal.valueOf(33.3));
         then(statsForUser.getExcellentState()).isEqualTo(BigDecimal.valueOf(33.3));
-        // TODO add logic for emotions
     }
 
     @Test
-    void checkGettingWeeklyStatsForNonExistingUser() {
+    void whenWeeklyStatsQueriedForNonExistingUserThenExceptionThrown() {
         // given
         given(userRepository.findByAlias("john_doe"))
                 .willReturn(Optional.empty());

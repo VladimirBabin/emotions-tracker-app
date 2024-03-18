@@ -18,7 +18,6 @@ import java.util.List;
 public class StateLogServiceImpl implements StateLogService {
     private final StateLogRepository stateLogRepository;
     private final UserRepository userRepository;
-
     private final StateLogEventPublisher stateLogEventPublisher;
 
     @Override

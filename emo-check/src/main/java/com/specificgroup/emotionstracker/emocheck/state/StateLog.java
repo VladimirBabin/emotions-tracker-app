@@ -23,7 +23,7 @@ public class StateLog {
     private User user;
     private State state;
 
-    @ElementCollection(targetClass = Emotion.class)
+    @ElementCollection(targetClass = Emotion.class, fetch = FetchType.LAZY)
     private Set<Emotion> emotions;
     private LocalDateTime dateTime;
 }
