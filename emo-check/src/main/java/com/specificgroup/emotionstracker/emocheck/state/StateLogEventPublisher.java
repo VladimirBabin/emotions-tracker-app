@@ -14,7 +14,7 @@ public class StateLogEventPublisher {
     private final String emotionsTopicExchange;
 
     public StateLogEventPublisher(AmqpTemplate amqpTemplate,
-                                  @Value("${amqp.exchange.state-logs}") String stateLogTopicExchange,
+                                  @Value("${amqp.exchange.states}") String stateLogTopicExchange,
                                   @Value("${amqp.exchange.emotions}") String emotionsTopicExchange) {
         this.amqpTemplate = amqpTemplate;
         this.stateLogTopicExchange = stateLogTopicExchange;
