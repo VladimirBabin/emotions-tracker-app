@@ -4,6 +4,9 @@ import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+/**
+ * Publisher of state logged events based on AmqpTemplate high-level implementation.
+ */
 @Service
 public class StateLogEventPublisher {
     private final AmqpTemplate amqpTemplate;
@@ -27,6 +30,11 @@ public class StateLogEventPublisher {
         }
     }
 
+    /**
+     * Publishes emotion logged events for every separate emotion.
+     * Publishes triggering emotions with a separate routing key.
+     * @param stateLog StateLog object.
+     */
     private void publishEmotions(StateLog stateLog) {
         // additional routing key for emotion is 'emotion.triggering'
         String triggeringRoutingKey = "emotion.triggering";

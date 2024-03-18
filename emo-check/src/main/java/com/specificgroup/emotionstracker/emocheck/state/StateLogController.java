@@ -6,6 +6,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * This class implements a REST API to POST state logs from users and GET statistics.
+ */
 @Slf4j
 @RequiredArgsConstructor
 @RestController

@@ -9,6 +9,9 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 import java.util.Set;
 
+/**
+ * Identifies a state log from a {@link User}.
+ */
 @Entity
 @Data
 @AllArgsConstructor

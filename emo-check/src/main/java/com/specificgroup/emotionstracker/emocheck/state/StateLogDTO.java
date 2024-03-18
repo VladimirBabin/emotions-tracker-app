@@ -7,6 +7,9 @@ import lombok.Value;
 import java.time.LocalDateTime;
 import java.util.Set;
 
+/**
+ * State log coming from a user
+ */
 @Value
 public class StateLogDTO {
     @NotBlank
