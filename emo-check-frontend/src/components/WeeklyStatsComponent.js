@@ -8,9 +8,9 @@ class WeeklyStatsComponent extends React.Component {
             <h5>Last week statistics:</h5>
             <div>
                     <ul>
-                        <li>Bad: {this.props.weeklyStats.awfulState}%</li>
+                        <li>Awful: {this.props.weeklyStats.awfulState}%</li>
                         <li>Bad: {this.props.weeklyStats.badState}%</li>
-                        <li>Bad: {this.props.weeklyStats.okState}%</li>
+                        <li>Ok: {this.props.weeklyStats.okState}%</li>
                         <li>Good: {this.props.weeklyStats.goodState}%</li>
                         <li>Excellent: {this.props.weeklyStats.excellentState}%</li>
                     </ul>

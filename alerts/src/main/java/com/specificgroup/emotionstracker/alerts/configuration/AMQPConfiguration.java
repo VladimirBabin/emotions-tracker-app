@@ -1,6 +1,7 @@
 package com.specificgroup.emotionstracker.alerts.configuration;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.annotation.RabbitListenerConfigurer;
@@ -74,6 +75,7 @@ public class AMQPConfiguration {
                 new MappingJackson2MessageConverter();
         jsonConverter.getObjectMapper().registerModule(
                 new ParameterNamesModule(JsonCreator.Mode.PROPERTIES));
+        jsonConverter.getObjectMapper().registerModule(new JavaTimeModule());
         factory.setMessageConverter(jsonConverter);
         return factory;
     }
@@ -81,6 +83,6 @@ public class AMQPConfiguration {
     @Bean
     public RabbitListenerConfigurer rabbitListenerConfigurer(
             final MessageHandlerMethodFactory messageHandlerMethodFactory) {
-        return (c) -> c.setMessageHandlerMethodFactory(messageHandlerMethodFactory);
+        return c -> c.setMessageHandlerMethodFactory(messageHandlerMethodFactory);
     }
 }

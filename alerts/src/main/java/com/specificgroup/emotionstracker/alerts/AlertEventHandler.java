@@ -20,10 +20,12 @@ public class AlertEventHandler {
     @RabbitListener(queues = "${amqp.queue.alert-states}")
     void handleNewStateLogged(StateLoggedEvent stateLoggedEvent) {
         log.info("State Logged Event received: {}", stateLoggedEvent.getState());
+        alertService.newStateLogForUser(stateLoggedEvent);
     }
 
     @RabbitListener(queues = "${amqp.queue.alert-emotions}")
     void handleNewEmotionLogged(EmotionLoggedEvent emotionLoggedEvent) {
         log.info("Emotion Logged Event received: {}", emotionLoggedEvent.getEmotion());
+        alertService.newEmotionLogForUser(emotionLoggedEvent);
     }
 }
