@@ -15,6 +15,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 import static org.assertj.core.api.BDDAssertions.then;
@@ -40,8 +41,11 @@ class StateLogControllerTest {
     @Autowired
     private JacksonTester<WeeklyStats> weeklyStatsJacksonTester;
 
+    @Autowired
+    private JacksonTester<List<StateLog>> lastLoggedStatesJacksonTester;
+
     @Test
-    void postValidStateLog() throws Exception {
+    void whenPostValidStateLogThenResponseOk() throws Exception {
         // given
         User existingUser = new User(1L, "john_doe");
         LocalDateTime dateTime = LocalDateTime.now();
@@ -63,7 +67,7 @@ class StateLogControllerTest {
     }
 
     @Test
-    void postInvalidStateLog() throws Exception {
+    void whenPostValidStateLogThenBadRequest() throws Exception {
         // given
         StateLogDTO stateLogDTO = new StateLogDTO("", null, null, LocalDateTime.now());
 
@@ -78,7 +82,7 @@ class StateLogControllerTest {
     }
 
     @Test
-    void checkGettingWeeklyStatsForExistingUser() throws Exception {
+    void whenGetWeeklyStatsForExistingUserThenResponseOk() throws Exception {
         // given
         BigDecimal oneFifth = BigDecimal.valueOf(20);
         WeeklyStats stats = new WeeklyStats(oneFifth, oneFifth , oneFifth, oneFifth, oneFifth);
@@ -97,7 +101,7 @@ class StateLogControllerTest {
     }
 
     @Test
-    void checkGettingWeeklyStatsForNonExistingUser() throws Exception {
+    void whenGetWeeklyStatsForNonExistingUserThenNotFound() throws Exception {
         // given
         given(stateLogService.getWeeklyStatsForUser("john_doe"))
                 .willThrow(new NonExistingUserException("No user found with alias john_doe"));
@@ -110,5 +114,31 @@ class StateLogControllerTest {
 
         // then
         then(response.getStatus()).isEqualTo(HttpStatus.NOT_FOUND.value());
+    }
+
+    @Test
+    void whenGetLastLoggedStateForExistingUserThenResponseOk() throws Exception {
+        // given
+        User user = new User("john_doe");
+
+        StateLog log1 = new StateLog(1L, user, State.GOOD,
+                Set.of(Emotion.PEACEFUL, Emotion.HAPPY),
+                LocalDateTime.now());
+        StateLog log2 = new StateLog(2L, user, State.BAD,
+                Set.of(Emotion.ANGRY, Emotion.HOPEFUL),
+                LocalDateTime.now());
+        List<StateLog> stateLogs = List.of(log1, log2);
+        given(stateLogService.getLastLogsForUser("john_doe"))
+                .willReturn(stateLogs);
+
+        // when
+        MockHttpServletResponse response = mvc.perform(
+                        get("/state/statistics/last").param("alias", "john_doe"))
+                .andReturn().getResponse();
+
+        // then
+        then(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+        then(response.getContentAsString()).isEqualTo(
+                lastLoggedStatesJacksonTester.write(stateLogs).getJson());
     }
 }

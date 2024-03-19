@@ -6,6 +6,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * This class implements a REST API to POST state logs from users and GET statistics.
  */
@@ -23,5 +25,10 @@ public class StateLogController {
     @GetMapping("/statistics/week")
     ResponseEntity<WeeklyStats> getWeeklyStats(@RequestParam("alias") String alias) {
         return ResponseEntity.ok(stateLogService.getWeeklyStatsForUser(alias));
+    }
+
+    @GetMapping("/statistics/last")
+    ResponseEntity<List<StateLog>> getLastLoggedStates(@RequestParam("alias") String alias) {
+        return ResponseEntity.ok(stateLogService.getLastLogsForUser(alias));
     }
 }
