@@ -1,5 +1,6 @@
 package com.specificgroup.emotionstracker.emocheck.state;
 
+import com.specificgroup.emotionstracker.emocheck.state.domain.StateLog;
 import com.specificgroup.emotionstracker.emocheck.user.User;
 import org.springframework.data.repository.CrudRepository;
 

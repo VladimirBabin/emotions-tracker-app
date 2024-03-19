@@ -1,5 +1,7 @@
 package com.specificgroup.emotionstracker.emocheck.state;
 
+import com.specificgroup.emotionstracker.emocheck.state.domain.Emotion;
+import com.specificgroup.emotionstracker.emocheck.state.domain.State;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Value;

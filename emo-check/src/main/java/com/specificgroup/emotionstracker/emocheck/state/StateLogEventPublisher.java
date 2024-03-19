@@ -1,5 +1,8 @@
 package com.specificgroup.emotionstracker.emocheck.state;
 
+import com.specificgroup.emotionstracker.emocheck.state.domain.Emotion;
+import com.specificgroup.emotionstracker.emocheck.state.domain.State;
+import com.specificgroup.emotionstracker.emocheck.state.domain.StateLog;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -12,18 +15,30 @@ public class StateLogEventPublisher {
     private final AmqpTemplate amqpTemplate;
     private final String stateLogTopicExchange;
     private final String emotionsTopicExchange;
+    private final String triggeringStateRoutingKey;
+    private final String triggeringEmotionRoutingKey;
+
 
     public StateLogEventPublisher(AmqpTemplate amqpTemplate,
                                   @Value("${amqp.exchange.states}") String stateLogTopicExchange,
-                                  @Value("${amqp.exchange.emotions}") String emotionsTopicExchange) {
+                                  @Value("${amqp.exchange.emotions}") String emotionsTopicExchange,
+                                  @Value("${amqp.routing-key.triggering-state}") String triggeringStateRoutingKey,
+                                  @Value("${amqp.routing-key.triggering-emotion}") String triggeringEmotionRoutingKey) {
         this.amqpTemplate = amqpTemplate;
         this.stateLogTopicExchange = stateLogTopicExchange;
         this.emotionsTopicExchange = emotionsTopicExchange;
+        this.triggeringStateRoutingKey = triggeringStateRoutingKey;
+        this.triggeringEmotionRoutingKey = triggeringEmotionRoutingKey;
     }
 
     public void stateLogged(StateLog stateLog) {
         StateLoggedEvent stateLoggedEvent = buildStateLoggedEvent(stateLog);
         amqpTemplate.convertAndSend(stateLogTopicExchange, stateLoggedEvent);
+        if (stateLog.getState().isAlertTriggering()) {
+            amqpTemplate.convertAndSend(stateLogTopicExchange,
+                    triggeringStateRoutingKey,
+                    stateLoggedEvent);
+        }
 
         if (stateLog.getEmotions() != null) {
             publishEmotions(stateLog);
@@ -36,8 +51,6 @@ public class StateLogEventPublisher {
      * @param stateLog StateLog object.
      */
     private void publishEmotions(StateLog stateLog) {
-        // additional routing key for emotion is 'emotion.triggering'
-        String triggeringRoutingKey = "emotion.triggering";
 
         stateLog.getEmotions().forEach(emotion -> {
             EmotionLoggedEvent emotionLoggedEvent = buildEmotionLoggedEvent(stateLog, emotion);
@@ -45,7 +58,7 @@ public class StateLogEventPublisher {
 
             if (emotion.isAlertTriggering()) {
                 amqpTemplate.convertAndSend(emotionsTopicExchange,
-                        triggeringRoutingKey,
+                        triggeringEmotionRoutingKey,
                         emotionLoggedEvent);
             }
         });

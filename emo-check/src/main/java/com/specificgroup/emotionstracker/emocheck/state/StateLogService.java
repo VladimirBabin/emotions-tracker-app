@@ -1,5 +1,7 @@
 package com.specificgroup.emotionstracker.emocheck.state;
 
+import com.specificgroup.emotionstracker.emocheck.state.domain.StateLog;
+
 import java.util.List;
 
 public interface StateLogService {

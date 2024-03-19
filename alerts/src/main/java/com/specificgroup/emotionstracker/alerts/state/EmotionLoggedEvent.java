@@ -12,7 +12,6 @@ public class EmotionLoggedEvent {
 
     long stateLogId;
     long userId;
-    String userAlias;
     Emotion emotion;
     LocalDateTime dateTime;
 

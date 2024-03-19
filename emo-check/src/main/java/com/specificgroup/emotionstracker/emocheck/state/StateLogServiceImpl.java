@@ -1,6 +1,8 @@
 package com.specificgroup.emotionstracker.emocheck.state;
 
 
+import com.specificgroup.emotionstracker.emocheck.state.domain.State;
+import com.specificgroup.emotionstracker.emocheck.state.domain.StateLog;
 import com.specificgroup.emotionstracker.emocheck.user.User;
 import com.specificgroup.emotionstracker.emocheck.user.UserRepository;
 import lombok.RequiredArgsConstructor;

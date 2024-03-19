@@ -1,9 +1,10 @@
-package com.specificgroup.emotionstracker.emocheck.state;
+package com.specificgroup.emotionstracker.emocheck.state.domain;
 
 import com.specificgroup.emotionstracker.emocheck.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
@@ -28,5 +29,6 @@ public class StateLog {
 
     @ElementCollection(targetClass = Emotion.class, fetch = FetchType.LAZY)
     private Set<Emotion> emotions;
+    @EqualsAndHashCode.Exclude
     private LocalDateTime dateTime;
 }

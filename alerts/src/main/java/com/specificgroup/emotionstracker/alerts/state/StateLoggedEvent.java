@@ -12,7 +12,6 @@ public class StateLoggedEvent {
 
     long stateLogId;
     long userId;
-    String userAlias;
     State state;
     LocalDateTime dateTime;
 }

@@ -1,5 +1,6 @@
 package com.specificgroup.emotionstracker.emocheck.state;
 
+import com.specificgroup.emotionstracker.emocheck.state.domain.StateLog;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -1,24 +1,31 @@
-package com.specificgroup.emotionstracker.emocheck.state;
+package com.specificgroup.emotionstracker.emocheck.state.domain;
 
+/**
+ * Enumeration with different type of emotions a user can log. Emotion can be classified as alert triggering.
+ */
 public enum Emotion {
-    HAPPY (false),
-    INDIFFERENT (false),
+    HAPPY,
+    INDIFFERENT,
     SAD (true),
-    EXCITED (false),
-    PEACEFUL (false),
+    EXCITED,
+    PEACEFUL,
     ANXIOUS (true),
-    SATISFIED (false),
-    CONTENT (false),
+    SATISFIED,
+    CONTENT,
     DRAINED (true),
-    PASSIONATE (false),
+    PASSIONATE,
     STRESSED (true),
     ANGRY (true),
     TIRED (true),
-    HOPEFUL (false),
+    HOPEFUL,
     IRRITATED (true),
-    SURPRISED (false),
+    SURPRISED,
     SCARED (true),
-    JEALOUS (false);
+    JEALOUS;
+
+    Emotion() {
+        this(false);
+    }
 
     Emotion(boolean alertTriggering) {
         this.alertTriggering = alertTriggering;

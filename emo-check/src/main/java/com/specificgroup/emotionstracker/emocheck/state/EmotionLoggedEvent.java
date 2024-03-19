@@ -1,5 +1,6 @@
 package com.specificgroup.emotionstracker.emocheck.state;
 
+import com.specificgroup.emotionstracker.emocheck.state.domain.Emotion;
 import lombok.Value;
 import java.time.LocalDateTime;
 
