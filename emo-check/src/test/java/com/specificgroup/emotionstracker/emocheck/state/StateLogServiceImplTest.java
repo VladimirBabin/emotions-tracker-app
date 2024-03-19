@@ -118,4 +118,25 @@ class StateLogServiceImplTest {
         // then
         thenExceptionOfType(NonExistingUserException.class).isThrownBy(() -> stateLogService.getWeeklyStatsForUser("john_doe"));
     }
+
+    @Test
+    void whenGetLastLogsForUserThenRetrievedSuccessfully() {
+        // given
+        User user = new User("john_doe");
+        StateLog log1 = new StateLog(1L, user, State.GOOD,
+                Set.of(Emotion.PEACEFUL, Emotion.HAPPY),
+                LocalDateTime.now());
+        StateLog log2 = new StateLog(2L, user, State.BAD,
+                Set.of(Emotion.ANGRY, Emotion.HOPEFUL),
+                LocalDateTime.now());
+        List<StateLog> stateLogs = List.of(log1, log2);
+        given(stateLogRepository.findTop10ByUserAliasOrderByDateTimeDesc("john_doe"))
+                .willReturn(stateLogs);
+
+        // when
+        List<StateLog> stateLogsResult = stateLogService.getLastLogsForUser("john_doe");
+
+        // then
+        then(stateLogsResult).isEqualTo(stateLogs);
+    }
 }

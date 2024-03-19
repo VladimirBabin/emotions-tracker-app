@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface StateLogRepository extends CrudRepository<StateLog, Long> {
     List<StateLog> findAllByUserAndDateTimeAfter(User user, LocalDateTime dateTime);
+    List<StateLog> findTop10ByUserAliasOrderByDateTimeDesc(String userAlias);
 }

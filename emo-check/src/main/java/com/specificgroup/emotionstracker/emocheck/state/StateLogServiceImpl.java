@@ -46,6 +46,11 @@ public class StateLogServiceImpl implements StateLogService {
     }
 
     @Override
+    public List<StateLog> getLastLogsForUser(String userAlias) {
+        return stateLogRepository.findTop10ByUserAliasOrderByDateTimeDesc(userAlias);
+    }
+
+    @Override
     public WeeklyStats getWeeklyStatsForUser(String alias) {
         User user = userRepository.findByAlias(alias)
                 .orElseThrow(() -> new NonExistingUserException("No user found by alias " + alias));
