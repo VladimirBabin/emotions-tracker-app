@@ -1,8 +1,8 @@
 import React from 'react';
-import Popup from "./custom-classes/Popup";
+import Popup from "../custom-classes/Popup";
 import { useState } from 'react';
 
-function App() {
+function AuthContent() {
     const [buttonPopup, setButtonPopup] = useState(false);
 
     return (
@@ -23,4 +23,4 @@ function App() {
     );
 }
 
-export default App;
+export default AuthContent;
