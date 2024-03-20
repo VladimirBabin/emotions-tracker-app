@@ -29,12 +29,12 @@ import static org.mockito.Mockito.*;
 class StateAlertServiceImplTest {
     private StateAlertService alertService;
     @Mock
-    StateLogRepository logRepository;
+    private StateLogRepository logRepository;
     @Mock
-    StateAlertRepository alertRepository;
+    private StateAlertRepository alertRepository;
 
     @Mock
-    StateAlertProcessor alertProcessor;
+    private StateAlertProcessor alertProcessor;
 
     @BeforeEach
     void setUp() {

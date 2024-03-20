@@ -14,7 +14,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class TimeBasedStateAlertProcessorTest {
 
-    TimeBasedStateAlertProcessor alertProcessor = new SevenTimesAWeekStateAlertProcessor();
+    private final TimeBasedStateAlertProcessor alertProcessor = new SevenTimesAWeekStateAlertProcessor();
 
     @Test
     void whenEligibleForAlertAndNotReceivedYetThenAlertPresent() {

@@ -21,13 +21,13 @@ import static org.mockito.Mockito.verify;
 @ExtendWith(MockitoExtension.class)
 class AlertEventHandlerTest {
 
-    AlertEventHandler alertEventHandler;
+    private AlertEventHandler alertEventHandler;
 
     @Mock
-    StateAlertService stateAlertService;
+    private StateAlertService stateAlertService;
 
     @Mock
-    EmotionAlertService emotionAlertService;
+    private EmotionAlertService emotionAlertService;
 
     @BeforeEach
     void setUp() {

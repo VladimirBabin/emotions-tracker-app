@@ -10,7 +10,7 @@ public interface EmotionAlertService {
     /**
      * @return alerts generated during the last minute before the call.
      */
-    List<EmotionAlertType> getLastMinuteAddedEmotionAlerts(Long userId);
+    List<EmotionAlertType> getLastAddedEmotionAlerts(Long userId);
 
     /**
      * Accepts a new emotion log from a user.

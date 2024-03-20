@@ -24,15 +24,15 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class EmotionAlertServiceImplTest {
-    EmotionAlertService alertService;
+    private EmotionAlertService alertService;
     @Mock
-    EmotionLogRepository logRepository;
+    private EmotionLogRepository logRepository;
     @Mock
-    EmotionAlertRepository alertRepository;
+    private EmotionAlertRepository alertRepository;
     @Mock
-    EmotionAlertProcessor alertProcessor;
+    private EmotionAlertProcessor alertProcessor;
     @Mock
-    EmotionAlertSecondaryProcessor secondaryProcessor;
+    private EmotionAlertSecondaryProcessor secondaryProcessor;
 
     @BeforeEach
     void setUp() {

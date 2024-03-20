@@ -10,7 +10,7 @@ public interface StateAlertService {
     /**
      * @return alerts generated during the last minute before the call.
      */
-    List<StateAlertType> getLastMinuteAddedStateAlerts(Long userId);
+    List<StateAlertType> getLastAddedStateAlerts(Long userId);
 
     /**
      * Accepts a new state log from a user.
