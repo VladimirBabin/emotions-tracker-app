@@ -67,7 +67,7 @@ class StateAlertServiceImplTest {
                 new StateLog(1L, 1L, State.BAD, LocalDateTime.now()),
                 new StateLog(2L, 1L, State.BAD, LocalDateTime.now())
         );
-        given(logRepository.findByUserOrderByDateTime(1L))
+        given(logRepository.findByUserIdOrderByDateTime(1L))
                 .willReturn(foundLogs);
         given(alertRepository.getAlertsByUserIdAfterGivenLocalDateTime(eq(1L),
                 any()))
@@ -91,7 +91,7 @@ class StateAlertServiceImplTest {
         // given
         StateLoggedEvent event = new StateLoggedEvent(1L, 1L, State.AWFUL, LocalDateTime.now());
 
-        given(logRepository.findByUserOrderByDateTime(1L))
+        given(logRepository.findByUserIdOrderByDateTime(1L))
                 .willReturn(List.of());
         given(alertRepository.getAlertsByUserIdAfterGivenLocalDateTime(eq(1L),
                 any()))

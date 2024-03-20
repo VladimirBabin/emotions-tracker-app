@@ -46,7 +46,7 @@ public class StateAlertServiceImpl implements StateAlertService {
     private List<StateAlert> processForStateAlerts(StateLoggedEvent event) {
         // get all logged triggering states for user
         List<StateLog> userStateLogs = logRepository
-                .findByUserOrderByDateTime(event.getUserId());
+                .findByUserIdOrderByDateTime(event.getUserId());
 
         List<StateAlert> latestAlerts = alertRepository.getAlertsByUserIdAfterGivenLocalDateTime(
                 event.getUserId(), LocalDateTime.now().minusDays(DAYS_BEFORE_ALERT_CAN_REPEAT));
