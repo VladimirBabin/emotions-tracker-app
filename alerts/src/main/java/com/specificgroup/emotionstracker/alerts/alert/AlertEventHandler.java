@@ -1,6 +1,5 @@
 package com.specificgroup.emotionstracker.alerts.alert;
 
-import com.specificgroup.emotionstracker.alerts.alert.AlertService;
 import com.specificgroup.emotionstracker.alerts.state.EmotionLoggedEvent;
 import com.specificgroup.emotionstracker.alerts.state.StateLoggedEvent;
 import lombok.RequiredArgsConstructor;
@@ -16,14 +15,14 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 public class AlertEventHandler {
-
-    private final AlertService alertService;
+    private final StateAlertService stateAlertService;
+    private final EmotionAlertService emotionAlertService;
 
     @RabbitListener(queues = "${amqp.queue.alert-states}")
     void handleNewStateLogged(StateLoggedEvent stateLoggedEvent) {
         log.info("State Logged Event received: {}", stateLoggedEvent.getState());
         try {
-            alertService.newTriggeringStateForUser(stateLoggedEvent);
+            stateAlertService.newTriggeringStateForUser(stateLoggedEvent);
         } catch (Exception e) {
             log.error("Error when trying to process ChallengeSolvedEvent", e);
             // Avoids the event to be re-queues and reprocessed.
@@ -35,7 +34,7 @@ public class AlertEventHandler {
     void handleNewEmotionLogged(EmotionLoggedEvent emotionLoggedEvent) {
         log.info("Emotion Logged Event received: {}", emotionLoggedEvent.getEmotion());
         try {
-            alertService.newTriggeringEmotionForUser(emotionLoggedEvent);
+            emotionAlertService.newTriggeringEmotionForUser(emotionLoggedEvent);
         } catch (Exception e) {
             log.error("Error when trying to process ChallengeSolvedEvent", e);
             // Avoids the event to be re-queues and reprocessed.
