@@ -1,6 +1,7 @@
 import './Checkbox.css'
 
 const Checkbox = ({ text, onChange, value, styleColor }) => {
+
     return (
         <label className="checkbox-label">
             <input

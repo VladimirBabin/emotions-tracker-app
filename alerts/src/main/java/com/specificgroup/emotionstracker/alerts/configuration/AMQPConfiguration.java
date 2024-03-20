@@ -15,7 +15,7 @@ import org.springframework.messaging.handler.annotation.support.MessageHandlerMe
 @Configuration
 public class AMQPConfiguration {
 
-    @Value("${amqp.exchange.state-logs}")
+    @Value("${amqp.exchange.states}")
     String stateLogsExchangeName;
 
     @Value("${amqp.exchange.emotions}")

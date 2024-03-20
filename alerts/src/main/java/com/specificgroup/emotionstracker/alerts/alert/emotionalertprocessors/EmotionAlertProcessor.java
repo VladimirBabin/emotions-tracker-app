@@ -14,20 +14,24 @@ public interface EmotionAlertProcessor {
      * @return an EmotionAlertType triggered by the emotion logged.
      */
     Optional<EmotionAlertType> processForOptionalAlert(List<EmotionLog> allLoggedEmotions,
-                                                       List<EmotionAlert> lastMonthEmotionAlerts);
+                                                       List<EmotionAlert> lastEmotionAlerts);
 
     default Optional<EmotionAlertType> processForOptionalAlertWithCheck(List<EmotionLog> allLoggedEmotions,
-                                                                List<EmotionAlert> lastMonthEmotionAlerts) {
-        if (userAlreadyReceivedAlertInCustomPeriod(lastMonthEmotionAlerts)) {
+                                                                List<EmotionAlert> lastEmotionAlerts) {
+        if (userAlreadyReceivedAlertInCustomPeriod(lastEmotionAlerts)) {
             return Optional.empty();
         }
-        return this.processForOptionalAlert(allLoggedEmotions, lastMonthEmotionAlerts);
+        return this.processForOptionalAlert(allLoggedEmotions, lastEmotionAlerts);
     }
 
     int checkedDaysPeriod();
 
-    private boolean userAlreadyReceivedAlertInCustomPeriod(List<EmotionAlert> lastMonthEmotionAlerts) {
-        return lastMonthEmotionAlerts.stream()
+    private boolean userAlreadyReceivedAlertInCustomPeriod(List<EmotionAlert> lastEmotionAlerts) {
+        return lastEmotionAlerts.stream()
+                .filter(ea -> ea.getEmotionAlertType().equals(emotionAlertType()))
                 .anyMatch(ea -> ea.getLocalDateTime().isAfter(LocalDateTime.now().minusDays(checkedDaysPeriod())));
     }
+
+    EmotionAlertType emotionAlertType();
+    Emotion getEmotionType();
 }

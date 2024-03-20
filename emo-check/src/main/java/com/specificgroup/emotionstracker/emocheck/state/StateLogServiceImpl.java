@@ -49,7 +49,9 @@ public class StateLogServiceImpl implements StateLogService {
 
     @Override
     public List<StateLog> getLastLogsForUser(String userAlias) {
-        return stateLogRepository.findTop10ByUserAliasOrderByDateTimeDesc(userAlias);
+        List<StateLog> lastLogs = stateLogRepository.findTop10ByUserAliasOrderByDateTimeDesc(userAlias);
+        log.info("Found last logs: {}", lastLogs);
+        return lastLogs;
     }
 
     @Override

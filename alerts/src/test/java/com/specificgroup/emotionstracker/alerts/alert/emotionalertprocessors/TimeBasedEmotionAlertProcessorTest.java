@@ -21,6 +21,11 @@ class TimeBasedEmotionAlertProcessorTest {
         }
 
         @Override
+        public Emotion getEmotionType() {
+            return Emotion.STRESSED;
+        }
+
+        @Override
         public int numberOfRequiredRepetitions() {
             return 5;
         }

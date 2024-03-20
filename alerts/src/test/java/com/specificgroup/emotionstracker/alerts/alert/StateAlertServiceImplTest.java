@@ -72,7 +72,7 @@ class StateAlertServiceImplTest {
         given(alertRepository.getAlertsByUserIdAfterGivenLocalDateTime(eq(1L),
                 any()))
                 .willReturn(List.of());
-        given(alertProcessor.processForOptionalAlert(foundLogs, List.of()))
+        given(alertProcessor.processForOptionalAlertWithCheck(foundLogs, List.of()))
                 .willReturn(Optional.of(StateAlertType.LOW_STATE_TWICE_IN_TWO_DAYS));
 
         // when
@@ -96,7 +96,7 @@ class StateAlertServiceImplTest {
         given(alertRepository.getAlertsByUserIdAfterGivenLocalDateTime(eq(1L),
                 any()))
                 .willReturn(List.of());
-        given(alertProcessor.processForOptionalAlert(List.of(), List.of()))
+        given(alertProcessor.processForOptionalAlertWithCheck(List.of(), List.of()))
                 .willReturn(Optional.empty());
 
         // when

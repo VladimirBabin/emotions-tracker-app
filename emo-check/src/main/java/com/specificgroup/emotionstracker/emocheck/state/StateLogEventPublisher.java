@@ -1,7 +1,6 @@
 package com.specificgroup.emotionstracker.emocheck.state;
 
 import com.specificgroup.emotionstracker.emocheck.state.domain.Emotion;
-import com.specificgroup.emotionstracker.emocheck.state.domain.State;
 import com.specificgroup.emotionstracker.emocheck.state.domain.StateLog;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Value;
@@ -51,7 +50,6 @@ public class StateLogEventPublisher {
      * @param stateLog StateLog object.
      */
     private void publishEmotions(StateLog stateLog) {
-
         stateLog.getEmotions().forEach(emotion -> {
             EmotionLoggedEvent emotionLoggedEvent = buildEmotionLoggedEvent(stateLog, emotion);
             amqpTemplate.convertAndSend(emotionsTopicExchange, emotionLoggedEvent);

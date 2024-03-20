@@ -7,12 +7,11 @@ import com.specificgroup.emotionstracker.alerts.state.StateLog;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 public abstract class TimeBasedStateAlertProcessor implements StateAlertProcessor{
     @Override
     public Optional<StateAlertType> processForOptionalAlert(List<StateLog> allLoggedStates,
-                                                            List<StateAlert> lastMonthStateAlerts) {
+                                                            List<StateAlert> lastStateAlerts) {
         long count = allLoggedStates.stream()
                 .filter(sl -> sl.getDateTime().isAfter(LocalDateTime.now().minusDays(checkedDaysPeriod())))
                 .count();

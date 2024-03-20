@@ -23,7 +23,6 @@ class StateComponent extends React.Component {
         this.handleCheckbox = this.handleCheckbox.bind(this);
     }
 
-
     handleSetChange(event) {
         const name = event.target.name;
         this.setState({
@@ -33,7 +32,11 @@ class StateComponent extends React.Component {
 
     handleCheckbox(event) {
         const value = event.target.value;
-        this.state.emotions.push(value);
+        if (event.target.checked === true) {
+            this.state.emotions.push(value);
+        } else {
+            this.state.emotions.pop(value);
+        }
     }
 
     handleSubmitResult(event) {

@@ -15,20 +15,20 @@ public interface StateAlertProcessor {
      * @return an StateAlertType triggered by the emotion logged.
      */
     Optional<StateAlertType> processForOptionalAlert(List<StateLog> allLoggedStates,
-                                                     List<StateAlert> lastMonthStateAlerts);
+                                                     List<StateAlert> lastStateAlerts);
 
     default Optional<StateAlertType> processForOptionalAlertWithCheck(List<StateLog> allLoggedStates,
-                                                                      List<StateAlert> lastMonthStateAlerts) {
-        if (userAlreadyReceivedAlertInCustomPeriod(lastMonthStateAlerts)) {
+                                                                      List<StateAlert> lastStateAlerts) {
+        if (userAlreadyReceivedAlertInCustomPeriod(lastStateAlerts)) {
             return Optional.empty();
         }
-        return this.processForOptionalAlert(allLoggedStates, lastMonthStateAlerts);
+        return this.processForOptionalAlert(allLoggedStates, lastStateAlerts);
     }
 
     int checkedDaysPeriod();
 
-    private boolean userAlreadyReceivedAlertInCustomPeriod(List<StateAlert> lastMonthStateAlerts) {
-        return lastMonthStateAlerts.stream()
+    private boolean userAlreadyReceivedAlertInCustomPeriod(List<StateAlert> lastStateAlerts) {
+        return lastStateAlerts.stream()
                 .anyMatch(sa -> sa.getLocalDateTime().isAfter(LocalDateTime.now().minusDays(checkedDaysPeriod())));
     }
 }

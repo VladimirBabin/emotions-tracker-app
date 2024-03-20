@@ -51,9 +51,11 @@ public class StateAlertServiceImpl implements StateAlertService {
         List<StateAlert> latestAlerts = alertRepository.getAlertsByUserIdAfterGivenLocalDateTime(
                 event.getUserId(), LocalDateTime.now().minusDays(DAYS_BEFORE_ALERT_CAN_REPEAT));
 
+        log.info("found latest alerts: {}", latestAlerts);
+
         // check if user is eligible for new alerts, persist them and return
         List<StateAlert> newStateAlerts = alertProcessors.stream()
-                .map(p -> p.processForOptionalAlert(userStateLogs, latestAlerts))
+                .map(p -> p.processForOptionalAlertWithCheck(userStateLogs, latestAlerts))
                 .flatMap(Optional::stream)
                 .map(stateAlertType -> new StateAlert(event.getUserId(), stateAlertType))
                 .toList();

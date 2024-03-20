@@ -3,7 +3,6 @@ package com.specificgroup.emotionstracker.alerts.alert;
 import com.specificgroup.emotionstracker.alerts.alert.domain.EmotionAlert;
 import com.specificgroup.emotionstracker.alerts.alert.domain.EmotionAlertType;
 import com.specificgroup.emotionstracker.alerts.alert.emotionalertprocessors.EmotionAlertProcessor;
-import com.specificgroup.emotionstracker.alerts.alert.emotionalertprocessors.EmotionAlertSecondaryProcessor;
 import com.specificgroup.emotionstracker.alerts.state.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -31,16 +30,13 @@ class EmotionAlertServiceImplTest {
     private EmotionAlertRepository alertRepository;
     @Mock
     private EmotionAlertProcessor alertProcessor;
-    @Mock
-    private EmotionAlertSecondaryProcessor secondaryProcessor;
 
     @BeforeEach
     void setUp() {
         alertService = new EmotionAlertServiceImpl(
                 logRepository,
                 alertRepository,
-                List.of(alertProcessor),
-                List.of(secondaryProcessor));
+                List.of(alertProcessor));
     }
 
     @Test
@@ -51,12 +47,37 @@ class EmotionAlertServiceImplTest {
                 event.getUserId(),
                 event.getEmotion(),
                 event.getDateTime());
+        given(alertProcessor.getEmotionType())
+                .willReturn(Emotion.SCARED);
 
         // when
         alertService.newTriggeringEmotionForUser(event);
 
         // then
         verify(logRepository).save(emotionLog);
+    }
+
+    @Test
+    void whenEligibleForOneAlertOtherSimilarTimeAlertsNotAdded() {
+        // given
+        EmotionLoggedEvent event = new EmotionLoggedEvent(1L, 1L, Emotion.DRAINED, LocalDateTime.now());
+        List<EmotionLog> foundLogs = List.of(
+                new EmotionLog(1L, 1L, Emotion.DRAINED, LocalDateTime.now()),
+                new EmotionLog(2L, 1L, Emotion.DRAINED, LocalDateTime.now())
+        );
+        given(logRepository.findByUserIdAndEmotionOrderByDateTime(1L, Emotion.DRAINED))
+                .willReturn(foundLogs);
+        given(alertRepository.getAlertsByUserIdAfterGivenLocalDateTime(eq(1L),
+                any()))
+                .willReturn(List.of());
+        given(alertProcessor.getEmotionType())
+                .willReturn(Emotion.SCARED);
+
+        // when
+        alertService.newTriggeringEmotionForUser(event);
+
+        // then
+        verify(alertProcessor, never()).processForOptionalAlertWithCheck(any(), any());
     }
 
     @Test
@@ -72,8 +93,10 @@ class EmotionAlertServiceImplTest {
         given(alertRepository.getAlertsByUserIdAfterGivenLocalDateTime(eq(1L),
                 any()))
                 .willReturn(List.of());
-        given(alertProcessor.processForOptionalAlert(foundLogs, List.of()))
+        given(alertProcessor.processForOptionalAlertWithCheck(foundLogs, List.of()))
                 .willReturn(Optional.of(EmotionAlertType.SCARED_TWICE_LAST_WEEK));
+        given(alertProcessor.getEmotionType())
+                .willReturn(Emotion.SCARED);
 
         // when
         alertService.newTriggeringEmotionForUser(event);
@@ -96,8 +119,11 @@ class EmotionAlertServiceImplTest {
         given(alertRepository.getAlertsByUserIdAfterGivenLocalDateTime(eq(1L),
                 any()))
                 .willReturn(List.of());
-        given(alertProcessor.processForOptionalAlert(List.of(), List.of()))
+        given(alertProcessor.getEmotionType())
+                .willReturn(Emotion.SCARED);
+        given(alertProcessor.processForOptionalAlertWithCheck(List.of(), List.of()))
                 .willReturn(Optional.empty());
+
 
         // when
         alertService.newTriggeringEmotionForUser(event);

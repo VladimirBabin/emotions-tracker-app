@@ -7,12 +7,11 @@ import com.specificgroup.emotionstracker.alerts.state.EmotionLog;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 public abstract class TimeBasedEmotionAlertProcessor implements EmotionAlertProcessor {
     @Override
     public Optional<EmotionAlertType> processForOptionalAlert(List<EmotionLog> allLoggedEmotions,
-                                                              List<EmotionAlert> lastMonthEmotionAlerts) {
+                                                              List<EmotionAlert> lastEmotionAlerts) {
         long count = allLoggedEmotions.stream()
                 .filter(sl -> sl.getDateTime().isAfter(LocalDateTime.now().minusDays(checkedDaysPeriod())))
                 .count();
@@ -22,8 +21,6 @@ public abstract class TimeBasedEmotionAlertProcessor implements EmotionAlertProc
         return Optional.empty();
     }
 
-
-    public abstract int numberOfRequiredRepetitions();
-
     public abstract EmotionAlertType emotionAlertType();
+    public abstract int numberOfRequiredRepetitions();
 }

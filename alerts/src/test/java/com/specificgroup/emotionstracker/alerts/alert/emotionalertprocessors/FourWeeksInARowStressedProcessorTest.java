@@ -28,7 +28,7 @@ class FourWeeksInARowStressedProcessorTest {
         List<EmotionAlert> alerts = List.of(emotionAlert1, emotionAlert2, emotionAlert3, emotionAlert4);
 
         // when
-        Optional<EmotionAlertType> emotionAlertType = alertProcessor.processForOptionalAlertWithCheck(alerts);
+        Optional<EmotionAlertType> emotionAlertType = alertProcessor.processForOptionalAlertWithCheck(List.of(), alerts);
 
         // then
         assertThat(emotionAlertType).contains(EmotionAlertType.STRESSED_FOUR_WEEKS_IN_A_ROW);
@@ -47,7 +47,7 @@ class FourWeeksInARowStressedProcessorTest {
         List<EmotionAlert> alerts = List.of(emotionAlert1, emotionAlert2, emotionAlert3);
 
         // when
-        Optional<EmotionAlertType> emotionAlertType = alertProcessor.processForOptionalAlertWithCheck(alerts);
+        Optional<EmotionAlertType> emotionAlertType = alertProcessor.processForOptionalAlertWithCheck(List.of(), alerts);
 
         // then
         assertThat(emotionAlertType).isEmpty();
@@ -69,7 +69,7 @@ class FourWeeksInARowStressedProcessorTest {
         List<EmotionAlert> alerts = List.of(emotionAlert1, emotionAlert2, emotionAlert3, emotionAlert4, emotionAlert5);
 
         // when
-        Optional<EmotionAlertType> emotionAlertType = alertProcessor.processForOptionalAlertWithCheck(alerts);
+        Optional<EmotionAlertType> emotionAlertType = alertProcessor.processForOptionalAlertWithCheck(List.of(), alerts);
 
         // then
         assertThat(emotionAlertType).isEmpty();

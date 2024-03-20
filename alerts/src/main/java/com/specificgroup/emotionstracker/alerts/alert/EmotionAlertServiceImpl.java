@@ -3,7 +3,6 @@ package com.specificgroup.emotionstracker.alerts.alert;
 import com.specificgroup.emotionstracker.alerts.alert.domain.EmotionAlert;
 import com.specificgroup.emotionstracker.alerts.alert.domain.EmotionAlertType;
 import com.specificgroup.emotionstracker.alerts.alert.emotionalertprocessors.EmotionAlertProcessor;
-import com.specificgroup.emotionstracker.alerts.alert.emotionalertprocessors.EmotionAlertSecondaryProcessor;
 import com.specificgroup.emotionstracker.alerts.state.EmotionLog;
 import com.specificgroup.emotionstracker.alerts.state.EmotionLogRepository;
 import com.specificgroup.emotionstracker.alerts.state.EmotionLoggedEvent;
@@ -12,7 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,7 +23,6 @@ public class EmotionAlertServiceImpl implements EmotionAlertService {
     private final EmotionLogRepository logRepository;
     private final EmotionAlertRepository alertRepository;
     private final List<EmotionAlertProcessor> alertProcessors;
-    private final List<EmotionAlertSecondaryProcessor> secondaryProcessors;
 
     @Override
     public List<EmotionAlertType> getLastAddedEmotionAlerts(Long userId) {
@@ -57,20 +54,12 @@ public class EmotionAlertServiceImpl implements EmotionAlertService {
                 event.getUserId(), LocalDateTime.now().minusDays(DAYS_BEFORE_ALERT_CAN_REPEAT));
 
         // check if user is eligible for new alerts, persist them and return
-        List<EmotionAlert> newEmotionAlerts = new ArrayList<>(alertProcessors.stream()
-                .map(p -> p.processForOptionalAlert(userEmotionLogs, latestAlerts))
+        List<EmotionAlert> newEmotionAlerts = alertProcessors.stream()
+                .filter(p -> p.getEmotionType().equals(event.getEmotion()))
+                .map(p -> p.processForOptionalAlertWithCheck(userEmotionLogs, latestAlerts))
                 .flatMap(Optional::stream)
                 .map(emotionAlertType -> new EmotionAlert(event.getUserId(), emotionAlertType))
-                .toList());
-
-        if (!newEmotionAlerts.isEmpty()) {
-            List<EmotionAlert> secondaryAlerts = secondaryProcessors.stream()
-                    .map(p -> p.processForOptionalAlert(latestAlerts))
-                    .flatMap(Optional::stream)
-                    .map(emotionAlertType -> new EmotionAlert(event.getUserId(), emotionAlertType))
-                    .toList();
-            newEmotionAlerts.addAll(secondaryAlerts);
-        }
+                .toList();
 
         if (!newEmotionAlerts.isEmpty()) {
             alertRepository.saveAll(newEmotionAlerts);
