@@ -261,8 +261,7 @@ class StateComponent extends React.Component {
                     <WeeklyStatsComponent weeklyStats={this.state.weeklyStats}/>
                 }
             </div>
-        )
-            ;
+        );
     }
 }
 
