@@ -19,13 +19,16 @@ export default class LoginForm extends React.Component {
     }
 
     onChangeHandler = (event) => {
-        let name =event.target.name;
+        let name = event.target.name;
         let value = event.target.value;
         this.setState({[name]: value});
     };
 
     obSubmitLogin = (e) => {
-        this.state.onLogin(e, this.state.login, this.state.password);
+        this.state.onLogin(
+            e,
+            this.state.login,
+            this.state.password);
     };
 
     onSubmitRegister = (e) => {
@@ -33,6 +36,7 @@ export default class LoginForm extends React.Component {
             e,
             this.state.firstName,
             this.state.lastName,
+            this.state.login,
             this.state.password
         );
     };
@@ -78,7 +82,7 @@ export default class LoginForm extends React.Component {
                                 <div className="form-outline mb-4">
                                     <input type="text" id="firstName" name="firstName" className="form-control"
                                            onChange={this.onChangeHandler}/>
-                                    <label className="form-label" htmlFor="loginName">First name</label>
+                                    <label className="form-label" htmlFor="firstName">First name</label>
                                 </div>
                                 <div className="form-outline mb-4">
                                     <input type="text" id="lastName" name="lastName" className="form-control"

@@ -1,12 +1,13 @@
 import * as React from "react";
+import classNames from "classnames";
+import './Buttons.css'
 
 export default function Buttons(props) {
     return (
-        <div className="row">
-            <div className="col-md-12 text-center" style={{marginTop: "30px"}}>
-            <button className="btn btn-primary" style={{margin: "10px"}} onClick={props.login}>Login</button>
-            <button className="btn btn-dark" style={{margin: "10px"}} onClick={props.logout}>Logout</button>
-            </div>
+        <div>
+            <button className={classNames("btn btn-primary", "btn-login")} onClick={props.login}>Login</button>
+            <button className={classNames("btn btn-dark", "btn-logout")} onClick={props.logout}>Logout</button>
         </div>
+
     );
 };

@@ -5,16 +5,15 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.specificgroup.emotionstracker.authorization.dto.UserDto;
+import com.specificgroup.emotionstracker.authorization.services.UserService;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 
 import java.util.Base64;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 
@@ -35,7 +34,7 @@ public class UserAuthProvider {
 
     public String createToken(String login) {
         Date now = new Date();
-        Date validity = new Date(now.getTime() + 3_600_600);
+        Date validity = new Date(now.getTime() + 3_600_000);
 
         return JWT.create()
                 .withIssuer(login)

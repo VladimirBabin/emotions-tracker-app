@@ -97,7 +97,7 @@ class StateComponent extends React.Component {
                                     text="Awful"
                                     onChange={this.handleSetChange}
                                     value="AWFUL"
-                                    styleColor="indigo"
+                                    styleColor="mediumslateblue"
                                 />
                                 <RadioButton
                                     text="Bad"
@@ -257,8 +257,8 @@ class StateComponent extends React.Component {
                 </div>
                 <br/>
                 {
-                    this.state.userLogged &&
-                    <WeeklyStatsComponent weeklyStats={this.state.weeklyStats}/>
+                    // this.state.userLogged &&
+                    // <WeeklyStatsComponent weeklyStats={this.state.weeklyStats}/>
                 }
             </div>
         );

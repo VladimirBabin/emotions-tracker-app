@@ -1,68 +1,32 @@
-import * as React from "react";
-import WelcomeContent from "./WelcomeContent";
-import AuthContent from "./AuthContent";
-import LoginForm from "./LoginForm";
-import Buttons from "./Buttons";
-import {request} from "../axios_helper";
+import React from 'react';
+import Popup from "../custom-classes/Popup";
+import {useState} from 'react';
+import './AppContent.css'
+import WeeklyStatsComponent from "./WeeklyStatsComponent";
 
-export default class AppContent extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            componentToShow: "welcome"
-        };
-    };
 
-    login = () => {
-        this.setState({componentToShow: "login"});
-    };
 
-    logout = () => {
-        this.setState({componentToShow: "welcome"});
-    };
+function AppContent() {
+    const [buttonPopup, setButtonPopup] = useState(false);
 
-    onLogin = (e, username, password) => {
-        e.preventDefault();
-        request("POST",
-            "/login",
-            {
-                login: username,
-                password: password
-            }
-        ).then((response) => {
-            this.setState({componentToShow: "appContent"});
-        }).catch((error) => {
-            this.setState({componentToShow: "welcome"});
-        });
-    };
-
-    onRegister = (e, firstName, lastName, username, password) => {
-        e.preventDefault();
-        request("POST",
-            "/register",
-            {
-                firstName: firstName,
-                lastName: lastName,
-                login: username,
-                password: password
-            }
-        ).then((response) => {
-            this.setState({componentToShow: "messages"});
-        }).catch((error) => {
-            this.setState({componentToShow: "welcome"});
-        });
-    };
-
-    render() {
-        return (
-            <div>
-                <Buttons login={this.login} logout={this.logout}
-                    />
-                {this.state.componentToShow === "welcome" && <WelcomeContent/>}
-                {this.state.componentToShow === "appContent" && <AuthContent/>}
-                {this.state.componentToShow === "login"
-                    && <LoginForm onLogin={this.onLogin} onRegister={this.onRegister}/>}
+    return (
+        <div>
+            <div className="plus-button-title">
+                <h6>To log your state tap the button:</h6>
             </div>
-        )
-    }
+            <div className="plus-button-div">
+                <button className="plus-button" onClick={() => setButtonPopup(true)}>+</button>
+            </div>
+            <div className="container-fluid">
+                <div className="weekly-stats-div">
+                    <WeeklyStatsComponent/>
+                </div>
+            </div>
+            <div>
+                <Popup trigger={buttonPopup} setTrigger={setButtonPopup}/>
+            </div>
+        </div>
+    );
 }
+
+export default AppContent;

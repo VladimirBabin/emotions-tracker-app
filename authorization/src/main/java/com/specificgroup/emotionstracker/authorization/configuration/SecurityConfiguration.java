@@ -22,7 +22,7 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.exceptionHandling((exception) -> exception.authenticationEntryPoint(jwtAuthenticationEntryPoint)
-                .accessDeniedPage("error/access-denied"))
+                .accessDeniedPage("/error/access-denied"))
                 .addFilterBefore(new JwtAuthFilter(userAuthProvider), BasicAuthenticationFilter.class)
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(httpSecuritySessionManagementConfigurer ->
