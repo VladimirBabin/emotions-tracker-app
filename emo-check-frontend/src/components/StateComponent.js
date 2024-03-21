@@ -1,7 +1,5 @@
 import * as React from "react";
 import ApiClient from "../services/ApiClient";
-import WeeklyStatsComponent from "./WeeklyStatsComponent"
-import {WeeklyStats} from "./WeeklyStatsComponent";
 import RadioButton from "../custom-classes/RadioButton";
 import Checkbox from "../custom-classes/Checkbox"
 import './StateComponent.css'
@@ -14,7 +12,6 @@ class StateComponent extends React.Component {
             user: '',
             state: '',
             dateTime: '',
-            weeklyStats: WeeklyStats,
             userLogged: false,
             emotions: []
         };
@@ -256,10 +253,6 @@ class StateComponent extends React.Component {
                     {this.state.message}
                 </div>
                 <br/>
-                {
-                    // this.state.userLogged &&
-                    // <WeeklyStatsComponent weeklyStats={this.state.weeklyStats}/>
-                }
             </div>
         );
     }
