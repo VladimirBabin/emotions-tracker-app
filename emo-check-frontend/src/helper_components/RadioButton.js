@@ -1,6 +1,7 @@
 import './RadioButton.css'
+import StateColour from "./StateColour";
 
-const RadioButton = ({ text, onChange, value, styleColor }) => {
+const RadioButton = ({ text, onChange, value }) => {
     return (
         <label className="radiobutton-label">
             <input
@@ -11,7 +12,7 @@ const RadioButton = ({ text, onChange, value, styleColor }) => {
                 onChange={onChange}
 
             />
-            <span className="custom-radiobutton" style={{backgroundColor: styleColor}} />
+            <span className="custom-radiobutton" style={{backgroundColor: StateColour(value)}} />
             {text}
         </label>
     );

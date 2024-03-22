@@ -1,9 +1,8 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Popup from "../helper_components/Popup";
-import {useState} from 'react';
 import './AppContent.css'
 import WeeklyStatsComponent from "./WeeklyStatsComponent";
-
+import {LastLogsComponent} from "./LastLogsComponent";
 
 
 function AppContent() {
@@ -21,6 +20,9 @@ function AppContent() {
             <div className="container-fluid">
                 <div className="weekly-stats-div">
                     <WeeklyStatsComponent statsRefresh={statsRefresh} setStatsRefresh={setStatsRefresh}/>
+                </div>
+                <div className="last-logs-div">
+                    <LastLogsComponent statsRefresh={statsRefresh} setStatsRefresh={setStatsRefresh}/>
                 </div>
             </div>
             <div>

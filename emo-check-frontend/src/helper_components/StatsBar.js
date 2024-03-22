@@ -1,10 +1,11 @@
 import './StatsBar.css'
+import StateColour from "./StateColour";
 
-const StatsBar = ({backColor, stateName, percent}) => {
+const StatsBar = ({stateName, percent}) => {
     return (
         <div className="stats-container-div">
             <div className="stats-div-bar" style={{
-                backgroundColor: backColor,
+                backgroundColor: StateColour(stateName.toUpperCase()),
                 width: percent * 10
             }}></div>
             <p className="stats-p-item">

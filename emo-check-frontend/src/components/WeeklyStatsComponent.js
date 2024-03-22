@@ -9,6 +9,7 @@ class WeeklyStatsComponent extends React.Component {
         super(props);
         this.state = {
             weeklyStats: WeeklyStats,
+            serverError: false
         }
     }
 
@@ -23,32 +24,55 @@ class WeeklyStatsComponent extends React.Component {
         }
     }
 
-    refreshStats() {
-        ApiClient.weeklyStats(window.localStorage.getItem("login")).then(res => {
-            if (res.ok) {
-                res.json().then(stats => {
-                    this.setState({
-                        weeklyStats: stats
-                    })
-                });
+    getStats(): Promise {
+        return ApiClient.weeklyStats(window.localStorage.getItem("login")).then(
+            res => {
+                if (res.ok) {
+                    return res.json();
+                } else {
+                    return Promise.reject("Error on fetching last logs");
+                }
             }
+        );
+    }
+
+    updateStats(stats) {
+        this.setState({
+            weeklyStats: stats,
+            // reset the flag
+            serverError: false
+        });
+    }
+
+    refreshStats() {
+        this.getStats().then(stats => {
+                this.updateStats(stats);
+            }
+        ).catch(reason => {
+            this.setState({serverError: true});
+            console.log('Emo-check server error', reason);
         });
     }
 
 
     render() {
+        if (this.state.serverError) {
+            return (
+                <div>We're sorry, but we can't display last logged states at the moment</div>
+            );
+        }
         return (
             <>
                 <h5>Last week statistics:</h5>
                 <div>
                     <ul>
-                        <StatsBar backColor="mediumslateblue" stateName="Awful"
+                        <StatsBar stateName="Awful"
                                   percent={this.state.weeklyStats.awfulState}/>
-                        <StatsBar backColor="cornflowerblue" stateName="Bad" percent={this.state.weeklyStats.badState}/>
-                        <StatsBar backColor="yellowgreen" stateName="Ok" percent={this.state.weeklyStats.okState}/>
-                        <StatsBar backColor="mediumseagreen" stateName="Good"
+                        <StatsBar stateName="Bad" percent={this.state.weeklyStats.badState}/>
+                        <StatsBar stateName="Ok" percent={this.state.weeklyStats.okState}/>
+                        <StatsBar stateName="Good"
                                   percent={this.state.weeklyStats.goodState}/>
-                        <StatsBar backColor="seagreen" stateName="Excellent"
+                        <StatsBar stateName="Excellent"
                                   percent={this.state.weeklyStats.excellentState}/>
                     </ul>
                 </div>

@@ -1,6 +1,7 @@
 import './Checkbox.css'
+import EmotionsColour from "./EmotionsColour";
 
-const Checkbox = ({ text, onChange, value, styleColor }) => {
+const Checkbox = ({ text, onChange, value }) => {
 
     return (
         <label className="checkbox-label">
@@ -11,7 +12,7 @@ const Checkbox = ({ text, onChange, value, styleColor }) => {
                 value={value}
                 onChange={onChange}
             />
-            <span className="custom-checkbox" style={{backgroundColor: styleColor}} />
+            <span className="custom-checkbox" style={{backgroundColor: EmotionsColour(value)}} />
             {text}
         </label>
     );

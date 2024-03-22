@@ -31,5 +31,9 @@
     margin: 10px;
     border-style: solid;
     border-width: 2px;
-    border-radius: 2%;
+    border-radius: 10px;
+}
+
+.last-logs-div {
+    padding-top: 10px;
 }

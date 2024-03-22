@@ -2,7 +2,7 @@ import * as React from "react";
 import ApiClient from "../services/ApiClient";
 import RadioButton from "../helper_components/RadioButton";
 import Checkbox from "../helper_components/Checkbox"
-import './StateComponent.css'
+import './LogStateComponent.css'
 
 class LogStateComponent extends React.Component {
 
@@ -13,7 +13,8 @@ class LogStateComponent extends React.Component {
             state: '',
             dateTime: '',
             userLogged: false,
-            emotions: []
+            emotions: [],
+            message: ''
         };
         this.handleSubmitResult = this.handleSubmitResult.bind(this);
         this.handleSetChange = this.handleSetChange.bind(this);
@@ -45,26 +46,10 @@ class LogStateComponent extends React.Component {
             .then(res => {
                 if (res.ok) {
                     this.updateMessage("New state was successfully logged");
-                    this.setState({
-                        userLogged: true
-                    });
-                    this.updateWeeklyStats(this.state.user);
                 } else {
                     this.updateMessage("Error: server error or not available");
                 }
             });
-    }
-
-    updateWeeklyStats(userAlias: string) {
-        ApiClient.weeklyStats(userAlias).then(res => {
-            if (res.ok) {
-                res.json().then(stats => {
-                    this.setState({
-                        weeklyStats: stats
-                    });
-                });
-            }
-        });
     }
 
     updateMessage(m: string) {
@@ -94,31 +79,26 @@ class LogStateComponent extends React.Component {
                                     text="Awful"
                                     onChange={this.handleSetChange}
                                     value="AWFUL"
-                                    styleColor="mediumslateblue"
                                 />
                                 <RadioButton
                                     text="Bad"
                                     onChange={this.handleSetChange}
                                     value="BAD"
-                                    styleColor="cornflowerblue"
                                 />
                                 <RadioButton
                                     text="Ok"
                                     onChange={this.handleSetChange}
                                     value="OK"
-                                    styleColor="yellowgreen"
                                 />
                                 <RadioButton
                                     text="Good"
                                     onChange={this.handleSetChange}
                                     value="GOOD"
-                                    styleColor="mediumseagreen"
                                 />
                                 <RadioButton
                                     text="Excellent"
                                     onChange={this.handleSetChange}
                                     value="EXCELLENT"
-                                    styleColor="seagreen"
                                 />
                             </div>
                         </div>
@@ -131,37 +111,31 @@ class LogStateComponent extends React.Component {
                                     text="Happy"
                                     onChange={this.handleCheckbox}
                                     value="HAPPY"
-                                    styleColor="yellow"
                                 />
                                 <Checkbox
                                     text="Indifferent"
                                     onChange={this.handleCheckbox}
                                     value="INDIFFERENT"
-                                    styleColor="skyblue"
                                 />
                                 <Checkbox
                                     text="Sad"
                                     onChange={this.handleCheckbox}
                                     value="SAD"
-                                    styleColor="rebeccapurple"
                                 />
                                 <Checkbox
                                     text="Excited"
                                     onChange={this.handleCheckbox}
                                     value="EXCITED"
-                                    styleColor="deeppink"
                                 />
                                 <Checkbox
                                     text="Peaceful"
                                     onChange={this.handleCheckbox}
                                     value="PEACEFUL"
-                                    styleColor="darkolivegreen"
                                 />
                                 <Checkbox
                                     text="Anxious"
                                     onChange={this.handleCheckbox}
                                     value="ANXIOUS"
-                                    styleColor="cyan"
                                 />
                             </div>
                             <div className="checkbox-div">
@@ -169,37 +143,31 @@ class LogStateComponent extends React.Component {
                                     text="Satisfied"
                                     onChange={this.handleCheckbox}
                                     value="SATISFIED"
-                                    styleColor="lightpink"
                                 />
                                 <Checkbox
                                     text="Content"
                                     onChange={this.handleCheckbox}
                                     value="CONTENT"
-                                    styleColor="indianred"
                                 />
                                 <Checkbox
                                     text="Drained"
                                     onChange={this.handleCheckbox}
                                     value="DRAINED"
-                                    styleColor="black"
                                 />
                                 <Checkbox
                                     text="Passionate"
                                     onChange={this.handleCheckbox}
                                     value="PASSIONATE"
-                                    styleColor="darkorange"
                                 />
                                 <Checkbox
                                     text="Stressed"
                                     onChange={this.handleCheckbox}
                                     value="STRESSED"
-                                    styleColor="powderblue"
                                 />
                                 <Checkbox
                                     text="Angry"
                                     onChange={this.handleCheckbox}
                                     value="ANGRY"
-                                    styleColor="crimson"
                                 />
                             </div>
                             <div className="checkbox-div">
@@ -207,37 +175,31 @@ class LogStateComponent extends React.Component {
                                     text="Tired"
                                     onChange={this.handleCheckbox}
                                     value="TIRED"
-                                    styleColor="brown"
                                 />
                                 <Checkbox
                                     text="Hopeful"
                                     onChange={this.handleCheckbox}
                                     value="HOPEFUL"
-                                    styleColor="olive"
                                 />
                                 <Checkbox
                                     text="Irritated"
                                     onChange={this.handleCheckbox}
                                     value="IRRITATED"
-                                    styleColor="peru"
                                 />
                                 <Checkbox
                                     text="Surprised"
                                     onChange={this.handleCheckbox}
                                     value="SURPRISED"
-                                    styleColor="sandybrown"
                                 />
                                 <Checkbox
                                     text="Scared"
                                     onChange={this.handleCheckbox}
                                     value="SCARED"
-                                    styleColor="dimgrey"
                                 />
                                 <Checkbox
                                     text="Jealous"
                                     onChange={this.handleCheckbox}
                                     value="JEALOUS"
-                                    styleColor="darkorange"
                                 />
                             </div>
                         </div>

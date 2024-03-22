@@ -1,0 +1,13 @@
+.state-view-item {
+    width: 100px;
+    min-width: 100px;
+    height: 100px;
+    border-style: solid;
+    border-radius: 50%;
+    justify-content: center;
+    flex-direction: column;
+    display: flex;
+    font-size: 15px;
+    font-weight: bold;
+    margin: 10px;
+}

@@ -1,0 +1,11 @@
+.date-view-item {
+    width: 100px;
+    border-style: solid;
+    border-radius: 10px;
+    justify-content: left;
+    flex-direction: column;
+    display: flex;
+    font-size: 15px;
+    font-weight: bold;
+    margin: 10px;
+}

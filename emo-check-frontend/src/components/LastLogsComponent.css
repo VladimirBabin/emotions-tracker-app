@@ -1,0 +1,9 @@
+.state-log-div {
+    text-align: center;
+    padding: 5px;
+    margin: 10px;
+    border-style: solid;
+    border-width: 2px;
+    border-radius: 10px;
+    display: flex;
+}
