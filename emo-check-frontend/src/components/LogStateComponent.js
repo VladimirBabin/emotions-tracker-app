@@ -4,7 +4,7 @@ import RadioButton from "../helper_components/RadioButton";
 import Checkbox from "../helper_components/Checkbox"
 import './StateComponent.css'
 
-class StateComponent extends React.Component {
+class LogStateComponent extends React.Component {
 
     constructor(props) {
         super(props);
@@ -258,4 +258,4 @@ class StateComponent extends React.Component {
     }
 }
 
-export default StateComponent;
+export default LogStateComponent;

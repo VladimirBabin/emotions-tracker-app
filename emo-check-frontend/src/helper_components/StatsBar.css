@@ -2,6 +2,7 @@
     text-align: left;
     overflow: visible;
     white-space: nowrap;
+    font-weight: bold;
 }
 
 .stats-div-bar {

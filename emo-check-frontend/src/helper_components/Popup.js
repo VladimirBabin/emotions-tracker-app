@@ -1,13 +1,16 @@
 import * as React from 'react';
 import './Popup.css'
-import StateComponent from "../components/StateComponent";
+import LogStateComponent from "../components/LogStateComponent";
 
 function Popup (props) {
     return (props.trigger) ? (
         <div className="popup">
             <div className="popup-inner">
-                <StateComponent trigger={props.trigger} setTrigger={props.setTrigger}/>
-                <button className="close-btn" onClick={() => props.setTrigger(false)}>close</button>
+                <LogStateComponent trigger={props.trigger} setTrigger={props.setTrigger}/>
+                <button className="close-btn" onClick={() =>  {
+                    props.setTrigger(false);
+                    props.setStatsRefresh(true);
+                }}>close</button>
             </div>
         </div>
     ) : "";

@@ -16,9 +16,12 @@ class WeeklyStatsComponent extends React.Component {
         this.refreshStats();
     }
 
-    // componentDidUpdate(prevProps, prevState, snapshot) {
-    //     this.refreshStats();
-    // }
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (this.props.statsRefresh === true) {
+            this.refreshStats();
+            this.props.setStatsRefresh(false);
+        }
+    }
 
     refreshStats() {
         ApiClient.weeklyStats(window.localStorage.getItem("login")).then(res => {
@@ -36,16 +39,19 @@ class WeeklyStatsComponent extends React.Component {
     render() {
         return (
             <>
-            <h5>Last week statistics:</h5>
-            <div>
+                <h5>Last week statistics:</h5>
+                <div>
                     <ul>
-                        <StatsBar backColor="mediumslateblue" stateName="Awful" percent={this.state.weeklyStats.awfulState}/>
+                        <StatsBar backColor="mediumslateblue" stateName="Awful"
+                                  percent={this.state.weeklyStats.awfulState}/>
                         <StatsBar backColor="cornflowerblue" stateName="Bad" percent={this.state.weeklyStats.badState}/>
                         <StatsBar backColor="yellowgreen" stateName="Ok" percent={this.state.weeklyStats.okState}/>
-                        <StatsBar backColor="mediumseagreen" stateName="Good" percent={this.state.weeklyStats.goodState}/>
-                        <StatsBar backColor="seagreen" stateName="Excellent" percent={this.state.weeklyStats.excellentState}/>
+                        <StatsBar backColor="mediumseagreen" stateName="Good"
+                                  percent={this.state.weeklyStats.goodState}/>
+                        <StatsBar backColor="seagreen" stateName="Excellent"
+                                  percent={this.state.weeklyStats.excellentState}/>
                     </ul>
-            </div>
+                </div>
             </>
         )
     }
