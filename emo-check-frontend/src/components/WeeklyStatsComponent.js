@@ -3,6 +3,16 @@ import ApiClient from "../services/ApiClient";
 import './WeeklyStatsComponent.css'
 import StatsBar from "../helper_components/StatsBar";
 
+const WeeklyStats = (awfulState, badState, goodState, okState, excellentState) => {
+    return {
+        awfulState: awfulState,
+        badState: badState,
+        okState: okState,
+        goodState: goodState,
+        excellentState: excellentState
+    }
+}
+
 class WeeklyStatsComponent extends React.Component {
 
     constructor(props) {
@@ -83,12 +93,3 @@ class WeeklyStatsComponent extends React.Component {
 
 export default WeeklyStatsComponent;
 
-export const WeeklyStats = (awfulState, badState, goodState, okState, excellentState) => {
-    return {
-        awfulState: awfulState,
-        badState: badState,
-        okState: okState,
-        goodState: goodState,
-        excellentState: excellentState
-    }
-}

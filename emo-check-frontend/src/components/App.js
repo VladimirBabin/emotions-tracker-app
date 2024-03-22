@@ -4,7 +4,7 @@ import * as React from "react";
 import Buttons from "./Buttons";
 import WelcomeContent from "./WelcomeContent";
 import LoginForm from "./LoginForm";
-import {request, setAuthToken, setLogin} from "../axios_helper";
+import {request, setAuthToken, setLogin, setUserId} from "../axios_helper";
 
 class App extends React.Component {
     constructor(props) {
@@ -34,10 +34,11 @@ class App extends React.Component {
         ).then((response) => {
             this.setState({componentToShow: "appContent"});
             setAuthToken(response.data.token);
-            console.log(response);
             setLogin(response.data.login);
-        }).catch((error) => {
+            setUserId(response.data.id);
+        }).catch((reason) => {
             this.setState({componentToShow: "welcome"});
+            console.log('Login error', reason);
         });
     };
 
@@ -55,8 +56,11 @@ class App extends React.Component {
         ).then((response) => {
             this.setState({componentToShow: "appContent"});
             setAuthToken(response.data.token);
-        }).catch((error) => {
+            setLogin(response.data.login);
+            setUserId(response.data.id);
+        }).catch((reason) => {
             this.setState({componentToShow: "welcome"});
+            console.log('Register error', reason);
         });
     };
 

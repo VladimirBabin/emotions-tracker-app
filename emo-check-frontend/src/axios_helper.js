@@ -15,6 +15,10 @@ export const setLogin = (login) => {
     window.localStorage.setItem("login", login);
 }
 
+export const setUserId = (userId) => {
+    window.localStorage.setItem("userId", userId);
+}
+
 export const request = (method, url, data) => {
     let headers = {};
     if (getAuthToken() !== null && getAuthToken() !== "null") {

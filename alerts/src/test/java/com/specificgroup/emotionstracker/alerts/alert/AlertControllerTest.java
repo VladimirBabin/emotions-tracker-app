@@ -21,7 +21,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 @WebMvcTest
 @AutoConfigureJsonTesters
 class AlertControllerTest {
-
     @Autowired
     private MockMvc mvc;
 
@@ -32,10 +31,7 @@ class AlertControllerTest {
     private EmotionAlertService emotionAlertService;
 
     @Autowired
-    private JacksonTester<List<StateAlertType>> stateAlertsJacksonTester;
-
-    @Autowired
-    private JacksonTester<List<EmotionAlertType>> emotionAlertsJacksonTester;
+    private JacksonTester<List<String>> alertsJacksonTester;
 
     @Test
     void whenGetStateAlertsThenResponseIsOk() throws Exception {
@@ -43,16 +39,17 @@ class AlertControllerTest {
         List<StateAlertType> stateAlerts = List.of(StateAlertType.LOW_STATE_TWICE_IN_TWO_DAYS);
         given(stateAlertService.getLastAddedStateAlerts(1L))
                 .willReturn(stateAlerts);
+        List<String> states = stateAlerts.stream().map(StateAlertType::getDescription).toList();
 
         // when
         MockHttpServletResponse response = mvc.perform(
-                        get("/alerts/state").param("id", "1"))
+                        get("/alerts/recent").param("id", "1"))
                 .andReturn().getResponse();
 
         // then
         then(response.getStatus()).isEqualTo(HttpStatus.OK.value());
         then(response.getContentAsString()).isEqualTo(
-                stateAlertsJacksonTester.write(stateAlerts).getJson());
+                alertsJacksonTester.write(states).getJson());
     }
 
     @Test
@@ -61,15 +58,16 @@ class AlertControllerTest {
         List<EmotionAlertType> emotionAlerts = List.of(EmotionAlertType.STRESSED_ONCE_A_WEEK);
         given(emotionAlertService.getLastAddedEmotionAlerts(1L))
                 .willReturn(emotionAlerts);
+        List<String> emotions = emotionAlerts.stream().map(EmotionAlertType::getDescription).toList();
 
         // when
         MockHttpServletResponse response = mvc.perform(
-                        get("/alerts/emotion").param("id", "1"))
+                        get("/alerts/recent").param("id", "1"))
                 .andReturn().getResponse();
 
         // then
         then(response.getStatus()).isEqualTo(HttpStatus.OK.value());
         then(response.getContentAsString()).isEqualTo(
-                emotionAlertsJacksonTester.write(emotionAlerts).getJson());
+                alertsJacksonTester.write(emotions).getJson());
     }
 }

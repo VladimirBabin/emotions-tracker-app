@@ -3,6 +3,7 @@ import Popup from "../helper_components/Popup";
 import './AppContent.css'
 import WeeklyStatsComponent from "./WeeklyStatsComponent";
 import {LastLogsComponent} from "./LastLogsComponent";
+import {AlertMessage} from "./AlertMessage"
 
 
 function AppContent() {
@@ -11,6 +12,7 @@ function AppContent() {
 
     return (
         <div>
+            <AlertMessage statsRefresh={statsRefresh} setStatsRefresh={setStatsRefresh}/>
             <div className="plus-button-title">
                 <h5>To log your state tap the button:</h5>
             </div>
@@ -19,11 +21,15 @@ function AppContent() {
             </div>
             <div className="container-fluid">
                 <div className="weekly-stats-div">
+
                     <WeeklyStatsComponent statsRefresh={statsRefresh} setStatsRefresh={setStatsRefresh}/>
                 </div>
                 <div className="last-logs-div">
                     <LastLogsComponent statsRefresh={statsRefresh} setStatsRefresh={setStatsRefresh}/>
                 </div>
+            </div>
+            <div>
+
             </div>
             <div>
                 <Popup trigger={buttonPopup} setTrigger={setButtonPopup} setStatsRefresh={setStatsRefresh}/>
