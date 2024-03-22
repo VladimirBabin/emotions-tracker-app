@@ -1,0 +1,19 @@
+.stats-p-item {
+    text-align: left;
+    overflow: visible;
+    white-space: nowrap;
+}
+
+.stats-div-bar {
+    height: 30px;
+    border-radius: 20px;
+    border-style: solid;
+    float: right;
+    margin-left: auto;
+    margin-right: 0;
+}
+
+.stats-container-div {
+    margin-top: 5px;
+    height: 30px;
+}

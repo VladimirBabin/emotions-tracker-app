@@ -1,7 +1,7 @@
 import * as React from "react";
 import ApiClient from "../services/ApiClient";
-import RadioButton from "../custom-classes/RadioButton";
-import Checkbox from "../custom-classes/Checkbox"
+import RadioButton from "../helper_components/RadioButton";
+import Checkbox from "../helper_components/Checkbox"
 import './StateComponent.css'
 
 class StateComponent extends React.Component {
