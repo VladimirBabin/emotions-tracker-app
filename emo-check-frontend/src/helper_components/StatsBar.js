@@ -6,13 +6,12 @@ const StatsBar = ({stateName, percent}) => {
         <div className="stats-container-div">
             <div className="stats-div-bar" style={{
                 backgroundColor: StateColour(stateName.toUpperCase()),
-                width: percent * 10
+                width: (isNaN(percent) ? 0 : percent)  * 10
             }}></div>
             <p className="stats-p-item">
                 {stateName}: {percent}%
             </p>
         </div>
-
     )
 };
 

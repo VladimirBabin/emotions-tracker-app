@@ -67,7 +67,7 @@ export class LastLogsComponent extends React.Component {
         return (
             <div>
                 {this.state.lastLogsData.map(logs =>
-                    <div className="state-log-div">
+                    <div className="state-log-div" key={logs.id}>
                         <DateFormatView value={logs.dateTime}/>
                         <StateView value={logs.state}/>
                         <EmotionsView emotions={logs.emotions}/>
