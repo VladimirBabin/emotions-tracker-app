@@ -19,16 +19,18 @@ import java.util.Optional;
 @Slf4j
 public class EmotionAlertServiceImpl implements EmotionAlertService {
     public static final int DAYS_BEFORE_ALERT_CAN_REPEAT = 30;
-    private static final int MINUTES_SPAN_FOR_ADDED_ALERT = 2;
+    private static final int MINUTES_SPAN_FOR_ADDED_ALERT = 60;
     private final EmotionLogRepository logRepository;
     private final EmotionAlertRepository alertRepository;
     private final List<EmotionAlertProcessor> alertProcessors;
 
     @Override
     public List<EmotionAlertType> getLastAddedEmotionAlerts(Long userId) {
-        return alertRepository
+        List<EmotionAlertType> alerts = alertRepository
                 .getAlertTypesByUserIdAfterGivenLocalDateTime(userId,
                         LocalDateTime.now().minusMinutes(MINUTES_SPAN_FOR_ADDED_ALERT));
+        log.info("Found alerts: {}", alerts);
+        return alerts;
     }
 
     @Override

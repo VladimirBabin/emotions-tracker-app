@@ -17,16 +17,19 @@ import java.util.Optional;
 @Slf4j
 public class StateAlertServiceImpl implements StateAlertService {
     public static final int DAYS_BEFORE_ALERT_CAN_REPEAT = 30;
-    public static final int MINUTES_SPAN_FOR_ADDED_ALERT = 2;
+    public static final int MINUTES_SPAN_FOR_ADDED_ALERT = 60;
     private final StateLogRepository logRepository;
     private final StateAlertRepository alertRepository;
     private final List<StateAlertProcessor> alertProcessors;
 
     @Override
     public List<StateAlertType> getLastAddedStateAlerts(Long userId) {
-        return alertRepository
+        log.info("local date time: {}", LocalDateTime.now().minusMinutes(MINUTES_SPAN_FOR_ADDED_ALERT));
+        List<StateAlertType> alerts = alertRepository
                 .getAlertTypesByUserIdAfterGivenLocalDateTime(userId,
                         LocalDateTime.now().minusMinutes(MINUTES_SPAN_FOR_ADDED_ALERT));
+        log.info("Found alerts: {}", alerts);
+        return alerts;
     }
 
     @Override

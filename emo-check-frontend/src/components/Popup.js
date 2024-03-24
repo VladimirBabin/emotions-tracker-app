@@ -1,6 +1,6 @@
 import * as React from 'react';
 import './Popup.css'
-import LogStateComponent from "../components/LogStateComponent";
+import LogStateComponent from "./LogStateComponent";
 
 function Popup (props) {
     return (props.trigger) ? (

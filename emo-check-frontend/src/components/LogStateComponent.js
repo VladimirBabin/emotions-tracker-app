@@ -9,7 +9,7 @@ class LogStateComponent extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            user: '',
+            // user: '',
             state: '',
             dateTime: '',
             userLogged: false,
@@ -42,8 +42,7 @@ class LogStateComponent extends React.Component {
 
     handleSubmitResult(event) {
         event.preventDefault();
-        console.log("Emotions to send: " + this.state.emotions)
-        ApiClient.sendState(this.state.user,
+        ApiClient.sendState(window.localStorage.getItem("login"),
             this.state.state,
             this.state.emotions,
             this.state.dateTime)
@@ -67,12 +66,12 @@ class LogStateComponent extends React.Component {
             <div className="display-column">
                 <form onSubmit={this.handleSubmitResult}>
                     <label className="states">
-                        Your name:
-                        <input type="text" maxLength="12"
-                               name="user"
-                               value={this.state.user}
-                               onChange={this.handleSetChange}/>
-                        <br/>
+                        {/*Your name:*/}
+                        {/*<input type="text" maxLength="12"*/}
+                        {/*       name="user"*/}
+                        {/*       value={this.state.user}*/}
+                        {/*       onChange={this.handleSetChange}/>*/}
+                        {/*<br/>*/}
                         <br/>
                         <div className="state-div">
                             <div className="state-title">

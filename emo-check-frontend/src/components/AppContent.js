@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
-import Popup from "../helper_components/Popup";
+import Popup from "./Popup";
 import './AppContent.css'
 import WeeklyStatsComponent from "./WeeklyStatsComponent";
 import {LastLogsComponent} from "./LastLogsComponent";
-import {AlertMessage} from "./AlertMessage"
+import {AlertMessages} from "./AlertMessages"
 
 
 function AppContent() {
@@ -12,7 +12,7 @@ function AppContent() {
 
     return (
         <div>
-            <AlertMessage statsRefresh={statsRefresh} setStatsRefresh={setStatsRefresh}/>
+            <AlertMessages statsRefresh={statsRefresh} setStatsRefresh={setStatsRefresh}/>
             <div className="plus-button-title">
                 <h5>To log your state tap the button:</h5>
             </div>

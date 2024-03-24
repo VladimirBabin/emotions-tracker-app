@@ -1,7 +1,9 @@
 .alert-div {
-    padding: 20px;
-    background-color: #f44336;
-    color: white;
+    margin: 5px;
+    padding: 10px;
+    background-color: lightpink;
+    color: floralwhite;
+    border-radius: 10px;
 }
 
 .alert-close-btn {
