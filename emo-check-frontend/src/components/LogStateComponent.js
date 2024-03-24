@@ -33,12 +33,16 @@ class LogStateComponent extends React.Component {
         if (event.target.checked === true) {
             this.state.emotions.push(value);
         } else {
-            this.state.emotions.pop(value);
+            let filtered = this.state.emotions.filter(e => e !== value);
+            this.setState({
+                emotions: filtered
+            })
         }
     }
 
     handleSubmitResult(event) {
         event.preventDefault();
+        console.log("Emotions to send: " + this.state.emotions)
         ApiClient.sendState(this.state.user,
             this.state.state,
             this.state.emotions,

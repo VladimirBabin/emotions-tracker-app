@@ -10,7 +10,6 @@ const RadioButton = ({ text, onChange, value }) => {
                 name="state"
                 value={value}
                 onChange={onChange}
-
             />
             <span className="custom-radiobutton" style={{backgroundColor: StateColour(value)}} />
             {text}
