@@ -24,12 +24,9 @@ public class StateAlertServiceImpl implements StateAlertService {
 
     @Override
     public List<StateAlertType> getLastAddedStateAlerts(Long userId) {
-        log.info("local date time: {}", LocalDateTime.now().minusMinutes(MINUTES_SPAN_FOR_ADDED_ALERT));
-        List<StateAlertType> alerts = alertRepository
+        return alertRepository
                 .getAlertTypesByUserIdAfterGivenLocalDateTime(userId,
                         LocalDateTime.now().minusMinutes(MINUTES_SPAN_FOR_ADDED_ALERT));
-        log.info("Found alerts: {}", alerts);
-        return alerts;
     }
 
     @Override
@@ -39,14 +36,10 @@ public class StateAlertServiceImpl implements StateAlertService {
                 event.getState(),
                 event.getDateTime()));
 
-        List<StateAlert> stateAlerts = processForStateAlerts(event);
-
-        if (!stateAlerts.isEmpty()) {
-            // make a WebSocket call to frontend
-        }
+        processForStateAlerts(event);
     }
 
-    private List<StateAlert> processForStateAlerts(StateLoggedEvent event) {
+    private void processForStateAlerts(StateLoggedEvent event) {
         // get all logged triggering states for user
         List<StateLog> userStateLogs = logRepository
                 .findByUserIdOrderByDateTime(event.getUserId());
@@ -65,7 +58,5 @@ public class StateAlertServiceImpl implements StateAlertService {
         if (!newStateAlerts.isEmpty()) {
             alertRepository.saveAll(newStateAlerts);
         }
-
-        return newStateAlerts;
     }
 }

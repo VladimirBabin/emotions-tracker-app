@@ -43,7 +43,7 @@ class AlertControllerTest {
 
         // when
         MockHttpServletResponse response = mvc.perform(
-                        get("/alerts/recent").param("id", "1"))
+                        get("/alerts/recent").param("userId", "1"))
                 .andReturn().getResponse();
 
         // then
@@ -62,7 +62,7 @@ class AlertControllerTest {
 
         // when
         MockHttpServletResponse response = mvc.perform(
-                        get("/alerts/recent").param("id", "1"))
+                        get("/alerts/recent").param("userId", "1"))
                 .andReturn().getResponse();
 
         // then

@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 @Builder
 @Data
 public class SignUpDto {
-
     @NotNull
     private String firstName;
     @NotNull

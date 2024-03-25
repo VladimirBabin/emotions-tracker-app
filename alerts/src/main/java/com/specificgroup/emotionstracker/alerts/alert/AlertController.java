@@ -22,7 +22,7 @@ public class AlertController {
     private final EmotionAlertService emotionAlertService;
 
     @GetMapping("/recent")
-    public ResponseEntity<List<String>> getStateAlerts(@RequestParam("id") long userId) {
+    public ResponseEntity<List<String>> getStateAlerts(@RequestParam("userId") long userId) {
         List<StateAlertType> lastAddedStateAlerts = stateAlertService.getLastAddedStateAlerts(userId);
         List<String> states = lastAddedStateAlerts.stream().map(StateAlertType::getDescription).toList();
         List<EmotionAlertType> lastAddedEmotionAlerts = emotionAlertService.getLastAddedEmotionAlerts(userId);

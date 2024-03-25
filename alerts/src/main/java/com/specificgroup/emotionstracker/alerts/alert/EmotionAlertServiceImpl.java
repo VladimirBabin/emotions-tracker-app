@@ -40,14 +40,10 @@ public class EmotionAlertServiceImpl implements EmotionAlertService {
                 event.getEmotion(),
                 event.getDateTime()));
 
-        List<EmotionAlert> emotionAlerts = processForEmotionAlerts(event);
-
-        if (!emotionAlerts.isEmpty()) {
-            // make a WebSocket call to frontend
-        }
+        processForEmotionAlerts(event);
     }
 
-    private List<EmotionAlert> processForEmotionAlerts(EmotionLoggedEvent event) {
+    private void processForEmotionAlerts(EmotionLoggedEvent event) {
         // get all logs for user for particular emotion
         List<EmotionLog> userEmotionLogs = logRepository
                 .findByUserIdAndEmotionOrderByDateTime(event.getUserId(), event.getEmotion());
@@ -66,7 +62,5 @@ public class EmotionAlertServiceImpl implements EmotionAlertService {
         if (!newEmotionAlerts.isEmpty()) {
             alertRepository.saveAll(newEmotionAlerts);
         }
-
-        return newEmotionAlerts;
     }
 }
