@@ -15,6 +15,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import static com.specificgroup.emotionstracker.alerts.alert.domain.EmotionAlertType.DEPRESSED_TWICE_LAST_WEEK;
+import static com.specificgroup.emotionstracker.alerts.alert.domain.EmotionAlertType.SCARED_TWICE_LAST_WEEK;
 import static org.assertj.core.api.BDDAssertions.then;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -37,6 +39,39 @@ class EmotionAlertServiceImplTest {
                 logRepository,
                 alertRepository,
                 List.of(alertProcessor));
+    }
+
+    @Test
+    void whenRecentAlertsQueriedThenRepositoryMethodsCalled() {
+        // given
+        EmotionAlert alert1 = new EmotionAlert(1L, SCARED_TWICE_LAST_WEEK);
+        EmotionAlert alert2 = new EmotionAlert(1L, DEPRESSED_TWICE_LAST_WEEK);
+        List<EmotionAlert> alerts = List.of(alert1, alert2);
+        given(alertRepository.getNotShownAlertsByUserIdAfterGivenLocalDateTime(eq(1L), any()))
+                .willReturn(alerts);
+        List<String> expectedAlerts = alerts.stream().map(EmotionAlert::getEmotionAlertType)
+                .map(EmotionAlertType::getDescription).toList();
+
+
+        // when
+        List<String> lastAddedStateAlerts = alertService.getLastAddedEmotionAlerts(1L);
+
+        // then
+        verify(alertRepository, times(1)).saveAll(any());
+        then(lastAddedStateAlerts).isEqualTo(expectedAlerts);
+    }
+
+    @Test
+    void whenNoAlertsReturnedByRepositoryNoAlertsUpdatedToShown() {
+        // given
+        given(alertRepository.getNotShownAlertsByUserIdAfterGivenLocalDateTime(eq(1L), any()))
+                .willReturn(List.of());
+
+        // when
+        alertService.getLastAddedEmotionAlerts(1L);
+
+        // then
+        verify(alertRepository, never()).saveAll(any());
     }
 
     @Test
@@ -94,7 +129,7 @@ class EmotionAlertServiceImplTest {
                 any()))
                 .willReturn(List.of());
         given(alertProcessor.processForOptionalAlertWithCheck(foundLogs, List.of()))
-                .willReturn(Optional.of(EmotionAlertType.SCARED_TWICE_LAST_WEEK));
+                .willReturn(Optional.of(SCARED_TWICE_LAST_WEEK));
         given(alertProcessor.getEmotionType())
                 .willReturn(Emotion.SCARED);
 
@@ -106,7 +141,7 @@ class EmotionAlertServiceImplTest {
         verify(alertRepository, times(1))
                 .saveAll(listArgumentCaptor.capture());
         then(listArgumentCaptor.getValue().get(0).getEmotionAlertType())
-                .isEqualTo(EmotionAlertType.SCARED_TWICE_LAST_WEEK);
+                .isEqualTo(SCARED_TWICE_LAST_WEEK);
     }
 
     @Test

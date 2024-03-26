@@ -10,13 +10,15 @@ export class AlertMessages extends React.Component {
         super(props);
         this.state = {
             alerts: [],
-            displayAlerts: false,
             shown: []
         }
     }
 
     componentDidMount() {
-        this.refreshAlerts();
+        if (this.props.alertsRefresh === true) {
+            this.refreshAlerts();
+            this.props.setAlertsRefresh(false);
+        }
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
@@ -40,10 +42,10 @@ export class AlertMessages extends React.Component {
 
     updateAlerts(alerts) {
         if (alerts !== null) {
-            alerts.map(alert => {
-                if (!this.state.shown.includes(alert) && !this.state.alerts.includes(alert)) {
-                    this.state.alerts.push(alert);
-                }
+            let filtered = alerts.filter(alert =>
+                !this.state.shown.includes(alert) && !this.state.alerts.includes(alert));
+            this.setState({
+                alerts: filtered
             })
         }
     }
@@ -51,19 +53,11 @@ export class AlertMessages extends React.Component {
     refreshAlerts() {
         this.getAlerts().then(
             alerts => {
-                if (alerts !== null) {
-                    this.updateAlerts(alerts)
-                }
+                this.updateAlerts(alerts)
             }
         ).catch(reason => {
-            this.setState({displayAlerts: false});
             console.log('Alerts server error', reason);
         });
-        if (this.state.alerts !== null && this.state.alerts.length !== 0) {
-            this.setState({
-                displayAlerts: true
-            })
-        }
     }
 
     closeAlert(alertMessage: string) {
@@ -78,11 +72,9 @@ export class AlertMessages extends React.Component {
     render() {
         return (
             <div>
-                {this.state.displayAlerts && this.state.alerts.map(alertMessage =>
-                    !this.state.shown.includes(alertMessage) &&
+                {this.state.alerts.map(alertMessage =>
                     <AlertMessage message={alertMessage} onClick={() => this.closeAlert(alertMessage)}/>
-                )
-                }</div>
+                )}</div>
         );
     }
 }

@@ -23,8 +23,10 @@ public class StateAlert {
     @EqualsAndHashCode.Exclude
     private LocalDateTime localDateTime;
     private StateAlertType stateAlertType;
+    @EqualsAndHashCode.Exclude
+    private boolean shown;
 
     public StateAlert(Long userId, StateAlertType stateAlertType) {
-        this(null, userId, LocalDateTime.now(), stateAlertType);
+        this(null, userId, LocalDateTime.now(), stateAlertType, false);
     }
 }

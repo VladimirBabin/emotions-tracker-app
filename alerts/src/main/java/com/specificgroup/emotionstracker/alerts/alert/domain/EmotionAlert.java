@@ -23,8 +23,10 @@ public class EmotionAlert {
     @EqualsAndHashCode.Exclude
     private LocalDateTime localDateTime;
     private EmotionAlertType emotionAlertType;
+    @EqualsAndHashCode.Exclude
+    private boolean shown;
 
     public EmotionAlert(Long userId, EmotionAlertType emotionAlertType) {
-        this(null, userId, LocalDateTime.now(), emotionAlertType);
+        this(null, userId, LocalDateTime.now(), emotionAlertType, false);
     }
 }

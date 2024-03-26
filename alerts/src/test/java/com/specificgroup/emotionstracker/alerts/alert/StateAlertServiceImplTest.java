@@ -18,6 +18,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import static com.specificgroup.emotionstracker.alerts.alert.domain.StateAlertType.LOW_STATE_SEVEN_TIMES_A_WEEK;
+import static com.specificgroup.emotionstracker.alerts.alert.domain.StateAlertType.LOW_STATE_TWICE_IN_TWO_DAYS;
 import static org.assertj.core.api.BDDAssertions.then;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -41,6 +43,39 @@ class StateAlertServiceImplTest {
         alertService = new StateAlertServiceImpl(logRepository,
                 alertRepository,
                 List.of(alertProcessor));
+    }
+
+    @Test
+    void whenRecentAlertsQueriedThenRepositoryMethodsCalled() {
+        // given
+        StateAlert alert1 = new StateAlert(1L, LOW_STATE_TWICE_IN_TWO_DAYS);
+        StateAlert alert2 = new StateAlert(1L, LOW_STATE_SEVEN_TIMES_A_WEEK);
+        List<StateAlert> alerts = List.of(alert1, alert2);
+        given(alertRepository.getNotShownAlertsByUserIdAfterGivenLocalDateTime(eq(1L), any()))
+                .willReturn(alerts);
+        List<String> expectedAlerts = alerts.stream().map(StateAlert::getStateAlertType)
+                .map(StateAlertType::getDescription).toList();
+
+
+        // when
+        List<String> lastAddedStateAlerts = alertService.getLastAddedStateAlerts(1L);
+
+        // then
+        verify(alertRepository, times(1)).saveAll(any());
+        then(lastAddedStateAlerts).isEqualTo(expectedAlerts);
+    }
+
+    @Test
+    void whenNoAlertsReturnedByRepositoryNoAlertsUpdatedToShown() {
+        // given
+        given(alertRepository.getNotShownAlertsByUserIdAfterGivenLocalDateTime(eq(1L), any()))
+                .willReturn(List.of());
+
+        // when
+        alertService.getLastAddedStateAlerts(1L);
+
+        // then
+        verify(alertRepository, never()).saveAll(any());
     }
 
     @Test
@@ -73,7 +108,7 @@ class StateAlertServiceImplTest {
                 any()))
                 .willReturn(List.of());
         given(alertProcessor.processForOptionalAlertWithCheck(foundLogs, List.of()))
-                .willReturn(Optional.of(StateAlertType.LOW_STATE_TWICE_IN_TWO_DAYS));
+                .willReturn(Optional.of(LOW_STATE_TWICE_IN_TWO_DAYS));
 
         // when
         alertService.newTriggeringStateForUser(event);
@@ -83,7 +118,7 @@ class StateAlertServiceImplTest {
         verify(alertRepository, times(1))
                 .saveAll(listArgumentCaptor.capture());
         then(listArgumentCaptor.getValue().get(0).getStateAlertType())
-                .isEqualTo(StateAlertType.LOW_STATE_TWICE_IN_TWO_DAYS);
+                .isEqualTo(LOW_STATE_TWICE_IN_TWO_DAYS);
     }
 
     @Test

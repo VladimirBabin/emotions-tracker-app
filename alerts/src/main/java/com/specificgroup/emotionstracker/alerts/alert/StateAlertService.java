@@ -1,6 +1,5 @@
 package com.specificgroup.emotionstracker.alerts.alert;
 
-import com.specificgroup.emotionstracker.alerts.alert.domain.StateAlertType;
 import com.specificgroup.emotionstracker.alerts.state.StateLoggedEvent;
 
 import java.util.List;
@@ -8,9 +7,9 @@ import java.util.List;
 public interface StateAlertService {
 
     /**
-     * @return alerts generated during the last minute before the call.
+     * @return not shown yet alerts generated in a custom set timeframe and sets alerts as shown.
      */
-    List<StateAlertType> getLastAddedStateAlerts(Long userId);
+    List<String> getLastAddedStateAlerts(Long userId);
 
     /**
      * Accepts a new state log from a user.

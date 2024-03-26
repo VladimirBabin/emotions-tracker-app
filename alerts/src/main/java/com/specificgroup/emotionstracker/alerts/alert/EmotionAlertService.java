@@ -1,6 +1,5 @@
 package com.specificgroup.emotionstracker.alerts.alert;
 
-import com.specificgroup.emotionstracker.alerts.alert.domain.EmotionAlertType;
 import com.specificgroup.emotionstracker.alerts.state.EmotionLoggedEvent;
 
 import java.util.List;
@@ -8,9 +7,9 @@ import java.util.List;
 public interface EmotionAlertService {
 
     /**
-     * @return alerts generated during the last minute before the call.
+     * @return not shown yet alerts generated in a custom set timeframe and sets alerts as shown.
      */
-    List<EmotionAlertType> getLastAddedEmotionAlerts(Long userId);
+    List<String> getLastAddedEmotionAlerts(Long userId);
 
     /**
      * Accepts a new emotion log from a user.

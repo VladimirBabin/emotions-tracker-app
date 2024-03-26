@@ -34,12 +34,11 @@ class AlertControllerTest {
     private JacksonTester<List<String>> alertsJacksonTester;
 
     @Test
-    void whenGetStateAlertsThenResponseIsOk() throws Exception {
+    void whenGetPresentStateAlertsThenResponseIsOk() throws Exception {
         // given
-        List<StateAlertType> stateAlerts = List.of(StateAlertType.LOW_STATE_TWICE_IN_TWO_DAYS);
+        List<String> states = List.of(StateAlertType.LOW_STATE_TWICE_IN_TWO_DAYS.getDescription());
         given(stateAlertService.getLastAddedStateAlerts(1L))
-                .willReturn(stateAlerts);
-        List<String> states = stateAlerts.stream().map(StateAlertType::getDescription).toList();
+                .willReturn(states);
 
         // when
         MockHttpServletResponse response = mvc.perform(
@@ -53,12 +52,11 @@ class AlertControllerTest {
     }
 
     @Test
-    void whenGetEmotionAlertsThenResponseIsOk() throws Exception {
+    void whenGetPresentEmotionAlertsThenResponseIsOk() throws Exception {
         // given
-        List<EmotionAlertType> emotionAlerts = List.of(EmotionAlertType.STRESSED_ONCE_A_WEEK);
+        List<String> emotions = List.of(EmotionAlertType.STRESSED_ONCE_A_WEEK.getDescription());
         given(emotionAlertService.getLastAddedEmotionAlerts(1L))
-                .willReturn(emotionAlerts);
-        List<String> emotions = emotionAlerts.stream().map(EmotionAlertType::getDescription).toList();
+                .willReturn(emotions);
 
         // when
         MockHttpServletResponse response = mvc.perform(
@@ -69,5 +67,18 @@ class AlertControllerTest {
         then(response.getStatus()).isEqualTo(HttpStatus.OK.value());
         then(response.getContentAsString()).isEqualTo(
                 alertsJacksonTester.write(emotions).getJson());
+    }
+
+    @Test
+    void whenNoAlertsPresentThenResponseIsOkAndEmptyListReturned() throws Exception {
+        // when
+        MockHttpServletResponse response = mvc.perform(
+                        get("/alerts/recent").param("userId", "1"))
+                .andReturn().getResponse();
+
+        // then
+        then(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+        then(response.getContentAsString())
+                .isEqualTo(alertsJacksonTester.write(List.of()).getJson());
     }
 }
