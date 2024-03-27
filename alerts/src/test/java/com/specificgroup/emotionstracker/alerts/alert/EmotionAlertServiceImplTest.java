@@ -14,6 +14,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import static com.specificgroup.emotionstracker.alerts.alert.domain.EmotionAlertType.DEPRESSED_TWICE_LAST_WEEK;
 import static com.specificgroup.emotionstracker.alerts.alert.domain.EmotionAlertType.SCARED_TWICE_LAST_WEEK;
@@ -44,17 +45,18 @@ class EmotionAlertServiceImplTest {
     @Test
     void whenRecentAlertsQueriedThenRepositoryMethodsCalled() {
         // given
-        EmotionAlert alert1 = new EmotionAlert(1L, SCARED_TWICE_LAST_WEEK);
-        EmotionAlert alert2 = new EmotionAlert(1L, DEPRESSED_TWICE_LAST_WEEK);
+        String userId = UUID.randomUUID().toString();
+        EmotionAlert alert1 = new EmotionAlert(userId, SCARED_TWICE_LAST_WEEK);
+        EmotionAlert alert2 = new EmotionAlert(userId, DEPRESSED_TWICE_LAST_WEEK);
         List<EmotionAlert> alerts = List.of(alert1, alert2);
-        given(alertRepository.getNotShownAlertsByUserIdAfterGivenLocalDateTime(eq(1L), any()))
+        given(alertRepository.getNotShownAlertsByUserIdAfterGivenLocalDateTime(eq(userId), any()))
                 .willReturn(alerts);
         List<String> expectedAlerts = alerts.stream().map(EmotionAlert::getEmotionAlertType)
                 .map(EmotionAlertType::getDescription).toList();
 
 
         // when
-        List<String> lastAddedStateAlerts = alertService.getLastAddedEmotionAlerts(1L);
+        List<String> lastAddedStateAlerts = alertService.getLastAddedEmotionAlerts(userId);
 
         // then
         verify(alertRepository, times(1)).saveAll(any());
@@ -64,11 +66,12 @@ class EmotionAlertServiceImplTest {
     @Test
     void whenNoAlertsReturnedByRepositoryNoAlertsUpdatedToShown() {
         // given
-        given(alertRepository.getNotShownAlertsByUserIdAfterGivenLocalDateTime(eq(1L), any()))
+        String userId = UUID.randomUUID().toString();
+        given(alertRepository.getNotShownAlertsByUserIdAfterGivenLocalDateTime(eq(userId), any()))
                 .willReturn(List.of());
 
         // when
-        alertService.getLastAddedEmotionAlerts(1L);
+        alertService.getLastAddedEmotionAlerts(userId);
 
         // then
         verify(alertRepository, never()).saveAll(any());
@@ -77,7 +80,8 @@ class EmotionAlertServiceImplTest {
     @Test
     void whenNewTriggeringStateReceivedThenPersisted() {
         // given
-        EmotionLoggedEvent event = new EmotionLoggedEvent(1L, 1L, Emotion.SCARED, LocalDateTime.now());
+        String userId = UUID.randomUUID().toString();
+        EmotionLoggedEvent event = new EmotionLoggedEvent(1L, userId, Emotion.SCARED, LocalDateTime.now());
         EmotionLog emotionLog = new EmotionLog(null,
                 event.getUserId(),
                 event.getEmotion(),
@@ -95,14 +99,15 @@ class EmotionAlertServiceImplTest {
     @Test
     void whenEligibleForOneAlertOtherSimilarTimeAlertsNotAdded() {
         // given
-        EmotionLoggedEvent event = new EmotionLoggedEvent(1L, 1L, Emotion.DRAINED, LocalDateTime.now());
+        String userId = UUID.randomUUID().toString();
+        EmotionLoggedEvent event = new EmotionLoggedEvent(1L, userId, Emotion.DRAINED, LocalDateTime.now());
         List<EmotionLog> foundLogs = List.of(
-                new EmotionLog(1L, 1L, Emotion.DRAINED, LocalDateTime.now()),
-                new EmotionLog(2L, 1L, Emotion.DRAINED, LocalDateTime.now())
+                new EmotionLog(1L, userId, Emotion.DRAINED, LocalDateTime.now()),
+                new EmotionLog(2L, userId, Emotion.DRAINED, LocalDateTime.now())
         );
-        given(logRepository.findByUserIdAndEmotionOrderByDateTime(1L, Emotion.DRAINED))
+        given(logRepository.findByUserIdAndEmotionOrderByDateTime(userId, Emotion.DRAINED))
                 .willReturn(foundLogs);
-        given(alertRepository.getAlertsByUserIdAfterGivenLocalDateTime(eq(1L),
+        given(alertRepository.getAlertsByUserIdAfterGivenLocalDateTime(eq(userId),
                 any()))
                 .willReturn(List.of());
         given(alertProcessor.getEmotionType())
@@ -118,14 +123,15 @@ class EmotionAlertServiceImplTest {
     @Test
     void whenEligibleForNewAlertThenAlertPersisted() {
         // given
-        EmotionLoggedEvent event = new EmotionLoggedEvent(1L, 1L, Emotion.SCARED, LocalDateTime.now());
+        String userId = UUID.randomUUID().toString();
+        EmotionLoggedEvent event = new EmotionLoggedEvent(1L, userId, Emotion.SCARED, LocalDateTime.now());
         List<EmotionLog> foundLogs = List.of(
-                new EmotionLog(1L, 1L, Emotion.SCARED, LocalDateTime.now()),
-                new EmotionLog(2L, 1L, Emotion.SCARED, LocalDateTime.now())
+                new EmotionLog(1L, userId, Emotion.SCARED, LocalDateTime.now()),
+                new EmotionLog(2L, userId, Emotion.SCARED, LocalDateTime.now())
         );
-        given(logRepository.findByUserIdAndEmotionOrderByDateTime(1L, Emotion.SCARED))
+        given(logRepository.findByUserIdAndEmotionOrderByDateTime(userId, Emotion.SCARED))
                 .willReturn(foundLogs);
-        given(alertRepository.getAlertsByUserIdAfterGivenLocalDateTime(eq(1L),
+        given(alertRepository.getAlertsByUserIdAfterGivenLocalDateTime(eq(userId),
                 any()))
                 .willReturn(List.of());
         given(alertProcessor.processForOptionalAlertWithCheck(foundLogs, List.of()))
@@ -146,12 +152,13 @@ class EmotionAlertServiceImplTest {
 
     @Test
     void whenNotEligibleForNewAlertThenNoAlertPersisted() {
+        String userId = UUID.randomUUID().toString();
         // given
-        EmotionLoggedEvent event = new EmotionLoggedEvent(1L, 1L, Emotion.SCARED, LocalDateTime.now());
+        EmotionLoggedEvent event = new EmotionLoggedEvent(1L, userId, Emotion.SCARED, LocalDateTime.now());
 
-        given(logRepository.findByUserIdAndEmotionOrderByDateTime(1L, Emotion.SCARED))
+        given(logRepository.findByUserIdAndEmotionOrderByDateTime(userId, Emotion.SCARED))
                 .willReturn(List.of());
-        given(alertRepository.getAlertsByUserIdAfterGivenLocalDateTime(eq(1L),
+        given(alertRepository.getAlertsByUserIdAfterGivenLocalDateTime(eq(userId),
                 any()))
                 .willReturn(List.of());
         given(alertProcessor.getEmotionType())

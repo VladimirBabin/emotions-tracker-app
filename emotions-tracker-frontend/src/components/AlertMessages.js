@@ -1,8 +1,8 @@
 import React from "react";
-import ApiClient from "../services/ApiClient";
 import './AlertMessages.css'
 import AlertMessage from "../helper_components/AlertMessage";
-import {getUserId} from "../axios_helper";
+import {getUserId} from "../services/AuthApiClient";
+import AlertsApiClient from "../services/AlertsApiClient";
 
 export class AlertMessages extends React.Component {
 
@@ -29,7 +29,7 @@ export class AlertMessages extends React.Component {
     }
 
     getAlerts(): Promise {
-        return ApiClient.checkForRecentAlerts(getUserId()).then(
+        return AlertsApiClient.checkForRecentAlerts(getUserId()).then(
             res => {
                 if (res.ok) {
                     return res.json();

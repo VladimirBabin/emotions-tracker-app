@@ -20,7 +20,7 @@ public class EntryLog {
     @Id
     @GeneratedValue
     private Long id;
-    private Long userId;
+    private String userId;
     private State state;
 
     @ElementCollection(targetClass = Emotion.class, fetch = FetchType.LAZY)

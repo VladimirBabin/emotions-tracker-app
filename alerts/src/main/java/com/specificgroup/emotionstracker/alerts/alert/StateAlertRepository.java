@@ -15,10 +15,10 @@ public interface StateAlertRepository extends CrudRepository<StateAlert, Long> {
      */
     @Query("SELECT DISTINCT(s) FROM StateAlert s " +
             "WHERE s.userId = :userId AND s.localDateTime > :localDateTime AND s.shown = FALSE")
-    List<StateAlert> getNotShownAlertsByUserIdAfterGivenLocalDateTime(@Param("userId") long userId,
+    List<StateAlert> getNotShownAlertsByUserIdAfterGivenLocalDateTime(@Param("userId") String userId,
                                                                         LocalDateTime localDateTime);
 
     @Query("SELECT DISTINCT(s) FROM StateAlert s WHERE s.userId = :userId AND s.localDateTime > :localDateTime")
-    List<StateAlert> getAlertsByUserIdAfterGivenLocalDateTime(@Param("userId") long userId,
+    List<StateAlert> getAlertsByUserIdAfterGivenLocalDateTime(@Param("userId") String userId,
                                                              LocalDateTime localDateTime);
 }

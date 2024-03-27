@@ -18,11 +18,12 @@ spring:
         # Use ip address rather than hostname during registration.
         prefer-ip-address: true
     gateway:
+#      excludedURLs: /auth/login,/auth/register
       routes:
         - id: authorization
           uri: lb://authorization/
           predicates:
-            - Path=/login,/register
+            - Path=/auth/login,/auth/register
         - id: entrylogging
           uri: lb://entrylogging/
           predicates:
@@ -48,6 +49,6 @@ spring:
             methods: GET,POST
 
 # ... route config
-#logging:
-#  level:
-#    org.springframework.cloud.gateway.handler.predicate: trace
+logging:
+  level:
+    org.springframework.cloud.gateway.handler.predicate: trace

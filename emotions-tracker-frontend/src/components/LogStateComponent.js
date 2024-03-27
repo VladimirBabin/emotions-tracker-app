@@ -1,9 +1,9 @@
 import * as React from "react";
-import ApiClient from "../services/ApiClient";
+import EntryLoggingApiClient from "../services/EntryLoggingApiClient";
 import RadioButton from "../helper_components/RadioButton";
 import Checkbox from "../helper_components/Checkbox"
 import './LogStateComponent.css'
-import {getUserId} from "../axios_helper";
+import {getUserId} from "../services/AuthApiClient";
 
 class LogStateComponent extends React.Component {
 
@@ -42,7 +42,7 @@ class LogStateComponent extends React.Component {
 
     handleSubmitResult(event) {
         event.preventDefault();
-        ApiClient.sendState(getUserId(),
+        EntryLoggingApiClient.sendState(getUserId(),
             this.state.state,
             this.state.emotions,
             this.state.dateTime)

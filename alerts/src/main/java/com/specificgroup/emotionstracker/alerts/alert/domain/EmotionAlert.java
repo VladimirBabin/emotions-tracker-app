@@ -19,14 +19,14 @@ public class EmotionAlert {
     @Id
     @GeneratedValue
     private Long alertId;
-    private Long userId;
+    private String userId;
     @EqualsAndHashCode.Exclude
     private LocalDateTime localDateTime;
     private EmotionAlertType emotionAlertType;
     @EqualsAndHashCode.Exclude
     private boolean shown;
 
-    public EmotionAlert(Long userId, EmotionAlertType emotionAlertType) {
+    public EmotionAlert(String userId, EmotionAlertType emotionAlertType) {
         this(null, userId, LocalDateTime.now(), emotionAlertType, false);
     }
 }

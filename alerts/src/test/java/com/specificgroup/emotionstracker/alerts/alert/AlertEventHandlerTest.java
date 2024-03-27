@@ -12,6 +12,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.amqp.AmqpRejectAndDontRequeueException;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.BDDMockito.doThrow;
@@ -37,7 +38,8 @@ class AlertEventHandlerTest {
     @Test
     void whenHandlesNewStateThenStateServiceIsCalled() {
         // given
-        StateLoggedEvent event = new StateLoggedEvent(1L, 1L, State.AWFUL, LocalDateTime.now());
+        String userId = UUID.randomUUID().toString();
+        StateLoggedEvent event = new StateLoggedEvent(1L, userId, State.AWFUL, LocalDateTime.now());
 
         // when
         alertEventHandler.handleNewStateLogged(event);
@@ -49,7 +51,8 @@ class AlertEventHandlerTest {
     @Test
     void whenHandlesNewEmotionThenEmotionServiceIsCalled() {
         // given
-        EmotionLoggedEvent event = new EmotionLoggedEvent(1L, 1L, Emotion.SCARED, LocalDateTime.now());
+        String userId = UUID.randomUUID().toString();
+        EmotionLoggedEvent event = new EmotionLoggedEvent(1L, userId, Emotion.SCARED, LocalDateTime.now());
 
         // when
         alertEventHandler.handleNewEmotionLogged(event);
@@ -61,7 +64,8 @@ class AlertEventHandlerTest {
     @Test
     void whenExceptionArisesInStateServiceThenCorrectAMQPExceptionThrows() {
         // given
-        StateLoggedEvent event = new StateLoggedEvent(1L, 1L, State.AWFUL, LocalDateTime.now());
+        String userId = UUID.randomUUID().toString();
+        StateLoggedEvent event = new StateLoggedEvent(1L, userId, State.AWFUL, LocalDateTime.now());
         doThrow(new RuntimeException("exception message"))
                 .when(stateAlertService).newTriggeringStateForUser(event);
 
@@ -73,7 +77,8 @@ class AlertEventHandlerTest {
     @Test
     void whenExceptionArisesInEmotionServiceThenCorrectAMQPExceptionThrows() {
         // given
-        EmotionLoggedEvent event = new EmotionLoggedEvent(1L, 1L, Emotion.SCARED, LocalDateTime.now());
+        String userId = UUID.randomUUID().toString();
+        EmotionLoggedEvent event = new EmotionLoggedEvent(1L, userId, Emotion.SCARED, LocalDateTime.now());
         doThrow(new RuntimeException("exception message"))
                 .when(emotionAlertService).newTriggeringEmotionForUser(event);
 

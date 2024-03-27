@@ -11,11 +11,12 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
+import static org.springframework.security.config.Customizer.withDefaults;
+
 @RequiredArgsConstructor
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {
-
     private final UserAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final UserAuthProvider userAuthProvider;
 
@@ -23,17 +24,18 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.exceptionHandling((exception) -> exception.authenticationEntryPoint(jwtAuthenticationEntryPoint)
                 .accessDeniedPage("/error/access-denied"))
+                .headers(AbstractHttpConfigurer::disable)
                 .addFilterBefore(new JwtAuthFilter(userAuthProvider), BasicAuthenticationFilter.class)
                 .csrf(AbstractHttpConfigurer::disable)
-                .sessionManagement(httpSecuritySessionManagementConfigurer ->
-                        httpSecuritySessionManagementConfigurer
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .sessionManagement(configurer ->
+                        configurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(requests ->
-                        requests.requestMatchers(HttpMethod.POST, "/login", "/register").permitAll()
+                        requests.requestMatchers(HttpMethod.POST, "/auth/login", "/auth/register").permitAll()
                                 .requestMatchers(HttpMethod.GET,"/actuator/health").permitAll()
-                                .anyRequest().authenticated()
-                );
+                                .requestMatchers(HttpMethod.GET, "/h2-console/**").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/h2-console/**").permitAll()
+                                .anyRequest().authenticated())
+                .httpBasic(withDefaults());
         return http.build();
-
     }
 }

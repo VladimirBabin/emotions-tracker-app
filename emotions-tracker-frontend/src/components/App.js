@@ -4,7 +4,7 @@ import * as React from "react";
 import Buttons from "./Buttons";
 import WelcomeContent from "./WelcomeContent";
 import LoginForm from "./LoginForm";
-import {request, setAuthToken, setLogin, setUserId} from "../axios_helper";
+import AuthApiClient, { setAuthToken, setUserId } from "../services/AuthApiClient";
 import ErrorMessage from "../helper_components/ErrorMessage";
 
 
@@ -33,51 +33,60 @@ class App extends React.Component {
         });
     }
 
+    sendLogin(username, password): Promise {
+        return AuthApiClient.login(username, password).then(
+            res => {
+                if (res.ok) {
+                    return res.json();
+                } else {
+                    return Promise.reject("Error on logging in");
+                }
+            }
+        );
+    }
+
     onLogin = (e, username, password) => {
         e.preventDefault();
         window.localStorage.clear();
-        request("POST",
-            "/login",
-            {
-                login: username,
-                password: password
-            }
-        ).then((response) => {
-            this.setState({componentToShow: "appContent"});
-            setAuthToken(response.data.token);
-            setLogin(response.data.login);
-            setUserId(response.data.id);
-        }).catch((reason) => {
+        this.sendLogin(username, password).then(
+            response => {
+                this.setState({componentToShow: "appContent"});
+                setAuthToken(response.token);
+                setUserId(response.id);
+            }).catch(reason => {
             this.setState({componentToShow: "welcome"});
-            console.log('Login error', reason);
-            this.updateMessage("Error: " + (reason.response.data.message !== null ?
-                reason.response.data.message :
-                "Server is not available. " + reason));
+            console.log('Login error: ', reason);
+            this.updateMessage("Error: " + (reason !== null ?
+                reason :
+                "Authentication server is not available."));
         });
     };
 
-    onRegister = (e, firstName, lastName, username, password) => {
+    sendRegister(firstName, lastName, login, password): Promise {
+        return AuthApiClient.register(firstName, lastName, login, password).then(
+            res => {
+                if (res.ok) {
+                    return res.json();
+                } else {
+                    return Promise.reject("Error on logging in");
+                }
+            }
+        );
+    }
+
+    onRegister = (e, firstName, lastName, login, password) => {
         e.preventDefault();
         window.localStorage.clear();
-        request("POST",
-            "/register",
-            {
-                firstName: firstName,
-                lastName: lastName,
-                login: username,
-                password: password
-            }
-        ).then((response) => {
+        this.sendRegister(firstName, lastName, login, password).then(response => {
             this.setState({componentToShow: "appContent"});
-            setAuthToken(response.data.token);
-            setLogin(response.data.login);
-            setUserId(response.data.id);
+            setAuthToken(response.token);
+            setUserId(response.id);
         }).catch((reason) => {
             this.setState({componentToShow: "welcome"});
             console.log('Register error', reason);
-            this.updateMessage("Error: " + (reason.response.data.message !== null ?
-                reason.response.data.message :
-                "Server is not available. " + reason));
+            this.updateMessage("Error: " + (reason !== null ?
+                reason :
+                "Authentication server is not available"));
         });
     };
 
@@ -95,7 +104,7 @@ class App extends React.Component {
                     <div className="row">
                         <div className="col">
                             {this.state.componentToShow === "welcome" && <WelcomeContent/>}
-                                <ErrorMessage message={this.state.message}/>
+                            <ErrorMessage message={this.state.message}/>
                             {this.state.componentToShow === "appContent" && <AppContent/>}
                             {this.state.componentToShow === "login"
                                 && <LoginForm onLogin={this.onLogin} onRegister={this.onRegister}/>}

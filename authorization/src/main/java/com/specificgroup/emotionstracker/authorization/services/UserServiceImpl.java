@@ -10,7 +10,6 @@ import com.specificgroup.emotionstracker.authorization.repositories.UserReposito
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.header.writers.StaticHeadersWriter;
 import org.springframework.stereotype.Service;
 
 import java.nio.CharBuffer;

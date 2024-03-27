@@ -9,7 +9,7 @@ public interface EmotionAlertService {
     /**
      * @return not shown yet alerts generated in a custom set timeframe and sets alerts as shown.
      */
-    List<String> getLastAddedEmotionAlerts(Long userId);
+    List<String> getLastAddedEmotionAlerts(String userId);
 
     /**
      * Accepts a new emotion log from a user.

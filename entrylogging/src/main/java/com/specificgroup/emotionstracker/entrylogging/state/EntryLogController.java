@@ -24,12 +24,12 @@ public class EntryLogController {
     }
 
     @GetMapping("/statistics/week")
-    ResponseEntity<WeeklyStats> getWeeklyStats(@RequestParam("userId") Long userId) {
+    ResponseEntity<WeeklyStats> getWeeklyStats(@RequestParam("userId") String userId) {
         return ResponseEntity.ok(entryLogService.getWeeklyStatsForUser(userId));
     }
 
     @GetMapping("/statistics/last")
-    ResponseEntity<List<EntryLog>> getLastLoggedStates(@RequestParam("userId") Long userId) {
+    ResponseEntity<List<EntryLog>> getLastLoggedStates(@RequestParam("userId") String userId) {
         return ResponseEntity.ok(entryLogService.getLastLogsForUser(userId));
     }
 }

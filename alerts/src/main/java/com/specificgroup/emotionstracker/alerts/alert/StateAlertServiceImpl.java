@@ -23,7 +23,7 @@ public class StateAlertServiceImpl implements StateAlertService {
     private final List<StateAlertProcessor> alertProcessors;
 
     @Override
-    public List<String> getLastAddedStateAlerts(Long userId) {
+    public List<String> getLastAddedStateAlerts(String userId) {
         List<StateAlert> recentAlertsForUser = alertRepository
                 .getNotShownAlertsByUserIdAfterGivenLocalDateTime(userId,
                         LocalDateTime.now().minusMinutes(MINUTES_SPAN_FOR_RECENT_ALERT));

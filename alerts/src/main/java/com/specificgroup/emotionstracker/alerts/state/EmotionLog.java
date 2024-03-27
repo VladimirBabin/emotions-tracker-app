@@ -21,7 +21,7 @@ public class EmotionLog {
     @Id
     @GeneratedValue
     private Long id;
-    private Long userId;
+    private String userId;
     private Emotion emotion;
     @EqualsAndHashCode.Exclude
     private LocalDateTime dateTime;

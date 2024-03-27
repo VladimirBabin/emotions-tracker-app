@@ -14,7 +14,7 @@ import java.util.Set;
 @Value
 public class EntryLogDTO {
     @NotNull
-    Long userId;
+    String userId;
     @NotNull
     State state;
     Set<Emotion> emotions;

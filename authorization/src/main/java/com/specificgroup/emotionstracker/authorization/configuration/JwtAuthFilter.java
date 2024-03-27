@@ -1,6 +1,5 @@
 package com.specificgroup.emotionstracker.authorization.configuration;
 
-import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -14,7 +13,6 @@ import java.io.IOException;
 
 @RequiredArgsConstructor
 public class JwtAuthFilter extends OncePerRequestFilter {
-
     private final UserAuthProvider userAuthProvider;
 
     @Override

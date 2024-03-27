@@ -16,9 +16,7 @@ import java.io.IOException;
 @Component
 @RequiredArgsConstructor
 public class UserAuthenticationEntryPoint implements AuthenticationEntryPoint {
-
     private final ObjectMapper objectMapper;
-
     @Override
     public void commence(HttpServletRequest request,
                          HttpServletResponse response,
