@@ -6,14 +6,11 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.specificgroup.emotionstracker.authorization.dto.UserDto;
 import com.specificgroup.emotionstracker.authorization.services.UserService;
-import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
-import java.util.Base64;
 import java.util.Collections;
 import java.util.Date;
 
@@ -21,15 +18,9 @@ import java.util.Date;
 @Component
 public class UserAuthProvider {
 
-    @Value("${security.jwt.token.secret-key:secret-value}")
-    private String secretKey;
-
+    private final RsaKeyProperties keyProperties;
     private final UserService userService;
 
-    @PostConstruct
-    protected void init() {
-        secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
-    }
 
     public String createToken(String login, String userId) {
         Date now = new Date();
@@ -40,11 +31,11 @@ public class UserAuthProvider {
                 .withAudience(userId)
                 .withIssuedAt(now)
                 .withExpiresAt(validity)
-                .sign(Algorithm.HMAC256(secretKey));
+                .sign(Algorithm.RSA256(keyProperties.publicKey(), keyProperties.privateKey()));
     }
 
     public Authentication validateToken(String token) {
-        JWTVerifier verifier = JWT.require(Algorithm.HMAC256(secretKey)).build();
+        JWTVerifier verifier = JWT.require(Algorithm.RSA256(keyProperties.publicKey())).build();
 
         DecodedJWT decoded = verifier.verify(token);
 

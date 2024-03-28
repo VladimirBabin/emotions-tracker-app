@@ -5,14 +5,11 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.InvalidClaimException;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
-import java.util.Base64;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -21,16 +18,10 @@ import java.util.Optional;
 @Component
 public class UserAuthProvider {
 
-    @Value("${security.jwt.token.secret-key:secret-value}")
-    private String secretKey;
-
-    @PostConstruct
-    protected void init() {
-        secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
-    }
+    private final RsaKey key;
 
     public Authentication validateToken(String token, Optional<String> userId) {
-        JWTVerifier verifier = JWT.require(Algorithm.HMAC256(secretKey)).build();
+        JWTVerifier verifier = JWT.require(Algorithm.RSA256(key.publicKey())).build();
 
         DecodedJWT decoded = verifier.verify(token);
         verifyAudience(userId, decoded);
