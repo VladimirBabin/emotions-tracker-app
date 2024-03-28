@@ -39,7 +39,7 @@ class App extends React.Component {
                 if (res.ok) {
                     return res.json();
                 } else {
-                    return Promise.reject("Error on logging in");
+                    return Promise.reject(res.json());
                 }
             }
         );
@@ -53,13 +53,12 @@ class App extends React.Component {
                 this.setState({componentToShow: "appContent"});
                 setAuthToken(response.token);
                 setUserId(response.id);
-            }).catch(reason => {
+            }).catch(error => error.then(e => {
             this.setState({componentToShow: "welcome"});
-            console.log('Login error: ', reason);
-            this.updateMessage("Error: " + (reason !== null ?
-                reason :
-                "Authentication server is not available."));
-        });
+            this.updateMessage("Login error: " + (e.message !== '' ?
+                e.message :
+                "Authentication server is not available"));
+        }));
     };
 
     sendRegister(firstName, lastName, login, password): Promise {
@@ -68,7 +67,7 @@ class App extends React.Component {
                 if (res.ok) {
                     return res.json();
                 } else {
-                    return Promise.reject("Error on logging in");
+                    return Promise.reject(res.json());
                 }
             }
         );
@@ -81,13 +80,12 @@ class App extends React.Component {
             this.setState({componentToShow: "appContent"});
             setAuthToken(response.token);
             setUserId(response.id);
-        }).catch((reason) => {
+        }).catch(error => error.then(e => {
             this.setState({componentToShow: "welcome"});
-            console.log('Register error', reason);
-            this.updateMessage("Error: " + (reason !== null ?
-                reason :
+            this.updateMessage("Register error: " + (e.message !== '' ?
+                e.message :
                 "Authentication server is not available"));
-        });
+        }));
     };
 
     render() {
