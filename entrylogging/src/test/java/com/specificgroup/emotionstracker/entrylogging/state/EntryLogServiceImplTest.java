@@ -14,6 +14,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 import static org.assertj.core.api.BDDAssertions.*;
 import static org.mockito.AdditionalAnswers.returnsFirstArg;
@@ -43,8 +44,9 @@ class EntryLogServiceImplTest {
     @Test
     void whenNewStateByNewUserLoggedThenUserStateAndEmotionsPersistedAndEventPublished() {
         // given
+        String userId = UUID.randomUUID().toString();
         Set<Emotion> emotions = Set.of(Emotion.HAPPY, Emotion.CONTENT);
-        EntryLogDTO entryLogDTO = new EntryLogDTO(1L, State.GOOD, emotions, LocalDateTime.now());
+        EntryLogDTO entryLogDTO = new EntryLogDTO(userId, State.GOOD, emotions, LocalDateTime.now());
         given(entryLogRepository.save(any()))
                 .will(returnsFirstArg());
 
@@ -61,8 +63,9 @@ class EntryLogServiceImplTest {
     @Test
     void whenNewStateByExistingUserLoggedThenUserFoundAndStateAndEmotionsPersistedAndEventPublished() {
         // given
+        String userId = UUID.randomUUID().toString();
         Set<Emotion> emotions = Set.of(Emotion.HAPPY, Emotion.CONTENT);
-        EntryLogDTO entryLogDTO = new EntryLogDTO(1L, State.BAD, emotions, LocalDateTime.now());
+        EntryLogDTO entryLogDTO = new EntryLogDTO(userId, State.BAD, emotions, LocalDateTime.now());
         given(entryLogRepository.save(any()))
                 .will(returnsFirstArg());
 
@@ -71,7 +74,7 @@ class EntryLogServiceImplTest {
 
         // then
         BDDAssertions.then(entryLog.getState()).isEqualTo(State.BAD);
-        BDDAssertions.then(entryLog.getUserId()).isEqualTo(1L);
+        BDDAssertions.then(entryLog.getUserId()).isEqualTo(userId);
         verify(entryLogRepository).save(entryLog);
         verify(entryLogEventPublisher).stateLogged(entryLog);
     }
@@ -79,7 +82,8 @@ class EntryLogServiceImplTest {
     @Test
     void whenWeeklyStatsQueriedForExistingUserThenFound() {
         // given
-        given(entryLogRepository.findAllByUserIdAndDateTimeAfter(eq(1L), any(LocalDateTime.class)))
+        String userId = UUID.randomUUID().toString();
+        given(entryLogRepository.findAllByUserIdAndDateTimeAfter(eq(userId), any(LocalDateTime.class)))
                 .willReturn(List.of(
                         new EntryLog(null, null, State.BAD,null, null),
                         new EntryLog(null, null, State.GOOD,null, null),
@@ -87,7 +91,7 @@ class EntryLogServiceImplTest {
                 ));
 
         // when
-        WeeklyStats statsForUser = entryLogService.getWeeklyStatsForUser(1L);
+        WeeklyStats statsForUser = entryLogService.getWeeklyStatsForUser(userId);
 
         // then
         then(statsForUser.getBadState()).isEqualTo(BigDecimal.valueOf(33.3));
@@ -98,18 +102,19 @@ class EntryLogServiceImplTest {
     @Test
     void whenGetLastLogsForUserThenRetrievedSuccessfully() {
         // given
-        EntryLog log1 = new EntryLog(1L, 1L, State.GOOD,
+        String userId = UUID.randomUUID().toString();
+        EntryLog log1 = new EntryLog(1L, userId, State.GOOD,
                 Set.of(Emotion.PEACEFUL, Emotion.HAPPY),
                 LocalDateTime.now());
-        EntryLog log2 = new EntryLog(2L, 1L, State.BAD,
+        EntryLog log2 = new EntryLog(2L, userId, State.BAD,
                 Set.of(Emotion.ANGRY, Emotion.HOPEFUL),
                 LocalDateTime.now());
         List<EntryLog> entryLogs = List.of(log1, log2);
-        given(entryLogRepository.findTop10ByUserIdOrderByDateTimeDesc(1L))
+        given(entryLogRepository.findTop10ByUserIdOrderByDateTimeDesc(userId))
                 .willReturn(entryLogs);
 
         // when
-        List<EntryLog> entryLogsResult = entryLogService.getLastLogsForUser(1L);
+        List<EntryLog> entryLogsResult = entryLogService.getLastLogsForUser(userId);
 
         // then
         then(entryLogsResult).isEqualTo(entryLogs);

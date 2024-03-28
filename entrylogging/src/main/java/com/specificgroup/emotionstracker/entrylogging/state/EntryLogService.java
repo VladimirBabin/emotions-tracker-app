@@ -15,11 +15,11 @@ public interface EntryLogService {
     /**
      * Retrieves the last 10 logged states for a particular user.
      */
-    List<EntryLog> getLastLogsForUser(Long userId);
+    List<EntryLog> getLastLogsForUser(String userId);
 
     /**
      * Retrieves statistics about the states logged during the last week for a particular user.
      * @return the resulting in query WeeklyStats object.
      */
-    WeeklyStats getWeeklyStatsForUser(Long userId);
+    WeeklyStats getWeeklyStatsForUser(String userId);
 }

@@ -19,14 +19,14 @@ public class StateAlert {
     @Id
     @GeneratedValue
     private Long alertId;
-    private Long userId;
+    private String userId;
     @EqualsAndHashCode.Exclude
     private LocalDateTime localDateTime;
     private StateAlertType stateAlertType;
     @EqualsAndHashCode.Exclude
     private boolean shown;
 
-    public StateAlert(Long userId, StateAlertType stateAlertType) {
+    public StateAlert(String userId, StateAlertType stateAlertType) {
         this(null, userId, LocalDateTime.now(), stateAlertType, false);
     }
 }

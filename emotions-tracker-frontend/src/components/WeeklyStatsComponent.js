@@ -1,7 +1,7 @@
 import * as React from "react";
-import ApiClient from "../services/ApiClient";
+import EntryLoggingApiClient from "../services/EntryLoggingApiClient";
 import StatsBar from "../helper_components/StatsBar";
-import {getUserId} from "../axios_helper";
+import {getUserId} from "../services/AuthApiClient";
 
 const WeeklyStats = (awfulState, badState, goodState, okState, excellentState) => {
     return {
@@ -35,7 +35,7 @@ class WeeklyStatsComponent extends React.Component {
     }
 
     getStats(): Promise {
-        return ApiClient.weeklyStats(getUserId()).then(
+        return EntryLoggingApiClient.weeklyStats(getUserId()).then(
             res => {
                 if (res.ok) {
                     return res.json();

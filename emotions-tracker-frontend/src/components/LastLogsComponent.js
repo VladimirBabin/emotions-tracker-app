@@ -1,10 +1,10 @@
 import React from "react";
-import ApiClient from "../services/ApiClient";
+import EntryLoggingApiClient from "../services/EntryLoggingApiClient";
 import "./LastLogsComponent.css"
 import DateFormatView from "../helper_components/DateFormatView";
 import StateView from "../helper_components/StateView";
 import EmotionsView from "../helper_components/EmotionsView";
-import {getUserId} from "../axios_helper";
+import {getUserId} from "../services/AuthApiClient";
 
 export class LastLogsComponent extends React.Component {
 
@@ -28,7 +28,7 @@ export class LastLogsComponent extends React.Component {
     }
 
     getLastLogs(): Promise {
-        return ApiClient.lastLogs(getUserId()).then(
+        return EntryLoggingApiClient.lastLogs(getUserId()).then(
             res => {
                 if (res.ok) {
                     return res.json();

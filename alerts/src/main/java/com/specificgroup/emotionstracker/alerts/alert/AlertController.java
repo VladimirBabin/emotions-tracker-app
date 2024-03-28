@@ -16,7 +16,7 @@ public class AlertController {
     private final StateAlertService stateAlertService;
     private final EmotionAlertService emotionAlertService;
     @GetMapping("/recent")
-    public ResponseEntity<List<String>> getStateAlerts(@RequestParam("userId") long userId) {
+    public ResponseEntity<List<String>> getStateAlerts(@RequestParam("userId") String userId) {
         List<String> states = stateAlertService.getLastAddedStateAlerts(userId);
         List<String> emotions = emotionAlertService.getLastAddedEmotionAlerts(userId);
         List<String> result = new ArrayList<>(states);

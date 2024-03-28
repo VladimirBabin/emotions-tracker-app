@@ -11,6 +11,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.amqp.core.AmqpTemplate;
 
 import java.util.Set;
+import java.util.UUID;
 
 import static org.assertj.core.api.BDDAssertions.then;
 import static org.mockito.Mockito.verify;
@@ -35,8 +36,9 @@ class EntryLogEventPublisherTest {
     @Test
     void whenStateLoggedAndEmotionsNotLoggedThenStateEventPublished() {
         // given
-        EntryLog entryLog = new EntryLog(1L, 1L, State.OK, null, null);
-        StateLoggedEvent expected = stateLoggedEvent(State.OK);
+        String userId = UUID.randomUUID().toString();
+        EntryLog entryLog = new EntryLog(1L, userId, State.OK, null, null);
+        StateLoggedEvent expected = stateLoggedEvent(State.OK, userId);
 
         // when
         entryLogEventPublisher.stateLogged(entryLog);
@@ -53,13 +55,14 @@ class EntryLogEventPublisherTest {
     @Test
     void whenBothStateAndEmotionsLoggedThenBothStateAndEmotionEventsPublished() {
         // given
+        String userId = UUID.randomUUID().toString();
         Set<Emotion> emotions = Set.of(Emotion.ANGRY, Emotion.CONTENT, Emotion.PASSIONATE);
-        EntryLog entryLog = new EntryLog(1L, 1L, State.OK, emotions, null);
-        StateLoggedEvent expectedStateEvent = stateLoggedEvent(State.OK);
+        EntryLog entryLog = new EntryLog(1L, userId, State.OK, emotions, null);
+        StateLoggedEvent expectedStateEvent = stateLoggedEvent(State.OK, userId);
         Set<EmotionLoggedEvent> expectedEmotions = Set.of(
-                emotionLoggedEvent(Emotion.ANGRY),
-                emotionLoggedEvent(Emotion.CONTENT),
-                emotionLoggedEvent(Emotion.PASSIONATE));
+                emotionLoggedEvent(Emotion.ANGRY, userId),
+                emotionLoggedEvent(Emotion.CONTENT, userId),
+                emotionLoggedEvent(Emotion.PASSIONATE, userId));
 
         // when
         entryLogEventPublisher.stateLogged(entryLog);
@@ -83,10 +86,11 @@ class EntryLogEventPublisherTest {
     @Test
     void whenTriggeringStateAndEmotionLoggedThenEventsWithTriggeringStateAndEmotionPublished() {
         // given
+        String userId = UUID.randomUUID().toString();
         Set<Emotion> emotions = Set.of(Emotion.ANGRY);
-        EntryLog entryLog = new EntryLog(1L, 1L, State.BAD, emotions, null);
-        StateLoggedEvent expectedState = stateLoggedEvent(State.BAD);
-        EmotionLoggedEvent expectedEmotion = emotionLoggedEvent(Emotion.ANGRY);
+        EntryLog entryLog = new EntryLog(1L, userId, State.BAD, emotions, null);
+        StateLoggedEvent expectedState = stateLoggedEvent(State.BAD, userId);
+        EmotionLoggedEvent expectedEmotion = emotionLoggedEvent(Emotion.ANGRY, userId);
 
         // when
         entryLogEventPublisher.stateLogged(entryLog);
@@ -113,10 +117,10 @@ class EntryLogEventPublisherTest {
         then(emotionEventCaptor.getValue()).isEqualTo(expectedEmotion);
     }
 
-    private static StateLoggedEvent stateLoggedEvent(State state) {
-        return new StateLoggedEvent(1L, 1L , state, null);
+    private static StateLoggedEvent stateLoggedEvent(State state, String userId) {
+        return new StateLoggedEvent(1L, userId , state, null);
     }
-    private static EmotionLoggedEvent emotionLoggedEvent(Emotion emotion) {
-        return new EmotionLoggedEvent(1L, 1L , emotion, null);
+    private static EmotionLoggedEvent emotionLoggedEvent(Emotion emotion, String userId) {
+        return new EmotionLoggedEvent(1L, userId , emotion, null);
     }
 }

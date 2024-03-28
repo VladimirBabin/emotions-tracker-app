@@ -39,14 +39,14 @@ public class EntryLogServiceImpl implements EntryLogService {
     }
 
     @Override
-    public List<EntryLog> getLastLogsForUser(Long userId) {
+    public List<EntryLog> getLastLogsForUser(String userId) {
         List<EntryLog> lastLogs = entryLogRepository.findTop10ByUserIdOrderByDateTimeDesc(userId);
         log.info("Found last logs: {}", lastLogs);
         return lastLogs;
     }
 
     @Override
-    public WeeklyStats getWeeklyStatsForUser(Long userId) {
+    public WeeklyStats getWeeklyStatsForUser(String userId) {
 
         List<EntryLog> entryLogs = entryLogRepository
                 .findAllByUserIdAndDateTimeAfter(userId,

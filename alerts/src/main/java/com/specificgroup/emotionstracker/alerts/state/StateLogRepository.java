@@ -9,5 +9,5 @@ public interface StateLogRepository extends CrudRepository<StateLog, Long> {
     /**
      * Retrieves all the state logs for user identified by user id.
      */
-    List<StateLog> findByUserIdOrderByDateTime(long userId);
+    List<StateLog> findByUserIdOrderByDateTime(String userId);
 }

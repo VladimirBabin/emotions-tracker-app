@@ -25,7 +25,7 @@ public class EmotionAlertServiceImpl implements EmotionAlertService {
     private final List<EmotionAlertProcessor> alertProcessors;
 
     @Override
-    public List<String> getLastAddedEmotionAlerts(Long userId) {
+    public List<String> getLastAddedEmotionAlerts(String userId) {
         List<EmotionAlert> recentAlertsForUser = alertRepository
                 .getNotShownAlertsByUserIdAfterGivenLocalDateTime(userId,
                         LocalDateTime.now().minusMinutes(MINUTES_SPAN_FOR_RECENT_ALERT));

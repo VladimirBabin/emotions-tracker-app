@@ -7,6 +7,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface EntryLogRepository extends CrudRepository<EntryLog, Long> {
-    List<EntryLog> findAllByUserIdAndDateTimeAfter(Long userId, LocalDateTime dateTime);
-    List<EntryLog> findTop10ByUserIdOrderByDateTimeDesc(Long userId);
+    List<EntryLog> findAllByUserIdAndDateTimeAfter(String userId, LocalDateTime dateTime);
+    List<EntryLog> findTop10ByUserIdOrderByDateTimeDesc(String userId);
 }

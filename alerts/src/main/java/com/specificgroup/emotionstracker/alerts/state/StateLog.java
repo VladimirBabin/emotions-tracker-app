@@ -19,7 +19,7 @@ public class StateLog {
     @Id
     @GeneratedValue
     private Long id;
-    private Long userId;
+    private String userId;
     private State state;
     @EqualsAndHashCode.Exclude
     private LocalDateTime dateTime;

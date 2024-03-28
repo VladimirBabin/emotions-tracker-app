@@ -17,6 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import static com.specificgroup.emotionstracker.alerts.alert.domain.StateAlertType.LOW_STATE_SEVEN_TIMES_A_WEEK;
 import static com.specificgroup.emotionstracker.alerts.alert.domain.StateAlertType.LOW_STATE_TWICE_IN_TWO_DAYS;
@@ -48,17 +49,18 @@ class StateAlertServiceImplTest {
     @Test
     void whenRecentAlertsQueriedThenRepositoryMethodsCalled() {
         // given
-        StateAlert alert1 = new StateAlert(1L, LOW_STATE_TWICE_IN_TWO_DAYS);
-        StateAlert alert2 = new StateAlert(1L, LOW_STATE_SEVEN_TIMES_A_WEEK);
+        String userId = UUID.randomUUID().toString();
+        StateAlert alert1 = new StateAlert(userId, LOW_STATE_TWICE_IN_TWO_DAYS);
+        StateAlert alert2 = new StateAlert(userId, LOW_STATE_SEVEN_TIMES_A_WEEK);
         List<StateAlert> alerts = List.of(alert1, alert2);
-        given(alertRepository.getNotShownAlertsByUserIdAfterGivenLocalDateTime(eq(1L), any()))
+        given(alertRepository.getNotShownAlertsByUserIdAfterGivenLocalDateTime(eq(userId), any()))
                 .willReturn(alerts);
         List<String> expectedAlerts = alerts.stream().map(StateAlert::getStateAlertType)
                 .map(StateAlertType::getDescription).toList();
 
 
         // when
-        List<String> lastAddedStateAlerts = alertService.getLastAddedStateAlerts(1L);
+        List<String> lastAddedStateAlerts = alertService.getLastAddedStateAlerts(userId);
 
         // then
         verify(alertRepository, times(1)).saveAll(any());
@@ -68,11 +70,12 @@ class StateAlertServiceImplTest {
     @Test
     void whenNoAlertsReturnedByRepositoryNoAlertsUpdatedToShown() {
         // given
-        given(alertRepository.getNotShownAlertsByUserIdAfterGivenLocalDateTime(eq(1L), any()))
+        String userId = UUID.randomUUID().toString();
+        given(alertRepository.getNotShownAlertsByUserIdAfterGivenLocalDateTime(eq(userId), any()))
                 .willReturn(List.of());
 
         // when
-        alertService.getLastAddedStateAlerts(1L);
+        alertService.getLastAddedStateAlerts(userId);
 
         // then
         verify(alertRepository, never()).saveAll(any());
@@ -81,7 +84,8 @@ class StateAlertServiceImplTest {
     @Test
     void whenNewTriggeringStateReceivedThenPersisted() {
         // given
-        StateLoggedEvent event = new StateLoggedEvent(1L, 1L, State.AWFUL, LocalDateTime.now());
+        String userId = UUID.randomUUID().toString();
+        StateLoggedEvent event = new StateLoggedEvent(1L, userId, State.AWFUL, LocalDateTime.now());
         StateLog stateLog = new StateLog(null,
                 event.getUserId(),
                 event.getState(),
@@ -97,14 +101,15 @@ class StateAlertServiceImplTest {
     @Test
     void whenEligibleForNewAlertThenAlertPersisted() {
         // given
-        StateLoggedEvent event = new StateLoggedEvent(1L, 1L, State.AWFUL, LocalDateTime.now());
+        String userId = UUID.randomUUID().toString();
+        StateLoggedEvent event = new StateLoggedEvent(1L, userId, State.AWFUL, LocalDateTime.now());
         List<StateLog> foundLogs = List.of(
-                new StateLog(1L, 1L, State.BAD, LocalDateTime.now()),
-                new StateLog(2L, 1L, State.BAD, LocalDateTime.now())
+                new StateLog(1L, userId, State.BAD, LocalDateTime.now()),
+                new StateLog(2L, userId, State.BAD, LocalDateTime.now())
         );
-        given(logRepository.findByUserIdOrderByDateTime(1L))
+        given(logRepository.findByUserIdOrderByDateTime(userId))
                 .willReturn(foundLogs);
-        given(alertRepository.getAlertsByUserIdAfterGivenLocalDateTime(eq(1L),
+        given(alertRepository.getAlertsByUserIdAfterGivenLocalDateTime(eq(userId),
                 any()))
                 .willReturn(List.of());
         given(alertProcessor.processForOptionalAlertWithCheck(foundLogs, List.of()))
@@ -124,11 +129,12 @@ class StateAlertServiceImplTest {
     @Test
     void whenNotEligibleForNewAlertThenNoAlertPersisted() {
         // given
-        StateLoggedEvent event = new StateLoggedEvent(1L, 1L, State.AWFUL, LocalDateTime.now());
+        String userId = UUID.randomUUID().toString();
+        StateLoggedEvent event = new StateLoggedEvent(1L, userId, State.AWFUL, LocalDateTime.now());
 
-        given(logRepository.findByUserIdOrderByDateTime(1L))
+        given(logRepository.findByUserIdOrderByDateTime(userId))
                 .willReturn(List.of());
-        given(alertRepository.getAlertsByUserIdAfterGivenLocalDateTime(eq(1L),
+        given(alertRepository.getAlertsByUserIdAfterGivenLocalDateTime(eq(userId),
                 any()))
                 .willReturn(List.of());
         given(alertProcessor.processForOptionalAlertWithCheck(List.of(), List.of()))

@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -17,13 +18,14 @@ class FourWeeksInARowStressedProcessorTest {
     @Test
     void whenEligibleForAlertAndNotReceivedYetThenAlertPresent() {
         // given
-        EmotionAlert emotionAlert1 = new EmotionAlert(1L, 1L, nowMinusCustomDays(28),
+        String userId = UUID.randomUUID().toString();
+        EmotionAlert emotionAlert1 = new EmotionAlert(1L, userId, nowMinusCustomDays(28),
                 EmotionAlertType.STRESSED_ONCE_A_WEEK, false);
-        EmotionAlert emotionAlert2 = new EmotionAlert(2L, 1L, nowMinusCustomDays(20),
+        EmotionAlert emotionAlert2 = new EmotionAlert(2L, userId, nowMinusCustomDays(20),
                 EmotionAlertType.STRESSED_ONCE_A_WEEK, false);
-        EmotionAlert emotionAlert3 = new EmotionAlert(3L, 1L, nowMinusCustomDays(11),
+        EmotionAlert emotionAlert3 = new EmotionAlert(3L, userId, nowMinusCustomDays(11),
                 EmotionAlertType.STRESSED_ONCE_A_WEEK, false);
-        EmotionAlert emotionAlert4 = new EmotionAlert(4L, 1L, nowMinusCustomDays(3),
+        EmotionAlert emotionAlert4 = new EmotionAlert(4L, userId, nowMinusCustomDays(3),
                 EmotionAlertType.STRESSED_ONCE_A_WEEK, false);
         List<EmotionAlert> alerts = List.of(emotionAlert1, emotionAlert2, emotionAlert3, emotionAlert4);
 
@@ -37,11 +39,12 @@ class FourWeeksInARowStressedProcessorTest {
     @Test
     void whenNotEligibleForAlertOptionalEmpty() {
         // given
-        EmotionAlert emotionAlert1 = new EmotionAlert(1L, 1L, nowMinusCustomDays(28),
+        String userId = UUID.randomUUID().toString();
+        EmotionAlert emotionAlert1 = new EmotionAlert(1L, userId, nowMinusCustomDays(28),
                 EmotionAlertType.STRESSED_ONCE_A_WEEK, false);
-        EmotionAlert emotionAlert2 = new EmotionAlert(2L, 1L, nowMinusCustomDays(20),
+        EmotionAlert emotionAlert2 = new EmotionAlert(2L, userId, nowMinusCustomDays(20),
                 EmotionAlertType.STRESSED_ONCE_A_WEEK, false);
-        EmotionAlert emotionAlert3 = new EmotionAlert(3L, 1L, nowMinusCustomDays(11),
+        EmotionAlert emotionAlert3 = new EmotionAlert(3L, userId, nowMinusCustomDays(11),
                 EmotionAlertType.STRESSED_ONCE_A_WEEK, false);
 
         List<EmotionAlert> alerts = List.of(emotionAlert1, emotionAlert2, emotionAlert3);
@@ -56,15 +59,16 @@ class FourWeeksInARowStressedProcessorTest {
     @Test
     void whenAlreadyReceivedAlertInSevenDaysOptionalEmpty() {
         // given
-        EmotionAlert emotionAlert1 = new EmotionAlert(1L, 1L, nowMinusCustomDays(28),
+        String userId = UUID.randomUUID().toString();
+        EmotionAlert emotionAlert1 = new EmotionAlert(1L, userId, nowMinusCustomDays(28),
                 EmotionAlertType.STRESSED_ONCE_A_WEEK, false);
-        EmotionAlert emotionAlert2 = new EmotionAlert(2L, 1L, nowMinusCustomDays(20),
+        EmotionAlert emotionAlert2 = new EmotionAlert(2L, userId, nowMinusCustomDays(20),
                 EmotionAlertType.STRESSED_ONCE_A_WEEK, false);
-        EmotionAlert emotionAlert3 = new EmotionAlert(3L, 1L, nowMinusCustomDays(11),
+        EmotionAlert emotionAlert3 = new EmotionAlert(3L, userId, nowMinusCustomDays(11),
                 EmotionAlertType.STRESSED_ONCE_A_WEEK, false);
-        EmotionAlert emotionAlert4 = new EmotionAlert(4L, 1L, nowMinusCustomDays(3),
+        EmotionAlert emotionAlert4 = new EmotionAlert(4L, userId, nowMinusCustomDays(3),
                 EmotionAlertType.STRESSED_ONCE_A_WEEK, false);
-        EmotionAlert emotionAlert5 = new EmotionAlert(5L, 1L, nowMinusCustomDays(3),
+        EmotionAlert emotionAlert5 = new EmotionAlert(5L, userId, nowMinusCustomDays(3),
                 EmotionAlertType.STRESSED_FOUR_WEEKS_IN_A_ROW, false);
         List<EmotionAlert> alerts = List.of(emotionAlert1, emotionAlert2, emotionAlert3, emotionAlert4, emotionAlert5);
 

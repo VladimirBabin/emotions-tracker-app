@@ -8,5 +8,5 @@ public interface EmotionLogRepository extends CrudRepository<EmotionLog, Long> {
     /**
      * Retrieves all the emotions logs for user identified by user id.
      */
-    List<EmotionLog> findByUserIdAndEmotionOrderByDateTime(long userId, Emotion emotion);
+    List<EmotionLog> findByUserIdAndEmotionOrderByDateTime(String userId, Emotion emotion);
 }

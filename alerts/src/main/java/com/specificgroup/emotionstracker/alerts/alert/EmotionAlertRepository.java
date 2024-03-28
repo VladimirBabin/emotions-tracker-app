@@ -14,10 +14,10 @@ public interface EmotionAlertRepository extends CrudRepository<EmotionAlert, Lon
      */
     @Query("SELECT DISTINCT(e) FROM EmotionAlert e " +
             "WHERE e.userId = :userId AND e.localDateTime > :localDateTime AND e.shown = FALSE")
-    List<EmotionAlert> getNotShownAlertsByUserIdAfterGivenLocalDateTime(@Param("userId") long userId,
+    List<EmotionAlert> getNotShownAlertsByUserIdAfterGivenLocalDateTime(@Param("userId") String userId,
                                                                 LocalDateTime localDateTime);
 
     @Query("SELECT DISTINCT(e) FROM EmotionAlert e WHERE e.userId = :userId AND e.localDateTime > :localDateTime")
-    List<EmotionAlert> getAlertsByUserIdAfterGivenLocalDateTime(@Param("userId") long userId,
+    List<EmotionAlert> getAlertsByUserIdAfterGivenLocalDateTime(@Param("userId") String userId,
                                                              LocalDateTime localDateTime);
 }

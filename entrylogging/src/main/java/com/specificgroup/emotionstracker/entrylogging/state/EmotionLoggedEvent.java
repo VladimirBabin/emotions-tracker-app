@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Value
 public class EmotionLoggedEvent {
     long stateLogId;
-    long userId;
+    String userId;
     Emotion emotion;
     LocalDateTime dateTime;
 }

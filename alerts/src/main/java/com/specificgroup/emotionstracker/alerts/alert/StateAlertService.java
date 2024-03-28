@@ -9,7 +9,7 @@ public interface StateAlertService {
     /**
      * @return not shown yet alerts generated in a custom set timeframe and sets alerts as shown.
      */
-    List<String> getLastAddedStateAlerts(Long userId);
+    List<String> getLastAddedStateAlerts(String userId);
 
     /**
      * Accepts a new state log from a user.
