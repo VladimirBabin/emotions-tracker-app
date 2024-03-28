@@ -1,0 +1,100 @@
+version: "3"
+
+services:
+  rabbitmq-dev:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - '5672:5672'
+      - '15672:15672'
+    networks:
+      - microservices
+
+  frontend:
+    build: ./../emotions-tracker-frontend
+    ports:
+      - '3000:80'
+
+  consul-dev:
+    image: consul:1.14.8
+    container_name: consul
+    # The UDP port 8600 is used by Consul nodes to talk to each other, so
+    # it's good to add it here even though we're using a single-node setup.
+    ports:
+      - '8500:8500'
+      - '8600:8600/udp'
+    command: 'agent -dev -node=learnmicro -client=0.0.0.0 -log-level=INFO'
+    networks:
+      - microservices
+
+  consul-importer:
+    build: ./consul
+    depends_on:
+      - consul-dev
+    networks:
+      - microservices
+
+  alerts:
+    build: ./../alerts
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_CLOUD_CONSUL_HOST=consul
+    depends_on:
+      - rabbitmq-dev
+      - consul-importer
+    networks:
+      - microservices
+
+  authentication:
+    build: ./../authentication
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_CLOUD_CONSUL_HOST=consul
+    depends_on:
+      - rabbitmq-dev
+      - consul-importer
+    networks:
+      - microservices
+
+  entrylogging:
+    build: ./../entrylogging
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_CLOUD_CONSUL_HOST=consul
+    depends_on:
+      - rabbitmq-dev
+      - consul-importer
+    networks:
+      - microservices
+
+  gateway:
+    build: ./../gateway
+    ports:
+      - '8000:8000'
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_CLOUD_CONSUL_HOST=consul
+    depends_on:
+      - rabbitmq-dev
+      - consul-importer
+    networks:
+      - microservices
+
+  logs:
+    build: ./../logs
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_CLOUD_CONSUL_HOST=consul
+    depends_on:
+      - rabbitmq-dev
+      - consul-importer
+    networks:
+      - microservices
+
+
+
+
+
+networks:
+  microservices:
+    driver: bridge

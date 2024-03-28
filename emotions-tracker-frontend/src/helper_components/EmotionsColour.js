@@ -1,5 +1,3 @@
-import * as React from "react";
-
 export default function EmotionsColour (emotion: string) {
     switch (emotion) {
         case "HAPPY": return "yellow";
@@ -20,5 +18,6 @@ export default function EmotionsColour (emotion: string) {
         case "SURPRISED": return "sandybrown"
         case "SCARED": return "dimgrey"
         case "JEALOUS": return "darkorange"
+        default: return "white"
     }
 }

@@ -1,5 +1,3 @@
-import * as React from "react";
-
 export default function AlertText (message: string) {
     switch (message) {
         case "stressed-slightly":
@@ -52,5 +50,7 @@ export default function AlertText (message: string) {
                 " — and that’s okay. Just take care to pay attention to other signs that may alert you to something" +
                 " else going on. However, if you feel loss of interest in things you usually enjoy, emptiness and " +
                 "persistent low mood - it might be best to talk to a therapist."
+        default:
+            return ""
     }
 }

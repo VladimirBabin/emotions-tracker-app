@@ -1,5 +1,3 @@
-import * as React from "react";
-
 export default function AlertTitle (message: string) {
     switch (message) {
         case "stressed-slightly":
@@ -18,5 +16,7 @@ export default function AlertTitle (message: string) {
             return "We've noticed your resources are getting low."
         case "resources-lowest":
             return "We've noticed your resources are very low."
+        default:
+            return ""
     }
 }

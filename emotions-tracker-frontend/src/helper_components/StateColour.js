@@ -1,5 +1,3 @@
-import * as React from "react";
-
 export default function StateColour (emotion: string) {
     switch (emotion) {
         case "AWFUL": return "mediumslateblue";
@@ -7,5 +5,6 @@ export default function StateColour (emotion: string) {
         case "OK": return "yellowgreen"
         case "GOOD": return "mediumseagreen"
         case "EXCELLENT": return "seagreen"
+        default: return "white"
     }
 }
