@@ -6,16 +6,6 @@ import './LogStateComponent.css'
 import {getUserId} from "../services/AuthApiClient";
 import FormDateTimeView from "../helper_components/FormDateTimeView";
 
-import dayjs from 'dayjs';
-import utc from 'dayjs/plugin/utc';
-import timezone from 'dayjs/plugin/timezone';
-
-dayjs.extend(utc);
-dayjs.extend(timezone);
-
-dayjs.tz.setDefault('Europe/Vilnius');
-
-
 class LogStateComponent extends React.Component {
 
     constructor(props) {
@@ -53,7 +43,7 @@ class LogStateComponent extends React.Component {
     handleSubmitResult(event) {
         event.preventDefault();
         const dateTime = this.props.date === null ? null :
-            dayjs.tz(this.props.date, true).toISOString();
+            this.props.date.format('YYYY-MM-DDTHH:mm:ss').toString();
         console.log(dateTime);
         EntryLoggingApiClient.sendState(getUserId(),
             this.state.state,

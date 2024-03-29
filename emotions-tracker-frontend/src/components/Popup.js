@@ -6,19 +6,10 @@ import {DemoContainer} from '@mui/x-date-pickers/internals/demo';
 import {LocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider';
 import {AdapterDayjs} from '@mui/x-date-pickers/AdapterDayjs';
 import {DateTimePicker} from '@mui/x-date-pickers/DateTimePicker';
-import dayjs from "dayjs";
-import utc from 'dayjs/plugin/utc';
-import timezone from 'dayjs/plugin/timezone';
-
-dayjs.extend(utc);
-dayjs.extend(timezone);
-dayjs.tz.setDefault('Europe/Vilnius');
 
 function Popup(props) {
 
     const [date, setDate] = useState(null);
-
-    const tz_lt = 'Europe/Vilnius';
 
     switch (props.trigger) {
         case "daySelectView":
@@ -29,8 +20,8 @@ function Popup(props) {
                             <div className="col-md-5">
                                 <button className="btn btn-success btn-block"
                                         onClick={() => {
-                                            props.setTrigger("logStateView");
                                             setDate(null);
+                                            props.setTrigger("logStateView");
                                         }}>
                                     Today
                                 </button>
@@ -61,7 +52,6 @@ function Popup(props) {
                             <DemoContainer components={['DateTimePicker', 'DateTimePicker']}>
                                 <DateTimePicker
                                     label="Choose date and time"
-                                    timezone="Europe/Vilnius"
                                     onChange={(newDate) => setDate(newDate)}
                                 />
                             </DemoContainer>

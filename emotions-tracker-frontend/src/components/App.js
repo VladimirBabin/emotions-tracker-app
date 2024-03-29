@@ -4,7 +4,7 @@ import * as React from "react";
 import Buttons from "./Buttons";
 import WelcomeContent from "./WelcomeContent";
 import LoginForm from "./LoginForm";
-import AuthApiClient, { setAuthToken, setUserId } from "../services/AuthApiClient";
+import AuthApiClient, {setAuthToken, setUserId} from "../services/AuthApiClient";
 import ErrorMessage from "../helper_components/ErrorMessage";
 
 
@@ -53,12 +53,15 @@ class App extends React.Component {
                 this.setState({componentToShow: "appContent"});
                 setAuthToken(response.token);
                 setUserId(response.id);
-            }).catch(error => error.then(e => {
-            this.setState({componentToShow: "welcome"});
-            this.updateMessage("Login error: " + (e.message !== '' ?
-                e.message :
-                "Authentication server is not available"));
-        }));
+            }).catch(error => error !== null ?
+            error.then(e => {
+                this.setState({componentToShow: "welcome"});
+                this.updateMessage("Login error: " + (e.message !== '' ?
+                    e.message :
+                    "Authentication server is not available"));
+            }) :
+            this.updateMessage("Authentication server is not available")
+        );
     };
 
     sendRegister(firstName, lastName, login, password): Promise {

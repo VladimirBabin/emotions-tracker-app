@@ -73,7 +73,8 @@ export class AlertMessages extends React.Component {
         return (
             <div>
                 {this.state.alerts.map(alertMessage =>
-                    <AlertMessage message={alertMessage} onClick={() => this.closeAlert(alertMessage)}/>
+                    <AlertMessage key={alertMessage} message={alertMessage}
+                                  onClick={() => this.closeAlert(alertMessage)}/>
                 )}</div>
         );
     }

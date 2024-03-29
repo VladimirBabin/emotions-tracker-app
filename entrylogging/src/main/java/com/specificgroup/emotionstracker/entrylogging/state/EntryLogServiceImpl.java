@@ -29,6 +29,8 @@ public class EntryLogServiceImpl implements EntryLogService {
                 LocalDateTime.now() :
                 entryLogDTO.getDateTime());
 
+        log.info("Adding new entry: {}", entryLog);
+
         // storing the state log
         EntryLog storedLog = entryLogRepository.save(entryLog);
 
