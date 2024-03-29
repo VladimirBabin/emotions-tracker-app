@@ -1,7 +1,7 @@
 import React from "react";
 import EntryLoggingApiClient from "../services/EntryLoggingApiClient";
 import "./LastLogsComponent.css"
-import DateFormatView from "../helper_components/DateFormatView";
+import LogsDateTimeView from "../helper_components/LogsDateTimeView";
 import StateView from "../helper_components/StateView";
 import EmotionsView from "../helper_components/EmotionsView";
 import {getUserId} from "../services/AuthApiClient";
@@ -68,7 +68,7 @@ export class LastLogsComponent extends React.Component {
             <div>
                 {this.state.lastLogsData.map(logs =>
                     <div className="state-log-div" key={logs.id}>
-                        <DateFormatView value={logs.dateTime}/>
+                        <LogsDateTimeView value={logs.dateTime}/>
                         <StateView value={logs.state}/>
                         <EmotionsView emotions={logs.emotions}/>
                     </div>)}

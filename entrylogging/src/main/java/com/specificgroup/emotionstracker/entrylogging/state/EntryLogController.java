@@ -20,6 +20,7 @@ public class EntryLogController {
     private final EntryLogService entryLogService;
     @PostMapping
     ResponseEntity<EntryLog> acceptStateLog(@RequestBody @Valid EntryLogDTO entryLogDTO) {
+        log.info("New log entry attempt: {}", entryLogDTO);
         return ResponseEntity.ok(entryLogService.acceptNewEntry(entryLogDTO));
     }
 

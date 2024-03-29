@@ -1,0 +1,10 @@
+.form-date-view-item {
+    width: 100%;
+    min-width: 150px;
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 5px;
+    justify-content: center;
+    display: flex;
+    margin-top: 10px;
+}

@@ -7,7 +7,7 @@ import {AlertMessages} from "./AlertMessages"
 
 
 function AppContent() {
-    const [buttonPopup, setButtonPopup] = useState(false);
+    const [buttonPopup, setButtonPopup] = useState("none");
     const [statsRefresh, setStatsRefresh] = useState(false);
     const [alertsRefresh, setAlertsRefresh] = useState(false);
 
@@ -18,7 +18,7 @@ function AppContent() {
                 <h5>To log your state tap the button:</h5>
             </div>
             <div className="plus-button-div">
-                <button className="plus-button" onClick={() => setButtonPopup(true)}>+</button>
+                <button className="plus-button" onClick={() => setButtonPopup("daySelectView")}>+</button>
             </div>
             <div className="container-fluid">
                 <div className="weekly-stats-div">

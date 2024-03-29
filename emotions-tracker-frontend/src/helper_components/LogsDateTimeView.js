@@ -1,6 +1,6 @@
-import "./DateFormatView.css"
+import "./LogsDateTimeView.css"
 
-const DateFormatView = ({ value }) => {
+const LogsDateTimeView = ({ value }) => {
     return (
         <div>
         <p className="date-view-item">{new Date(value).toDateString()}</p>
@@ -9,4 +9,4 @@ const DateFormatView = ({ value }) => {
     )
 };
 
-export default DateFormatView;
+export default LogsDateTimeView;

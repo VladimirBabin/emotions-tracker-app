@@ -4,17 +4,27 @@ import RadioButton from "../helper_components/RadioButton";
 import Checkbox from "../helper_components/Checkbox"
 import './LogStateComponent.css'
 import {getUserId} from "../services/AuthApiClient";
+import FormDateTimeView from "../helper_components/FormDateTimeView";
+
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
+
+dayjs.tz.setDefault('Europe/Vilnius');
+
 
 class LogStateComponent extends React.Component {
 
     constructor(props) {
+
         super(props);
         this.state = {
             state: '',
-            dateTime: '',
-            userLogged: false,
             emotions: [],
-            message: ''
+            message: '',
         };
         this.handleSubmitResult = this.handleSubmitResult.bind(this);
         this.handleSetChange = this.handleSetChange.bind(this);
@@ -42,10 +52,13 @@ class LogStateComponent extends React.Component {
 
     handleSubmitResult(event) {
         event.preventDefault();
+        const dateTime = this.props.date === null ? null :
+            dayjs.tz(this.props.date, true).toISOString();
+        console.log(dateTime);
         EntryLoggingApiClient.sendState(getUserId(),
             this.state.state,
             this.state.emotions,
-            this.state.dateTime)
+            dateTime)
             .then(res => {
                 if (res.ok) {
                     this.updateMessage("New state was successfully logged");
@@ -66,10 +79,15 @@ class LogStateComponent extends React.Component {
             <div className="display-column">
                 <form onSubmit={this.handleSubmitResult}>
                     <label className="states">
-                        <br/>
+                        <br/> {!(this.props.date === null) &&
                         <div className="state-div">
                             <div className="state-title">
-                                <h6>How are you?</h6>
+                                <FormDateTimeView value={this.props.date.toDate().toString()}/>
+                            </div>
+                        </div>}
+                        <div className="state-div">
+                            <div className="state-title">
+                                <h6>{this.props.date === null ? "How are you?" : "How were you?"}</h6>
                             </div>
                             <div className="radiobutton-div">
                                 <RadioButton
@@ -101,7 +119,7 @@ class LogStateComponent extends React.Component {
                         </div>
                         <div className="state-div">
                             <div className="state-title">
-                                <h6>How do you feel?</h6>
+                                <h6>{this.props.date === null ? "How do you feel?" : "How did you feel?"}</h6>
                             </div>
                             <div className="checkbox-div">
                                 <Checkbox
