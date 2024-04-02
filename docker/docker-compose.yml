@@ -61,7 +61,7 @@ services:
       - /db:/usr/src/authentication/BOOT-INF/classes/db
 
   entrylogging:
-    build: ./../entrylogging
+    build: ./../entries
     environment:
       - SPRING_PROFILES_ACTIVE=docker
       - SPRING_CLOUD_CONSUL_HOST=consul
@@ -71,7 +71,7 @@ services:
     networks:
       - microservices
     volumes:
-      - /db:/usr/src/entrylogging/BOOT-INF/classes/db
+      - /db:/usr/src/entries/BOOT-INF/classes/db
 
   gateway:
     build: ./../gateway

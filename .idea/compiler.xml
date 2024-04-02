@@ -8,7 +8,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="alerts" />
-        <module name="entrylogging" />
+        <module name="entries" />
         <module name="logs" />
         <module name="gateway" />
         <module name="authentication" />
@@ -19,7 +19,7 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="alerts" options="-parameters" />
       <module name="authentication" options="-parameters" />
-      <module name="entrylogging" options="-parameters" />
+      <module name="entries" options="-parameters" />
       <module name="gateway" options="-parameters" />
       <module name="logs" options="-parameters" />
     </option>

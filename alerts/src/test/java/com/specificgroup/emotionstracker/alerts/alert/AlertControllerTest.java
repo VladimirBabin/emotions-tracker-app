@@ -20,8 +20,8 @@ import static org.assertj.core.api.BDDAssertions.then;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
-@WebMvcTest
 @AutoConfigureJsonTesters
+@WebMvcTest
 @AutoConfigureMockMvc(addFilters = false)
 class AlertControllerTest {
     @Autowired

@@ -27,7 +27,7 @@
     <modules>
         <module>alerts</module>
         <module>authentication</module>
-        <module>entrylogging</module>
+        <module>entries</module>
         <module>gateway</module>
         <module>logs</module>
     </modules>
