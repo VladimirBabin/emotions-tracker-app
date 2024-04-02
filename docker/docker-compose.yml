@@ -45,7 +45,7 @@ services:
     networks:
       - microservices
     volumes:
-      - alerts-db:/BOOT-INF/classes/db
+      - /db:/usr/src/alerts/BOOT-INF/classes/db
 
   authentication:
     build: ./../authentication
@@ -58,7 +58,7 @@ services:
     networks:
       - microservices
     volumes:
-      - authentication-db:/BOOT-INF/classes/db
+      - /db:/usr/src/authentication/BOOT-INF/classes/db
 
   entrylogging:
     build: ./../entrylogging
@@ -71,7 +71,7 @@ services:
     networks:
       - microservices
     volumes:
-      - entrylogging-db:/BOOT-INF/classes/db
+      - /db:/usr/src/entrylogging/BOOT-INF/classes/db
 
   gateway:
     build: ./../gateway
@@ -102,6 +102,4 @@ networks:
     driver: bridge
 
 volumes:
-  entrylogging-db:
-  alerts-db:
-  authentication-db:
+  db:
