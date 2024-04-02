@@ -4,8 +4,8 @@ import com.specificgroup.emotionstracker.alerts.alert.domain.StateAlert;
 import com.specificgroup.emotionstracker.alerts.alert.domain.StateAlertType;
 import com.specificgroup.emotionstracker.alerts.alert.statealertprocessors.StateAlertProcessor;
 import com.specificgroup.emotionstracker.alerts.entry.State;
-import com.specificgroup.emotionstracker.alerts.entry.StateLog;
-import com.specificgroup.emotionstracker.alerts.entry.StateLogRepository;
+import com.specificgroup.emotionstracker.alerts.entry.StateEntry;
+import com.specificgroup.emotionstracker.alerts.entry.StateEntryRepository;
 import com.specificgroup.emotionstracker.alerts.entry.StateLoggedEvent;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,14 +25,16 @@ import static org.assertj.core.api.BDDAssertions.then;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.*;
+import static org.mockito.BDDMockito.verify;
+import static org.mockito.BDDMockito.times;
+import static org.mockito.BDDMockito.never;
 
 
 @ExtendWith(MockitoExtension.class)
 class StateAlertServiceImplTest {
     private StateAlertService alertService;
     @Mock
-    private StateLogRepository logRepository;
+    private StateEntryRepository entryRepository;
     @Mock
     private StateAlertRepository alertRepository;
 
@@ -41,7 +43,7 @@ class StateAlertServiceImplTest {
 
     @BeforeEach
     void setUp() {
-        alertService = new StateAlertServiceImpl(logRepository,
+        alertService = new StateAlertServiceImpl(entryRepository,
                 alertRepository,
                 List.of(alertProcessor));
     }
@@ -86,7 +88,7 @@ class StateAlertServiceImplTest {
         // given
         String userId = UUID.randomUUID().toString();
         StateLoggedEvent event = new StateLoggedEvent(1L, userId, State.AWFUL, LocalDateTime.now());
-        StateLog stateLog = new StateLog(null,
+        StateEntry stateEntry = new StateEntry(null,
                 event.getUserId(),
                 event.getState(),
                 event.getDateTime());
@@ -95,7 +97,7 @@ class StateAlertServiceImplTest {
         alertService.newTriggeringStateForUser(event);
 
         // then
-        verify(logRepository).save(stateLog);
+        verify(entryRepository).save(stateEntry);
     }
 
     @Test
@@ -103,11 +105,11 @@ class StateAlertServiceImplTest {
         // given
         String userId = UUID.randomUUID().toString();
         StateLoggedEvent event = new StateLoggedEvent(1L, userId, State.AWFUL, LocalDateTime.now());
-        List<StateLog> foundLogs = List.of(
-                new StateLog(1L, userId, State.BAD, LocalDateTime.now()),
-                new StateLog(2L, userId, State.BAD, LocalDateTime.now())
+        List<StateEntry> foundLogs = List.of(
+                new StateEntry(1L, userId, State.BAD, LocalDateTime.now()),
+                new StateEntry(2L, userId, State.BAD, LocalDateTime.now())
         );
-        given(logRepository.findByUserIdOrderByDateTime(userId))
+        given(entryRepository.findByUserIdOrderByDateTime(userId))
                 .willReturn(foundLogs);
         given(alertRepository.getAlertsByUserIdAfterGivenLocalDateTime(eq(userId),
                 any()))
@@ -132,7 +134,7 @@ class StateAlertServiceImplTest {
         String userId = UUID.randomUUID().toString();
         StateLoggedEvent event = new StateLoggedEvent(1L, userId, State.AWFUL, LocalDateTime.now());
 
-        given(logRepository.findByUserIdOrderByDateTime(userId))
+        given(entryRepository.findByUserIdOrderByDateTime(userId))
                 .willReturn(List.of());
         given(alertRepository.getAlertsByUserIdAfterGivenLocalDateTime(eq(userId),
                 any()))

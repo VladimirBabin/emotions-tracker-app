@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Configuration;
 public class AMQPConfiguration {
 
     @Bean
-    public TopicExchange stateLogsTopicExchange(@Value("${amqp.exchange.states}") String exchangeName) {
+    public TopicExchange statesTopicExchange(@Value("${amqp.exchange.states}") String exchangeName) {
         return ExchangeBuilder.topicExchange(exchangeName).durable(true).build();
     }
 

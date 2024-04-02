@@ -3,7 +3,7 @@ package com.specificgroup.emotionstracker.alerts.alert.statealertprocessors;
 import com.specificgroup.emotionstracker.alerts.alert.domain.StateAlert;
 import com.specificgroup.emotionstracker.alerts.alert.domain.StateAlertType;
 import com.specificgroup.emotionstracker.alerts.entry.State;
-import com.specificgroup.emotionstracker.alerts.entry.StateLog;
+import com.specificgroup.emotionstracker.alerts.entry.StateEntry;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
@@ -21,17 +21,17 @@ class TimeBasedStateAlertProcessorTest {
     void whenEligibleForAlertAndNotReceivedYetThenAlertPresent() {
         // given
         String userId = UUID.randomUUID().toString();
-        StateLog stateLog1 = new StateLog(1L, userId, State.BAD, nowMinusCustomDays(1));
-        StateLog stateLog2 = new StateLog(2L, userId, State.BAD, nowMinusCustomDays(2));
-        StateLog stateLog3 = new StateLog(3L, userId, State.AWFUL, nowMinusCustomDays(3));
-        StateLog stateLog4 = new StateLog(4L, userId, State.BAD, nowMinusCustomDays(4));
-        StateLog stateLog5 = new StateLog(5L, userId, State.BAD, nowMinusCustomDays(5));
-        StateLog stateLog6 = new StateLog(6L, userId, State.AWFUL, nowMinusCustomDays(6));
-        StateLog stateLog7 = new StateLog(7L, userId, State.BAD, nowMinusCustomDays(6));
-        List<StateLog> stateLogs = List.of(stateLog1, stateLog2, stateLog3, stateLog4, stateLog5, stateLog6, stateLog7);
+        StateEntry stateEntry1 = new StateEntry(1L, userId, State.BAD, nowMinusCustomDays(1));
+        StateEntry stateEntry2 = new StateEntry(2L, userId, State.BAD, nowMinusCustomDays(2));
+        StateEntry stateEntry3 = new StateEntry(3L, userId, State.AWFUL, nowMinusCustomDays(3));
+        StateEntry stateEntry4 = new StateEntry(4L, userId, State.BAD, nowMinusCustomDays(4));
+        StateEntry stateEntry5 = new StateEntry(5L, userId, State.BAD, nowMinusCustomDays(5));
+        StateEntry stateEntry6 = new StateEntry(6L, userId, State.AWFUL, nowMinusCustomDays(6));
+        StateEntry stateEntry7 = new StateEntry(7L, userId, State.BAD, nowMinusCustomDays(6));
+        List<StateEntry> stateEntries = List.of(stateEntry1, stateEntry2, stateEntry3, stateEntry4, stateEntry5, stateEntry6, stateEntry7);
 
         // when
-        Optional<StateAlertType> stateAlertType = alertProcessor.processForOptionalAlertWithCheck(stateLogs, List.of());
+        Optional<StateAlertType> stateAlertType = alertProcessor.processForOptionalAlertWithCheck(stateEntries, List.of());
 
         // then
         assertThat(stateAlertType).contains(StateAlertType.LOW_STATE_SEVEN_TIMES_A_WEEK);
@@ -41,16 +41,16 @@ class TimeBasedStateAlertProcessorTest {
     void whenNotEligibleForAlertOptionalEmpty() {
         // given
         String userId = UUID.randomUUID().toString();
-        StateLog stateLog1 = new StateLog(1L, userId, State.BAD, nowMinusCustomDays(1));
-        StateLog stateLog2 = new StateLog(2L, userId, State.BAD, nowMinusCustomDays(2));
-        StateLog stateLog3 = new StateLog(3L, userId, State.AWFUL, nowMinusCustomDays(3));
-        StateLog stateLog4 = new StateLog(4L, userId, State.BAD, nowMinusCustomDays(4));
-        StateLog stateLog5 = new StateLog(5L, userId, State.BAD, nowMinusCustomDays(5));
-        StateLog stateLog6 = new StateLog(6L, userId, State.AWFUL, nowMinusCustomDays(6));
-        List<StateLog> stateLogs = List.of(stateLog1, stateLog2, stateLog3, stateLog4, stateLog5, stateLog6);
+        StateEntry stateEntry1 = new StateEntry(1L, userId, State.BAD, nowMinusCustomDays(1));
+        StateEntry stateEntry2 = new StateEntry(2L, userId, State.BAD, nowMinusCustomDays(2));
+        StateEntry stateEntry3 = new StateEntry(3L, userId, State.AWFUL, nowMinusCustomDays(3));
+        StateEntry stateEntry4 = new StateEntry(4L, userId, State.BAD, nowMinusCustomDays(4));
+        StateEntry stateEntry5 = new StateEntry(5L, userId, State.BAD, nowMinusCustomDays(5));
+        StateEntry stateEntry6 = new StateEntry(6L, userId, State.AWFUL, nowMinusCustomDays(6));
+        List<StateEntry> stateEntries = List.of(stateEntry1, stateEntry2, stateEntry3, stateEntry4, stateEntry5, stateEntry6);
 
         // when
-        Optional<StateAlertType> stateAlertType = alertProcessor.processForOptionalAlertWithCheck(stateLogs, List.of());
+        Optional<StateAlertType> stateAlertType = alertProcessor.processForOptionalAlertWithCheck(stateEntries, List.of());
 
         // then
         assertThat(stateAlertType).isEmpty();
@@ -60,17 +60,17 @@ class TimeBasedStateAlertProcessorTest {
     void whenAlreadyReceivedAlertInSevenDaysOptionalEmpty() {
         // given
         String userId = UUID.randomUUID().toString();
-        StateLog stateLog1 = new StateLog(1L, userId, State.BAD, nowMinusCustomDays(1));
-        StateLog stateLog2 = new StateLog(2L, userId, State.BAD, nowMinusCustomDays(2));
-        StateLog stateLog3 = new StateLog(3L, userId, State.AWFUL, nowMinusCustomDays(3));
-        StateLog stateLog4 = new StateLog(4L, userId, State.BAD, nowMinusCustomDays(4));
-        StateLog stateLog5 = new StateLog(5L, userId, State.BAD, nowMinusCustomDays(5));
-        StateLog stateLog6 = new StateLog(6L, userId, State.AWFUL, nowMinusCustomDays(6));
-        StateLog stateLog7 = new StateLog(7L, userId, State.BAD, nowMinusCustomDays(6));
-        List<StateLog> stateLogs = List.of(stateLog1, stateLog2, stateLog3, stateLog4, stateLog5, stateLog6, stateLog7);
+        StateEntry stateEntry1 = new StateEntry(1L, userId, State.BAD, nowMinusCustomDays(1));
+        StateEntry stateEntry2 = new StateEntry(2L, userId, State.BAD, nowMinusCustomDays(2));
+        StateEntry stateEntry3 = new StateEntry(3L, userId, State.AWFUL, nowMinusCustomDays(3));
+        StateEntry stateEntry4 = new StateEntry(4L, userId, State.BAD, nowMinusCustomDays(4));
+        StateEntry stateEntry5 = new StateEntry(5L, userId, State.BAD, nowMinusCustomDays(5));
+        StateEntry stateEntry6 = new StateEntry(6L, userId, State.AWFUL, nowMinusCustomDays(6));
+        StateEntry stateEntry7 = new StateEntry(7L, userId, State.BAD, nowMinusCustomDays(6));
+        List<StateEntry> stateEntries = List.of(stateEntry1, stateEntry2, stateEntry3, stateEntry4, stateEntry5, stateEntry6, stateEntry7);
 
         // when
-        Optional<StateAlertType> stateAlertType = alertProcessor.processForOptionalAlertWithCheck(stateLogs,
+        Optional<StateAlertType> stateAlertType = alertProcessor.processForOptionalAlertWithCheck(stateEntries,
                 List.of(new StateAlert(userId, StateAlertType.LOW_STATE_SEVEN_TIMES_A_WEEK)));
 
         // then

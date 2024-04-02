@@ -60,7 +60,7 @@ services:
     volumes:
       - /db:/usr/src/authentication/BOOT-INF/classes/db
 
-  entrylogging:
+  entries:
     build: ./../entries
     environment:
       - SPRING_PROFILES_ACTIVE=docker
@@ -72,6 +72,19 @@ services:
       - microservices
     volumes:
       - /db:/usr/src/entries/BOOT-INF/classes/db
+
+  stats:
+    build: ./../stats
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_CLOUD_CONSUL_HOST=consul
+    depends_on:
+      - rabbitmq-dev
+      - consul-importer
+    networks:
+      - microservices
+    volumes:
+      - /db:/usr/src/stats/BOOT-INF/classes/db
 
   gateway:
     build: ./../gateway

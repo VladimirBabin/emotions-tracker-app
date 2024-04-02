@@ -2,7 +2,7 @@ package com.specificgroup.emotionstracker.alerts.alert.statealertprocessors;
 
 import com.specificgroup.emotionstracker.alerts.alert.domain.StateAlert;
 import com.specificgroup.emotionstracker.alerts.alert.domain.StateAlertType;
-import com.specificgroup.emotionstracker.alerts.entry.StateLog;
+import com.specificgroup.emotionstracker.alerts.entry.StateEntry;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -14,10 +14,10 @@ public interface StateAlertProcessor {
      *
      * @return an StateAlertType triggered by the emotion logged.
      */
-    Optional<StateAlertType> processForOptionalAlert(List<StateLog> allLoggedStates,
+    Optional<StateAlertType> processForOptionalAlert(List<StateEntry> allLoggedStates,
                                                      List<StateAlert> lastStateAlerts);
 
-    default Optional<StateAlertType> processForOptionalAlertWithCheck(List<StateLog> allLoggedStates,
+    default Optional<StateAlertType> processForOptionalAlertWithCheck(List<StateEntry> allLoggedStates,
                                                                       List<StateAlert> lastStateAlerts) {
         if (userAlreadyReceivedAlertInCustomPeriod(lastStateAlerts)) {
             return Optional.empty();

@@ -1,7 +1,6 @@
 package com.specificgroup.emotionstracker.entries.state;
 
 import com.specificgroup.emotionstracker.entries.entry.EntriesService;
-import com.specificgroup.emotionstracker.entries.entry.WeeklyStats;
 import com.specificgroup.emotionstracker.entries.entry.domain.Emotion;
 import com.specificgroup.emotionstracker.entries.entry.domain.Entry;
 import com.specificgroup.emotionstracker.entries.entry.domain.State;
@@ -18,7 +17,6 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
@@ -44,10 +42,6 @@ class EntryControllerTest {
     private JacksonTester<EntryDto> stateLogDTOJacksonTester;
     @Autowired
     private JacksonTester<Entry> stateLogJacksonTester;
-
-    @Autowired
-    private JacksonTester<WeeklyStats> weeklyStatsJacksonTester;
-
     @Autowired
     private JacksonTester<List<Entry>> lastLoggedStatesJacksonTester;
 
@@ -89,25 +83,6 @@ class EntryControllerTest {
         then(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
     }
 
-    @Test
-    void whenGetWeeklyStatsForExistingUserThenResponseOk() throws Exception {
-        // given
-        String userId = UUID.randomUUID().toString();
-        BigDecimal oneFifth = BigDecimal.valueOf(20);
-        WeeklyStats stats = new WeeklyStats(oneFifth, oneFifth , oneFifth, oneFifth, oneFifth);
-        given(entriesService.getWeeklyStatsForUser(userId))
-                .willReturn(stats);
-
-        // when
-        MockHttpServletResponse response = mvc.perform(
-                        get("/state/statistics/week").param("userId", userId))
-                .andReturn().getResponse();
-
-        // then
-        then(response.getStatus()).isEqualTo(HttpStatus.OK.value());
-        then(response.getContentAsString()).isEqualTo(
-                weeklyStatsJacksonTester.write(stats).getJson());
-    }
 
     @Test
     void whenGetLastLoggedStateForExistingUserThenResponseOk() throws Exception {

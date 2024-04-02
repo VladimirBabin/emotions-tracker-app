@@ -18,9 +18,4 @@ public interface EntriesService {
      */
     List<Entry> getLastLogsForUser(String userId);
 
-    /**
-     * Retrieves statistics about the states logged during the last week for a particular user.
-     * @return the resulting in query WeeklyStats object.
-     */
-    WeeklyStats getWeeklyStatsForUser(String userId);
 }

@@ -3,7 +3,7 @@ package com.specificgroup.emotionstracker.alerts.alert.emotionalertprocessors;
 import com.specificgroup.emotionstracker.alerts.alert.domain.EmotionAlert;
 import com.specificgroup.emotionstracker.alerts.alert.domain.EmotionAlertType;
 import com.specificgroup.emotionstracker.alerts.entry.Emotion;
-import com.specificgroup.emotionstracker.alerts.entry.EmotionLog;
+import com.specificgroup.emotionstracker.alerts.entry.EmotionEntry;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
@@ -41,16 +41,16 @@ class TimeBasedEmotionAlertProcessorTest {
     void whenEligibleForAlertAndNotReceivedYetThenAlertPresent() {
         // given
         String userId = UUID.randomUUID().toString();
-        EmotionLog emotionLog1 = new EmotionLog(1L, userId, Emotion.STRESSED, nowMinusCustomDays(1));
-        EmotionLog emotionLog2 = new EmotionLog(1L, userId, Emotion.STRESSED, nowMinusCustomDays(5));
-        EmotionLog emotionLog3 = new EmotionLog(1L, userId, Emotion.STRESSED, nowMinusCustomDays(3));
-        EmotionLog emotionLog4 = new EmotionLog(1L, userId, Emotion.STRESSED, nowMinusCustomDays(4));
-        EmotionLog emotionLog5 = new EmotionLog(1L, userId, Emotion.STRESSED, nowMinusCustomDays(6));
+        EmotionEntry emotionEntry1 = new EmotionEntry(1L, userId, Emotion.STRESSED, nowMinusCustomDays(1));
+        EmotionEntry emotionEntry2 = new EmotionEntry(1L, userId, Emotion.STRESSED, nowMinusCustomDays(5));
+        EmotionEntry emotionEntry3 = new EmotionEntry(1L, userId, Emotion.STRESSED, nowMinusCustomDays(3));
+        EmotionEntry emotionEntry4 = new EmotionEntry(1L, userId, Emotion.STRESSED, nowMinusCustomDays(4));
+        EmotionEntry emotionEntry5 = new EmotionEntry(1L, userId, Emotion.STRESSED, nowMinusCustomDays(6));
 
-        List<EmotionLog> emotionLogs = List.of(emotionLog1, emotionLog2, emotionLog3, emotionLog4, emotionLog5);
+        List<EmotionEntry> emotionEntries = List.of(emotionEntry1, emotionEntry2, emotionEntry3, emotionEntry4, emotionEntry5);
 
         // when
-        Optional<EmotionAlertType> emotionAlertType = alertProcessor.processForOptionalAlertWithCheck(emotionLogs,
+        Optional<EmotionAlertType> emotionAlertType = alertProcessor.processForOptionalAlertWithCheck(emotionEntries,
                 List.of());
 
         // then
@@ -61,15 +61,15 @@ class TimeBasedEmotionAlertProcessorTest {
     void whenNotEligibleForAlertOptionalEmpty() {
         // given
         String userId = UUID.randomUUID().toString();
-        EmotionLog emotionLog1 = new EmotionLog(1L, userId, Emotion.STRESSED, nowMinusCustomDays(1));
-        EmotionLog emotionLog2 = new EmotionLog(1L, userId, Emotion.STRESSED, nowMinusCustomDays(5));
-        EmotionLog emotionLog3 = new EmotionLog(1L, userId, Emotion.STRESSED, nowMinusCustomDays(3));
-        EmotionLog emotionLog4 = new EmotionLog(1L, userId, Emotion.STRESSED, nowMinusCustomDays(4));
+        EmotionEntry emotionEntry1 = new EmotionEntry(1L, userId, Emotion.STRESSED, nowMinusCustomDays(1));
+        EmotionEntry emotionEntry2 = new EmotionEntry(1L, userId, Emotion.STRESSED, nowMinusCustomDays(5));
+        EmotionEntry emotionEntry3 = new EmotionEntry(1L, userId, Emotion.STRESSED, nowMinusCustomDays(3));
+        EmotionEntry emotionEntry4 = new EmotionEntry(1L, userId, Emotion.STRESSED, nowMinusCustomDays(4));
 
-        List<EmotionLog> emotionLogs = List.of(emotionLog1, emotionLog2, emotionLog3, emotionLog4);
+        List<EmotionEntry> emotionEntries = List.of(emotionEntry1, emotionEntry2, emotionEntry3, emotionEntry4);
 
         // when
-        Optional<EmotionAlertType> emotionAlertType = alertProcessor.processForOptionalAlertWithCheck(emotionLogs,
+        Optional<EmotionAlertType> emotionAlertType = alertProcessor.processForOptionalAlertWithCheck(emotionEntries,
                 List.of());
 
         // then
@@ -80,16 +80,16 @@ class TimeBasedEmotionAlertProcessorTest {
     void whenAlreadyReceivedAlertInSevenDaysOptionalEmpty() {
         // given
         String userId = UUID.randomUUID().toString();
-        EmotionLog emotionLog1 = new EmotionLog(1L, userId, Emotion.STRESSED, nowMinusCustomDays(1));
-        EmotionLog emotionLog2 = new EmotionLog(1L, userId, Emotion.STRESSED, nowMinusCustomDays(5));
-        EmotionLog emotionLog3 = new EmotionLog(1L, userId, Emotion.STRESSED, nowMinusCustomDays(3));
-        EmotionLog emotionLog4 = new EmotionLog(1L, userId, Emotion.STRESSED, nowMinusCustomDays(4));
-        EmotionLog emotionLog5 = new EmotionLog(1L, userId, Emotion.STRESSED, nowMinusCustomDays(6));
+        EmotionEntry emotionEntry1 = new EmotionEntry(1L, userId, Emotion.STRESSED, nowMinusCustomDays(1));
+        EmotionEntry emotionEntry2 = new EmotionEntry(1L, userId, Emotion.STRESSED, nowMinusCustomDays(5));
+        EmotionEntry emotionEntry3 = new EmotionEntry(1L, userId, Emotion.STRESSED, nowMinusCustomDays(3));
+        EmotionEntry emotionEntry4 = new EmotionEntry(1L, userId, Emotion.STRESSED, nowMinusCustomDays(4));
+        EmotionEntry emotionEntry5 = new EmotionEntry(1L, userId, Emotion.STRESSED, nowMinusCustomDays(6));
 
-        List<EmotionLog> emotionLogs = List.of(emotionLog1, emotionLog2, emotionLog3, emotionLog4, emotionLog5);
+        List<EmotionEntry> emotionEntries = List.of(emotionEntry1, emotionEntry2, emotionEntry3, emotionEntry4, emotionEntry5);
 
         // when
-        Optional<EmotionAlertType> emotionAlertType = alertProcessor.processForOptionalAlertWithCheck(emotionLogs,
+        Optional<EmotionAlertType> emotionAlertType = alertProcessor.processForOptionalAlertWithCheck(emotionEntries,
                 List.of(
                 new EmotionAlert(userId, EmotionAlertType.STRESSED_FIVE_TIMES_LAST_WEEK)
         ));

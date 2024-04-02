@@ -21,20 +21,14 @@ public class AMQPConfiguration {
     @Value("${amqp.exchange.emotions}")
     String emotionsExchangeName;
 
-    @Value("${amqp.queue.alert-states}")
-    String alertStateQueueName;
+    @Value("${amqp.queue.states}")
+    String statesQueueName;
 
-    @Value("${amqp.queue.alert-emotions}")
-    String alertEmotionsQueueName;
-
-    @Value("${amqp.routing-key.triggering-state}")
-    String triggeringStateRoutingKey;
-
-    @Value("${amqp.routing-key.triggering-emotion}")
-    String triggeringEmotionRoutingKey;
+    @Value("${amqp.queue.emotions}")
+    String emotionsQueueName;
 
     @Bean
-    public TopicExchange stateLogsTopicExchange() {
+    public TopicExchange statesTopicExchange() {
         return ExchangeBuilder.topicExchange(stateLogsExchangeName).durable(true).build();
     }
 
@@ -44,28 +38,29 @@ public class AMQPConfiguration {
     }
 
     @Bean
-    public Queue alertStatesQueue() {
-        return QueueBuilder.durable(alertStateQueueName).build();
+    public Queue statesQueue() {
+        return QueueBuilder.durable(statesQueueName).build();
     }
 
     @Bean
-    public Queue alertEmotionsQueue() {
-        return QueueBuilder.durable(alertEmotionsQueueName).build();
+    public Queue emotionsQueue() {
+        return QueueBuilder.durable(emotionsQueueName).build();
     }
 
     @Bean
     public Binding triggeringStates() {
-        return BindingBuilder.bind(alertStatesQueue())
-                .to(stateLogsTopicExchange())
-                .with(triggeringStateRoutingKey);
+        return BindingBuilder.bind(statesQueue())
+                .to(statesTopicExchange())
+                .with("#");
     }
 
     @Bean
     public Binding triggeringEmotions() {
-        return BindingBuilder.bind(alertEmotionsQueue())
+        return BindingBuilder.bind(emotionsQueue())
                 .to(emotionsTopicExchange())
-                .with(triggeringEmotionRoutingKey);
+                .with("#");
     }
+
 
     @Bean
     public MessageHandlerMethodFactory messageHandlerMethodFactory() {

@@ -13,10 +13,10 @@ public interface EmotionAlertProcessor {
      * Checks if the user's last logged emotion should trigger an alert.
      * @return an EmotionAlertType triggered by the emotion logged.
      */
-    Optional<EmotionAlertType> processForOptionalAlert(List<EmotionLog> allLoggedEmotions,
+    Optional<EmotionAlertType> processForOptionalAlert(List<EmotionEntry> allLoggedEmotions,
                                                        List<EmotionAlert> lastEmotionAlerts);
 
-    default Optional<EmotionAlertType> processForOptionalAlertWithCheck(List<EmotionLog> allLoggedEmotions,
+    default Optional<EmotionAlertType> processForOptionalAlertWithCheck(List<EmotionEntry> allLoggedEmotions,
                                                                 List<EmotionAlert> lastEmotionAlerts) {
         if (userAlreadyReceivedAlertInCustomPeriod(lastEmotionAlerts)) {
             return Optional.empty();

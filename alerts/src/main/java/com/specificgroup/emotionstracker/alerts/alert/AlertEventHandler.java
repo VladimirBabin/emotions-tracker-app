@@ -24,7 +24,7 @@ public class AlertEventHandler {
         try {
             stateAlertService.newTriggeringStateForUser(stateLoggedEvent);
         } catch (Exception e) {
-            log.error("Error when trying to process ChallengeSolvedEvent", e);
+            log.error("Error when trying to process StateLoggedEvent", e);
             // Avoids the event to be re-queues and reprocessed.
             throw new AmqpRejectAndDontRequeueException(e);
         }
@@ -36,7 +36,7 @@ public class AlertEventHandler {
         try {
             emotionAlertService.newTriggeringEmotionForUser(emotionLoggedEvent);
         } catch (Exception e) {
-            log.error("Error when trying to process ChallengeSolvedEvent", e);
+            log.error("Error when trying to process StateLoggedEvent", e);
             // Avoids the event to be re-queues and reprocessed.
             throw new AmqpRejectAndDontRequeueException(e);
         }

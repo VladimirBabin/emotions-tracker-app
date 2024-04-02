@@ -18,20 +18,24 @@ spring:
         # Use ip address rather than hostname during registration.
         prefer-ip-address: true
     gateway:
-#      excludedURLs: /auth/login,/auth/register
       routes:
-        - id: authorization
-          uri: lb://authorization/
-          predicates:
-            - Path=/auth/login,/auth/register
-        - id: entrylogging
-          uri: lb://entrylogging/
-          predicates:
-            - Path=/state,/state/statistics/week/**,/state/statistics/last/**
         - id: alerts
           uri: lb://alerts/
           predicates:
             - Path=/alerts/recent/**
+        - id: authentication
+          uri: lb://authentication/
+          predicates:
+            - Path=/auth/login,/auth/register
+        - id: entries
+          uri: lb://entries/
+          predicates:
+            - Path=/state,/state/statistics/last/**
+        - id: stats
+          uri: lb://stats/
+          predicates:
+            - Path=/state/statistics/week/**
+
       globalcors:
         cors-configurations:
           '[/**]':

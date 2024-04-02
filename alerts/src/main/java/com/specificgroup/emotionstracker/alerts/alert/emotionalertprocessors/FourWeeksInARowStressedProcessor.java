@@ -3,7 +3,7 @@ package com.specificgroup.emotionstracker.alerts.alert.emotionalertprocessors;
 import com.specificgroup.emotionstracker.alerts.alert.domain.EmotionAlert;
 import com.specificgroup.emotionstracker.alerts.alert.domain.EmotionAlertType;
 import com.specificgroup.emotionstracker.alerts.entry.Emotion;
-import com.specificgroup.emotionstracker.alerts.entry.EmotionLog;
+import com.specificgroup.emotionstracker.alerts.entry.EmotionEntry;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -17,7 +17,7 @@ public class FourWeeksInARowStressedProcessor implements EmotionAlertProcessor {
         return Emotion.STRESSED;
     }
     @Override
-    public Optional<EmotionAlertType> processForOptionalAlert(List<EmotionLog> allLoggedEmotions,
+    public Optional<EmotionAlertType> processForOptionalAlert(List<EmotionEntry> allLoggedEmotions,
                                                               List<EmotionAlert> lastEmotionAlerts) {
         long count = lastEmotionAlerts.stream()
                 .filter(alert -> alert.getEmotionAlertType().equals(EmotionAlertType.STRESSED_ONCE_A_WEEK))

@@ -34,7 +34,7 @@ public class AMQPConfiguration {
     String triggeringEmotionRoutingKey;
 
     @Bean
-    public TopicExchange stateLogsTopicExchange() {
+    public TopicExchange statesTopicExchange() {
         return ExchangeBuilder.topicExchange(stateLogsExchangeName).durable(true).build();
     }
 
@@ -56,7 +56,7 @@ public class AMQPConfiguration {
     @Bean
     public Binding triggeringStates() {
         return BindingBuilder.bind(alertStatesQueue())
-                .to(stateLogsTopicExchange())
+                .to(statesTopicExchange())
                 .with(triggeringStateRoutingKey);
     }
 

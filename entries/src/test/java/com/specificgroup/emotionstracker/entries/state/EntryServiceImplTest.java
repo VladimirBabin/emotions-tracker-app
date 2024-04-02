@@ -1,6 +1,9 @@
 package com.specificgroup.emotionstracker.entries.state;
 
-import com.specificgroup.emotionstracker.entries.entry.*;
+import com.specificgroup.emotionstracker.entries.entry.EntriesEventPublisher;
+import com.specificgroup.emotionstracker.entries.entry.EntriesRepository;
+import com.specificgroup.emotionstracker.entries.entry.EntriesService;
+import com.specificgroup.emotionstracker.entries.entry.EntriesServiceImpl;
 import com.specificgroup.emotionstracker.entries.entry.domain.Emotion;
 import com.specificgroup.emotionstracker.entries.entry.domain.Entry;
 import com.specificgroup.emotionstracker.entries.entry.domain.State;
@@ -12,7 +15,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
@@ -21,9 +23,8 @@ import java.util.UUID;
 import static org.assertj.core.api.BDDAssertions.then;
 import static org.mockito.AdditionalAnswers.returnsFirstArg;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.verify;
+import static org.mockito.BDDMockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class EntryServiceImplTest {
@@ -44,26 +45,7 @@ class EntryServiceImplTest {
     }
 
     @Test
-    void whenNewStateByNewUserLoggedThenUserStateAndEmotionsPersistedAndEventPublished() {
-        // given
-        String userId = UUID.randomUUID().toString();
-        Set<Emotion> emotions = Set.of(Emotion.HAPPY, Emotion.CONTENT);
-        EntryDto entryDto = new EntryDto(userId, State.GOOD, emotions, LocalDateTime.now());
-        given(entriesRepository.save(any()))
-                .will(returnsFirstArg());
-
-
-        // when
-        Entry entry = entriesService.acceptNewEntry(entryDto);
-
-        // then
-        BDDAssertions.then(entry.getState()).isEqualTo(State.GOOD);
-        verify(entriesRepository).save(entry);
-        verify(entriesEventPublisher).stateLogged(entry);
-    }
-
-    @Test
-    void whenNewStateByExistingUserLoggedThenUserFoundAndStateAndEmotionsPersistedAndEventPublished() {
+    void whenNewStateLoggedThenStateAndEmotionsPersistedAndEventPublished() {
         // given
         String userId = UUID.randomUUID().toString();
         Set<Emotion> emotions = Set.of(Emotion.HAPPY, Emotion.CONTENT);
@@ -81,25 +63,6 @@ class EntryServiceImplTest {
         verify(entriesEventPublisher).stateLogged(entry);
     }
 
-    @Test
-    void whenWeeklyStatsQueriedForExistingUserThenFound() {
-        // given
-        String userId = UUID.randomUUID().toString();
-        given(entriesRepository.findAllByUserIdAndDateTimeAfter(eq(userId), any(LocalDateTime.class)))
-                .willReturn(List.of(
-                        new Entry(null, null, State.BAD,null, null),
-                        new Entry(null, null, State.GOOD,null, null),
-                        new Entry(null, null, State.EXCELLENT,null, null)
-                ));
-
-        // when
-        WeeklyStats statsForUser = entriesService.getWeeklyStatsForUser(userId);
-
-        // then
-        then(statsForUser.getBadState()).isEqualTo(BigDecimal.valueOf(33.3));
-        then(statsForUser.getGoodState()).isEqualTo(BigDecimal.valueOf(33.3));
-        then(statsForUser.getExcellentState()).isEqualTo(BigDecimal.valueOf(33.3));
-    }
 
     @Test
     void whenGetLastLogsForUserThenRetrievedSuccessfully() {

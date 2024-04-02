@@ -25,10 +25,6 @@ public class EntriesController {
         return ResponseEntity.ok(entriesService.acceptNewEntry(entryDto));
     }
 
-    @GetMapping("/statistics/week")
-    ResponseEntity<WeeklyStats> getWeeklyStats(@RequestParam("userId") String userId) {
-        return ResponseEntity.ok(entriesService.getWeeklyStatsForUser(userId));
-    }
 
     @GetMapping("/statistics/last")
     ResponseEntity<List<Entry>> getLastLoggedStates(@RequestParam("userId") String userId) {

@@ -12,32 +12,40 @@ import org.springframework.stereotype.Service;
 @Service
 public class EntriesEventPublisher {
     private final AmqpTemplate amqpTemplate;
-    private final String stateLogTopicExchange;
+    private final String statesTopicExchange;
     private final String emotionsTopicExchange;
     private final String triggeringStateRoutingKey;
     private final String triggeringEmotionRoutingKey;
 
+    private final String nonTriggeringStateRoutingKey;
+    private final String nonTriggeringEmotionRoutingKey;
+
 
     public EntriesEventPublisher(AmqpTemplate amqpTemplate,
-                                 @Value("${amqp.exchange.states}") String stateLogTopicExchange,
+                                 @Value("${amqp.exchange.states}") String statesTopicExchange,
                                  @Value("${amqp.exchange.emotions}") String emotionsTopicExchange,
                                  @Value("${amqp.routing-key.triggering-state}") String triggeringStateRoutingKey,
-                                 @Value("${amqp.routing-key.triggering-emotion}") String triggeringEmotionRoutingKey) {
+                                 @Value("${amqp.routing-key.triggering-emotion}") String triggeringEmotionRoutingKey,
+                                 @Value("${amqp.routing-key.non-triggering-state}") String nonTriggeringStateRoutingKey,
+                                 @Value("${amqp.routing-key.non-triggering-emotion}") String nonTriggeringEmotionRoutingKey) {
         this.amqpTemplate = amqpTemplate;
-        this.stateLogTopicExchange = stateLogTopicExchange;
+        this.statesTopicExchange = statesTopicExchange;
         this.emotionsTopicExchange = emotionsTopicExchange;
         this.triggeringStateRoutingKey = triggeringStateRoutingKey;
         this.triggeringEmotionRoutingKey = triggeringEmotionRoutingKey;
+        this.nonTriggeringStateRoutingKey = nonTriggeringStateRoutingKey;
+        this.nonTriggeringEmotionRoutingKey = nonTriggeringEmotionRoutingKey;
     }
 
     public void stateLogged(Entry entry) {
         StateLoggedEvent stateLoggedEvent = buildStateLoggedEvent(entry);
-        amqpTemplate.convertAndSend(stateLogTopicExchange, stateLoggedEvent);
-        if (entry.getState().isAlertTriggering()) {
-            amqpTemplate.convertAndSend(stateLogTopicExchange,
-                    triggeringStateRoutingKey,
-                    stateLoggedEvent);
-        }
+
+        amqpTemplate.convertAndSend(statesTopicExchange,
+                entry.getState().isAlertTriggering() ?
+                        triggeringStateRoutingKey :
+                        nonTriggeringStateRoutingKey,
+                stateLoggedEvent);
+
 
         if (entry.getEmotions() != null) {
             emotionsLogged(entry);
@@ -47,18 +55,19 @@ public class EntriesEventPublisher {
     /**
      * Publishes emotion logged events for every separate emotion.
      * Publishes triggering emotions with a separate routing key.
+     *
      * @param entry EntryLog object.
      */
     private void emotionsLogged(Entry entry) {
         entry.getEmotions().forEach(emotion -> {
             EmotionLoggedEvent emotionLoggedEvent = buildEmotionLoggedEvent(entry, emotion);
-            amqpTemplate.convertAndSend(emotionsTopicExchange, emotionLoggedEvent);
 
-            if (emotion.isAlertTriggering()) {
-                amqpTemplate.convertAndSend(emotionsTopicExchange,
-                        triggeringEmotionRoutingKey,
-                        emotionLoggedEvent);
-            }
+            amqpTemplate.convertAndSend(emotionsTopicExchange,
+                    emotion.isAlertTriggering() ?
+                    triggeringEmotionRoutingKey :
+                    nonTriggeringEmotionRoutingKey,
+                    emotionLoggedEvent);
+
         });
     }
 

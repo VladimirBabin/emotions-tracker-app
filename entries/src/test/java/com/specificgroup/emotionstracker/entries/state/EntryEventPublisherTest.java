@@ -35,7 +35,9 @@ class EntryEventPublisherTest {
                 "states-test.topic",
                 "emotions-test.topic",
                 "state.triggering",
-                "emotion.triggering");
+                "emotion.triggering",
+                "state.non-triggering",
+                "emotion.non-triggering");
     }
 
     @Test
@@ -50,22 +52,24 @@ class EntryEventPublisherTest {
 
         // then
         var exchangeCaptor = ArgumentCaptor.forClass(String.class);
+        var stateRoutingKeyCaptor = ArgumentCaptor.forClass(String.class);
         var stateEventCaptor = ArgumentCaptor.forClass(StateLoggedEvent.class);
 
-        verify(amqpTemplate).convertAndSend(exchangeCaptor.capture(), stateEventCaptor.capture());
+        verify(amqpTemplate).convertAndSend(exchangeCaptor.capture(), stateRoutingKeyCaptor.capture(), stateEventCaptor.capture());
         then(exchangeCaptor.getValue()).isEqualTo("states-test.topic");
+        then(stateRoutingKeyCaptor.getValue()).isEqualTo("state.non-triggering");
         then(stateEventCaptor.getValue()).isEqualTo(expected);
     }
 
     @Test
-    void whenBothStateAndEmotionsLoggedThenBothStateAndEmotionEventsPublished() {
+    void whenBothStateAndNonTriggeringEmotionsLoggedThenBothStateAndEmotionEventsPublished() {
         // given
         String userId = UUID.randomUUID().toString();
-        Set<Emotion> emotions = Set.of(Emotion.ANGRY, Emotion.CONTENT, Emotion.PASSIONATE);
+        Set<Emotion> emotions = Set.of(Emotion.HOPEFUL, Emotion.CONTENT, Emotion.PASSIONATE);
         Entry entry = new Entry(1L, userId, State.OK, emotions, null);
         StateLoggedEvent expectedStateEvent = stateLoggedEvent(State.OK, userId);
         Set<EmotionLoggedEvent> expectedEmotions = Set.of(
-                emotionLoggedEvent(Emotion.ANGRY, userId),
+                emotionLoggedEvent(Emotion.HOPEFUL, userId),
                 emotionLoggedEvent(Emotion.CONTENT, userId),
                 emotionLoggedEvent(Emotion.PASSIONATE, userId));
 
@@ -74,16 +78,23 @@ class EntryEventPublisherTest {
 
         // then
         var stateExchangeCaptor = ArgumentCaptor.forClass(String.class);
-        var emotionExchangeCaptor = ArgumentCaptor.forClass(String.class);
+        var stateRoutingKeyCaptor = ArgumentCaptor.forClass(String.class);
         var stateEventCaptor = ArgumentCaptor.forClass(StateLoggedEvent.class);
+
+        var emotionExchangeCaptor = ArgumentCaptor.forClass(String.class);
+        var emotionRoutingKeyCaptor = ArgumentCaptor.forClass(String.class);
         var emotionEventCaptor = ArgumentCaptor.forClass(EmotionLoggedEvent.class);
 
         verify(amqpTemplate, Mockito.times(1))
-                .convertAndSend(stateExchangeCaptor.capture(), stateEventCaptor.capture());
+                .convertAndSend(stateExchangeCaptor.capture(), stateRoutingKeyCaptor.capture(), stateEventCaptor.capture());
         verify(amqpTemplate, Mockito.times(3))
-                .convertAndSend(emotionExchangeCaptor.capture(), emotionEventCaptor.capture());
+                .convertAndSend(emotionExchangeCaptor.capture(), emotionRoutingKeyCaptor.capture(), emotionEventCaptor.capture());
         then(stateExchangeCaptor.getValue()).isEqualTo("states-test.topic");
+        then(stateRoutingKeyCaptor.getValue()).isEqualTo("state.non-triggering");
+
         then(emotionExchangeCaptor.getValue()).isEqualTo("emotions-test.topic");
+        then(emotionRoutingKeyCaptor.getValue()).isEqualTo("emotion.non-triggering");
+
         then(stateEventCaptor.getValue()).isEqualTo(expectedStateEvent);
         then(emotionEventCaptor.getAllValues()).containsAll(expectedEmotions);
     }

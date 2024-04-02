@@ -28,7 +28,7 @@ import static org.mockito.Mockito.*;
 class EmotionAlertServiceImplTest {
     private EmotionAlertService alertService;
     @Mock
-    private EmotionLogRepository logRepository;
+    private EmotionEntryRepository entryRepository;
     @Mock
     private EmotionAlertRepository alertRepository;
     @Mock
@@ -37,7 +37,7 @@ class EmotionAlertServiceImplTest {
     @BeforeEach
     void setUp() {
         alertService = new EmotionAlertServiceImpl(
-                logRepository,
+                entryRepository,
                 alertRepository,
                 List.of(alertProcessor));
     }
@@ -82,7 +82,7 @@ class EmotionAlertServiceImplTest {
         // given
         String userId = UUID.randomUUID().toString();
         EmotionLoggedEvent event = new EmotionLoggedEvent(1L, userId, Emotion.SCARED, LocalDateTime.now());
-        EmotionLog emotionLog = new EmotionLog(null,
+        EmotionEntry emotionEntry = new EmotionEntry(null,
                 event.getUserId(),
                 event.getEmotion(),
                 event.getDateTime());
@@ -93,7 +93,7 @@ class EmotionAlertServiceImplTest {
         alertService.newTriggeringEmotionForUser(event);
 
         // then
-        verify(logRepository).save(emotionLog);
+        verify(entryRepository).save(emotionEntry);
     }
 
     @Test
@@ -101,11 +101,11 @@ class EmotionAlertServiceImplTest {
         // given
         String userId = UUID.randomUUID().toString();
         EmotionLoggedEvent event = new EmotionLoggedEvent(1L, userId, Emotion.DRAINED, LocalDateTime.now());
-        List<EmotionLog> foundLogs = List.of(
-                new EmotionLog(1L, userId, Emotion.DRAINED, LocalDateTime.now()),
-                new EmotionLog(2L, userId, Emotion.DRAINED, LocalDateTime.now())
+        List<EmotionEntry> foundLogs = List.of(
+                new EmotionEntry(1L, userId, Emotion.DRAINED, LocalDateTime.now()),
+                new EmotionEntry(2L, userId, Emotion.DRAINED, LocalDateTime.now())
         );
-        given(logRepository.findByUserIdAndEmotionOrderByDateTime(userId, Emotion.DRAINED))
+        given(entryRepository.findByUserIdAndEmotionOrderByDateTime(userId, Emotion.DRAINED))
                 .willReturn(foundLogs);
         given(alertRepository.getAlertsByUserIdAfterGivenLocalDateTime(eq(userId),
                 any()))
@@ -125,11 +125,11 @@ class EmotionAlertServiceImplTest {
         // given
         String userId = UUID.randomUUID().toString();
         EmotionLoggedEvent event = new EmotionLoggedEvent(1L, userId, Emotion.SCARED, LocalDateTime.now());
-        List<EmotionLog> foundLogs = List.of(
-                new EmotionLog(1L, userId, Emotion.SCARED, LocalDateTime.now()),
-                new EmotionLog(2L, userId, Emotion.SCARED, LocalDateTime.now())
+        List<EmotionEntry> foundLogs = List.of(
+                new EmotionEntry(1L, userId, Emotion.SCARED, LocalDateTime.now()),
+                new EmotionEntry(2L, userId, Emotion.SCARED, LocalDateTime.now())
         );
-        given(logRepository.findByUserIdAndEmotionOrderByDateTime(userId, Emotion.SCARED))
+        given(entryRepository.findByUserIdAndEmotionOrderByDateTime(userId, Emotion.SCARED))
                 .willReturn(foundLogs);
         given(alertRepository.getAlertsByUserIdAfterGivenLocalDateTime(eq(userId),
                 any()))
@@ -156,7 +156,7 @@ class EmotionAlertServiceImplTest {
         // given
         EmotionLoggedEvent event = new EmotionLoggedEvent(1L, userId, Emotion.SCARED, LocalDateTime.now());
 
-        given(logRepository.findByUserIdAndEmotionOrderByDateTime(userId, Emotion.SCARED))
+        given(entryRepository.findByUserIdAndEmotionOrderByDateTime(userId, Emotion.SCARED))
                 .willReturn(List.of());
         given(alertRepository.getAlertsByUserIdAfterGivenLocalDateTime(eq(userId),
                 any()))

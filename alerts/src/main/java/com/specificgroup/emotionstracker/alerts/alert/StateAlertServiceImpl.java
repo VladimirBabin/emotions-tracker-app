@@ -18,7 +18,7 @@ import java.util.Optional;
 public class StateAlertServiceImpl implements StateAlertService {
     public static final int DAYS_BEFORE_ALERT_CAN_REPEAT = 30;
     public static final int MINUTES_SPAN_FOR_RECENT_ALERT = 60;
-    private final StateLogRepository logRepository;
+    private final StateEntryRepository entryRepository;
     private final StateAlertRepository alertRepository;
     private final List<StateAlertProcessor> alertProcessors;
 
@@ -43,7 +43,7 @@ public class StateAlertServiceImpl implements StateAlertService {
 
     @Override
     public void newTriggeringStateForUser(StateLoggedEvent event) {
-        logRepository.save(new StateLog(null,
+        entryRepository.save(new StateEntry(null,
                 event.getUserId(),
                 event.getState(),
                 event.getDateTime()));
@@ -53,7 +53,7 @@ public class StateAlertServiceImpl implements StateAlertService {
 
     private void processForStateAlerts(StateLoggedEvent event) {
         // get all logged triggering states for user
-        List<StateLog> userStateLogs = logRepository
+        List<StateEntry> userStateEntries = entryRepository
                 .findByUserIdOrderByDateTime(event.getUserId());
 
         List<StateAlert> latestAlerts = alertRepository.getAlertsByUserIdAfterGivenLocalDateTime(
@@ -63,7 +63,7 @@ public class StateAlertServiceImpl implements StateAlertService {
 
         // check if user is eligible for new alerts, persist them and return
         List<StateAlert> newStateAlerts = alertProcessors.stream()
-                .map(p -> p.processForOptionalAlertWithCheck(userStateLogs, latestAlerts))
+                .map(p -> p.processForOptionalAlertWithCheck(userStateEntries, latestAlerts))
                 .flatMap(Optional::stream)
                 .map(stateAlertType -> new StateAlert(event.getUserId(), stateAlertType))
                 .toList();
