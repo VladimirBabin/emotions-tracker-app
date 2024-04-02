@@ -3,7 +3,7 @@ package com.specificgroup.emotionstracker.alerts.alert;
 import com.specificgroup.emotionstracker.alerts.alert.statealertprocessors.StateAlertProcessor;
 import com.specificgroup.emotionstracker.alerts.alert.domain.StateAlert;
 import com.specificgroup.emotionstracker.alerts.alert.domain.StateAlertType;
-import com.specificgroup.emotionstracker.alerts.state.*;
+import com.specificgroup.emotionstracker.alerts.entry.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

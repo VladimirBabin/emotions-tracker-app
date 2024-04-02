@@ -1,4 +1,4 @@
-package com.specificgroup.emotionstracker.alerts.state;
+package com.specificgroup.emotionstracker.stats.entry;
 
 import lombok.Value;
 

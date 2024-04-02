@@ -1,4 +1,4 @@
-package com.specificgroup.emotionstracker.alerts.state;
+package com.specificgroup.emotionstracker.alerts.entry;
 
 import org.springframework.data.repository.CrudRepository;
 

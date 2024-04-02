@@ -1,7 +1,7 @@
 package com.specificgroup.emotionstracker.alerts.alert;
 
-import com.specificgroup.emotionstracker.alerts.state.EmotionLoggedEvent;
-import com.specificgroup.emotionstracker.alerts.state.StateLoggedEvent;
+import com.specificgroup.emotionstracker.alerts.entry.EmotionLoggedEvent;
+import com.specificgroup.emotionstracker.alerts.entry.StateLoggedEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.AmqpRejectAndDontRequeueException;

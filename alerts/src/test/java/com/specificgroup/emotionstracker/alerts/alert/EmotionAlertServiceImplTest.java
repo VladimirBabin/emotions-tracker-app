@@ -3,7 +3,7 @@ package com.specificgroup.emotionstracker.alerts.alert;
 import com.specificgroup.emotionstracker.alerts.alert.domain.EmotionAlert;
 import com.specificgroup.emotionstracker.alerts.alert.domain.EmotionAlertType;
 import com.specificgroup.emotionstracker.alerts.alert.emotionalertprocessors.EmotionAlertProcessor;
-import com.specificgroup.emotionstracker.alerts.state.*;
+import com.specificgroup.emotionstracker.alerts.entry.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

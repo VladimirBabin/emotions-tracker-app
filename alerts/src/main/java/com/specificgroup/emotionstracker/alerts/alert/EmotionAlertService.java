@@ -1,6 +1,6 @@
 package com.specificgroup.emotionstracker.alerts.alert;
 
-import com.specificgroup.emotionstracker.alerts.state.EmotionLoggedEvent;
+import com.specificgroup.emotionstracker.alerts.entry.EmotionLoggedEvent;
 
 import java.util.List;
 

@@ -2,7 +2,7 @@ package com.specificgroup.emotionstracker.alerts.alert.statealertprocessors;
 
 import com.specificgroup.emotionstracker.alerts.alert.domain.StateAlert;
 import com.specificgroup.emotionstracker.alerts.alert.domain.StateAlertType;
-import com.specificgroup.emotionstracker.alerts.state.StateLog;
+import com.specificgroup.emotionstracker.alerts.entry.StateLog;
 
 import java.time.LocalDateTime;
 import java.util.List;

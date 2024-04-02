@@ -2,8 +2,8 @@ package com.specificgroup.emotionstracker.alerts.alert.emotionalertprocessors;
 
 import com.specificgroup.emotionstracker.alerts.alert.domain.EmotionAlert;
 import com.specificgroup.emotionstracker.alerts.alert.domain.EmotionAlertType;
-import com.specificgroup.emotionstracker.alerts.state.Emotion;
-import com.specificgroup.emotionstracker.alerts.state.EmotionLog;
+import com.specificgroup.emotionstracker.alerts.entry.Emotion;
+import com.specificgroup.emotionstracker.alerts.entry.EmotionLog;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;

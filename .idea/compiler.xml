@@ -10,6 +10,7 @@
         <module name="alerts" />
         <module name="entries" />
         <module name="logs" />
+        <module name="stats" />
         <module name="gateway" />
         <module name="authentication" />
       </profile>
@@ -22,6 +23,7 @@
       <module name="entries" options="-parameters" />
       <module name="gateway" options="-parameters" />
       <module name="logs" options="-parameters" />
+      <module name="stats" options="-parameters" />
     </option>
   </component>
 </project>

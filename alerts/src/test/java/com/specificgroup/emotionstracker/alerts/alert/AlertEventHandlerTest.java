@@ -1,9 +1,9 @@
 package com.specificgroup.emotionstracker.alerts.alert;
 
-import com.specificgroup.emotionstracker.alerts.state.Emotion;
-import com.specificgroup.emotionstracker.alerts.state.EmotionLoggedEvent;
-import com.specificgroup.emotionstracker.alerts.state.State;
-import com.specificgroup.emotionstracker.alerts.state.StateLoggedEvent;
+import com.specificgroup.emotionstracker.alerts.entry.Emotion;
+import com.specificgroup.emotionstracker.alerts.entry.EmotionLoggedEvent;
+import com.specificgroup.emotionstracker.alerts.entry.State;
+import com.specificgroup.emotionstracker.alerts.entry.StateLoggedEvent;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

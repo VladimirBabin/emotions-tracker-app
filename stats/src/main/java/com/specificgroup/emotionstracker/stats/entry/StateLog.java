@@ -1,4 +1,4 @@
-package com.specificgroup.emotionstracker.alerts.state;
+package com.specificgroup.emotionstracker.stats.entry;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -11,18 +11,18 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 /**
- * Identifies an emotion log received from an EmotionLoggedEvent.
+ * Identifies a state log received from a StateLoggedEvent.
  */
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class EmotionLog {
+public class StateLog {
     @Id
     @GeneratedValue
     private Long id;
     private String userId;
-    private Emotion emotion;
+    private State state;
     @EqualsAndHashCode.Exclude
     private LocalDateTime dateTime;
 }
