@@ -21,7 +21,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 @AutoConfigureJsonTesters
 @WebMvcTest
 @AutoConfigureMockMvc(addFilters = false)
-class StateStatsControllerTest {
+class StatsControllerTest {
 
     @Autowired
     private MockMvc mvc;
@@ -43,7 +43,7 @@ class StateStatsControllerTest {
 
         // when
         MockHttpServletResponse response = mvc.perform(
-                        get("/state/statistics/week").param("userId", userId))
+                        get("/stats/state/week").param("userId", userId))
                 .andReturn().getResponse();
 
         // then

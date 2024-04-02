@@ -14,12 +14,12 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/state")
-public class StateStatsController {
+@RequestMapping("/stats")
+public class StatsController {
 
     private final StateStatsService stateService;
 
-    @GetMapping("/statistics/week")
+    @GetMapping("/state/week")
     ResponseEntity<WeeklyStats> getWeeklyStats(@RequestParam("userId") String userId) {
         return ResponseEntity.ok(stateService.getWeeklyStatsForUser(userId));
     }

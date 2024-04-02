@@ -16,7 +16,7 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/state")
+@RequestMapping("/entries")
 public class EntriesController {
     private final EntriesService entriesService;
     @PostMapping
@@ -26,7 +26,7 @@ public class EntriesController {
     }
 
 
-    @GetMapping("/statistics/last")
+    @GetMapping("/last")
     ResponseEntity<List<Entry>> getLastLoggedStates(@RequestParam("userId") String userId) {
         return ResponseEntity.ok(entriesService.getLastLogsForUser(userId));
     }

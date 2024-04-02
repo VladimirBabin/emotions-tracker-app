@@ -58,7 +58,7 @@ class EntryControllerTest {
 
         // when
         MockHttpServletResponse response = mvc.perform(
-                        post("/state").contentType(MediaType.APPLICATION_JSON)
+                        post("/entries").contentType(MediaType.APPLICATION_JSON)
                                 .content(stateLogDTOJacksonTester.write(entryDto).getJson()))
                 .andReturn().getResponse();
 
@@ -75,7 +75,7 @@ class EntryControllerTest {
 
         // when
         MockHttpServletResponse response = mvc.perform(
-                        post("/state").contentType(MediaType.APPLICATION_JSON)
+                        post("/entries").contentType(MediaType.APPLICATION_JSON)
                                 .content(stateLogDTOJacksonTester.write(entryDto).getJson()))
                 .andReturn().getResponse();
 
@@ -100,7 +100,7 @@ class EntryControllerTest {
 
         // when
         MockHttpServletResponse response = mvc.perform(
-                        get("/state/statistics/last").param("userId", userId))
+                        get("/entries/last").param("userId", userId))
                 .andReturn().getResponse();
 
         // then

@@ -1,5 +1,5 @@
 import React from "react";
-import EntryLoggingApiClient from "../services/EntryLoggingApiClient";
+import EntriesApiClient from "../services/EntriesApiClient";
 import "./LastLogsComponent.css"
 import LogsDateTimeView from "../helper_components/LogsDateTimeView";
 import StateView from "../helper_components/StateView";
@@ -28,7 +28,7 @@ export class LastLogsComponent extends React.Component {
     }
 
     getLastLogs(): Promise {
-        return EntryLoggingApiClient.lastLogs(getUserId()).then(
+        return EntriesApiClient.lastLogs(getUserId()).then(
             res => {
                 if (res.ok) {
                     return res.json();

@@ -1,5 +1,5 @@
 import * as React from "react";
-import EntryLoggingApiClient from "../services/EntryLoggingApiClient";
+import EntriesApiClient from "../services/EntriesApiClient";
 import RadioButton from "../helper_components/RadioButton";
 import Checkbox from "../helper_components/Checkbox"
 import './LogStateComponent.css'
@@ -45,7 +45,7 @@ class LogStateComponent extends React.Component {
         const dateTime = this.props.date === null ? null :
             this.props.date.format('YYYY-MM-DDTHH:mm:ss').toString();
         console.log(dateTime);
-        EntryLoggingApiClient.sendState(getUserId(),
+        EntriesApiClient.sendState(getUserId(),
             this.state.state,
             this.state.emotions,
             dateTime)

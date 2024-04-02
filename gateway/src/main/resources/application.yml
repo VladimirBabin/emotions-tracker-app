@@ -30,11 +30,11 @@ spring:
         - id: entries
           uri: lb://entries/
           predicates:
-            - Path=/state,/state/statistics/last/**
+            - Path=/entries,/entries/last/**
         - id: stats
           uri: lb://stats/
           predicates:
-            - Path=/state/statistics/week/**
+            - Path=/stats/state/week/**
 
       globalcors:
         cors-configurations:
