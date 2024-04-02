@@ -1,9 +1,10 @@
 import React, {useState} from 'react';
 import Popup from "./Popup";
 import './AppContent.css'
-import WeeklyStatsComponent from "./WeeklyStatsComponent";
+import WeeklyStateStatsComponent from "./WeeklyStateStatsComponent";
 import {LastLogsComponent} from "./LastLogsComponent";
 import {AlertMessages} from "./AlertMessages"
+import {EmotionsStatsComponent} from "./EmotionsStatsComponent";
 
 
 function AppContent() {
@@ -22,8 +23,8 @@ function AppContent() {
             </div>
             <div className="container-fluid">
                 <div className="weekly-stats-div">
-
-                    <WeeklyStatsComponent statsRefresh={statsRefresh} setStatsRefresh={setStatsRefresh}/>
+                    <WeeklyStateStatsComponent statsRefresh={statsRefresh} setStatsRefresh={setStatsRefresh}/>
+                    <EmotionsStatsComponent statsRefresh={statsRefresh} setStatsRefresh={setStatsRefresh}/>
                 </div>
                 <div className="last-logs-div">
                     <LastLogsComponent statsRefresh={statsRefresh} setStatsRefresh={setStatsRefresh}/>

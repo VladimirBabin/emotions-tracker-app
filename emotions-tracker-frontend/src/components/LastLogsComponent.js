@@ -11,49 +11,49 @@ export class LastLogsComponent extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            lastLogsData: [],
+            lastEntries: [],
             serverError: false
         }
     }
 
     componentDidMount() {
-        this.refreshLastLogs();
+        this.refreshLastEntries();
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (this.props.statsRefresh === true) {
-            this.refreshLastLogs();
+            this.refreshLastEntries();
             this.props.setStatsRefresh(false);
         }
     }
 
     getLastLogs(): Promise {
-        return EntriesApiClient.lastLogs(getUserId()).then(
+        return EntriesApiClient.getLastEntries(getUserId()).then(
             res => {
                 if (res.ok) {
                     return res.json();
                 } else {
-                    return Promise.reject("Error on fetching last logs");
+                    return Promise.reject("Error on fetching last entries");
                 }
             }
         );
     }
 
-    updateLastLogs(lastLogs) {
+    updateLastEntries(lastEntries) {
         this.setState({
-            lastLogsData: lastLogs,
+            lastEntries: lastEntries,
             serverError: false
         });
     }
 
-    refreshLastLogs() {
+    refreshLastEntries() {
         this.getLastLogs().then(
-            lastLogs => {
-                this.updateLastLogs(lastLogs);
+            lastEntries => {
+                this.updateLastEntries(lastEntries);
             }
         ).catch(reason => {
             this.setState({serverError: true});
-            console.log('Entry logging server error', reason);
+            console.log('Entries server error', reason);
         });
     }
 
@@ -61,12 +61,12 @@ export class LastLogsComponent extends React.Component {
     render() {
         if (this.state.serverError) {
             return (
-                <div>We're sorry, but we can't display last logged states at the moment</div>
+                <div>We're sorry, but we can't display last logged entries at the moment</div>
             );
         }
         return (
             <div>
-                {this.state.lastLogsData.map(logs =>
+                {this.state.lastEntries.map(logs =>
                     <div className="state-log-div" key={logs.id}>
                         <LogsDateTimeView value={logs.dateTime}/>
                         <StateView value={logs.state}/>

@@ -34,7 +34,7 @@ spring:
         - id: stats
           uri: lb://stats/
           predicates:
-            - Path=/stats/state/week/**
+            - Path=/stats/state/week/**,/stats/emotion/week/top/**
 
       globalcors:
         cors-configurations:

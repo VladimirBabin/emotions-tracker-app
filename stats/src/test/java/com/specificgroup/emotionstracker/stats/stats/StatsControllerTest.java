@@ -1,5 +1,6 @@
 package com.specificgroup.emotionstracker.stats.stats;
 
+import com.specificgroup.emotionstracker.stats.entry.Emotion;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.json.AutoConfigureJsonTesters;
@@ -12,6 +13,7 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.math.BigDecimal;
+import java.util.Set;
 import java.util.UUID;
 
 import static org.assertj.core.api.BDDAssertions.then;
@@ -22,18 +24,19 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 @WebMvcTest
 @AutoConfigureMockMvc(addFilters = false)
 class StatsControllerTest {
-
     @Autowired
     private MockMvc mvc;
-
     @MockBean
     StateStatsService stateService;
-
+    @MockBean
+    EmotionStatsService emotionService;
     @Autowired
     private JacksonTester<WeeklyStats> weeklyStatsJacksonTester;
+    @Autowired
+    private JacksonTester<Set<Emotion>> emotionsListJacksonTester;
 
     @Test
-    void whenGetWeeklyStatsForExistingUserThenResponseOk() throws Exception {
+    void whenGetWeeklyStatsThenResponseOk() throws Exception {
         // given
         String userId = UUID.randomUUID().toString();
         BigDecimal oneFifth = BigDecimal.valueOf(20);
@@ -48,8 +51,31 @@ class StatsControllerTest {
 
         // then
         then(response.getStatus()).isEqualTo(HttpStatus.OK.value());
-        then(response.getContentAsString()).isEqualTo(
-                weeklyStatsJacksonTester.write(stats).getJson());
+        then(response.getContentAsString())
+                .isEqualTo(weeklyStatsJacksonTester.write(stats).getJson());
     }
 
+    @Test
+    void whenGetTopLoggedEmotionsThenResponseOk() throws Exception {
+        // given
+        String userId = UUID.randomUUID().toString();
+        Set<Emotion> topEmotions = Set.of(
+                Emotion.CONTENT,
+                Emotion.PEACEFUL,
+                Emotion.PASSIONATE,
+                Emotion.SCARED,
+                Emotion.STRESSED);
+        given(emotionService.getLastWeekMostLoggedEmotions(userId))
+                .willReturn(topEmotions);
+
+        // when
+        MockHttpServletResponse response = mvc.perform(
+                        get("/stats/emotion/week/top").param("userId", userId))
+                .andReturn().getResponse();
+
+        // then
+        then(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+        then(response.getContentAsString())
+                .isEqualTo(emotionsListJacksonTester.write(topEmotions).getJson());
+    }
 }

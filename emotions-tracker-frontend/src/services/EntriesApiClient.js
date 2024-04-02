@@ -9,7 +9,7 @@ class EntriesApiClient {
     static GET_LAST_STATS_BY_USER_ID = '/entries/last?userId=';
     static POST_STATE = '/entries';
 
-    static lastLogs(userId: number): Promise<Response> {
+    static getLastEntries(userId: number): Promise<Response> {
         return fetch(EntriesApiClient.SERVER_URL +
             EntriesApiClient.GET_LAST_STATS_BY_USER_ID +
             userId,

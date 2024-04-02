@@ -1,0 +1,12 @@
+.emotion-view-item {
+    width: 100px;
+    height: 25px;
+    border-style: solid;
+    border-radius: 10px;
+    justify-content: center;
+    flex-direction: column;
+    display: flex;
+    font-size: 16px;
+    font-weight: bold;
+    margin: 10px;
+}

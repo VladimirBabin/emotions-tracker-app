@@ -53,7 +53,7 @@ class StateStatsServiceImplTest {
     }
 
     @Test
-    void whenWeeklyStatsQueriedForExistingUserThenFound() {
+    void whenWeeklyStatsQueriedForExistingUserThenCalculatedAndReturned() {
         // given
         String userId = UUID.randomUUID().toString();
         given(entryRepository.findAllByUserIdAndDateTimeAfter(eq(userId), any(LocalDateTime.class)))

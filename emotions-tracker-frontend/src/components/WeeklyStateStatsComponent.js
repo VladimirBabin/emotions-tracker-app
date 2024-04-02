@@ -13,7 +13,7 @@ const WeeklyStats = (awfulState, badState, goodState, okState, excellentState) =
     }
 }
 
-class WeeklyStatsComponent extends React.Component {
+class WeeklyStateStatsComponent extends React.Component {
 
     constructor(props) {
         super(props);
@@ -35,12 +35,12 @@ class WeeklyStatsComponent extends React.Component {
     }
 
     getStats(): Promise {
-        return StatsApiClient.weeklyStats(getUserId()).then(
+        return StatsApiClient.getWeeklyStateStats(getUserId()).then(
             res => {
                 if (res.ok) {
                     return res.json();
                 } else {
-                    return Promise.reject("Error on fetching last logs");
+                    return Promise.reject("Error on fetching weekly state stats");
                 }
             }
         );
@@ -59,7 +59,7 @@ class WeeklyStatsComponent extends React.Component {
             }
         ).catch(reason => {
             this.setState({serverError: true});
-            console.log('Entry logging server error', reason);
+            console.log('Stats server error', reason);
         });
     }
 
@@ -90,5 +90,5 @@ class WeeklyStatsComponent extends React.Component {
     }
 }
 
-export default WeeklyStatsComponent;
+export default WeeklyStateStatsComponent;
 
