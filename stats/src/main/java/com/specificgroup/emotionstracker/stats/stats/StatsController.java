@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Set;
+import java.util.List;
 
 /**
  * This class implements a REST API to GET statistics.
@@ -28,7 +28,7 @@ public class StatsController {
     }
 
     @GetMapping("emotion/week/top")
-    ResponseEntity<Set<Emotion>> getTopLoggedEmotions(@RequestParam("userId") String userId) {
+    ResponseEntity<List<Emotion>> getTopLoggedEmotions(@RequestParam("userId") String userId) {
         return ResponseEntity.ok(emotionService.getLastWeekMostLoggedEmotions(userId));
     }
 }

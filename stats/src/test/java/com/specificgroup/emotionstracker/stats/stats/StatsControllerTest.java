@@ -13,7 +13,7 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.math.BigDecimal;
-import java.util.Set;
+import java.util.List;
 import java.util.UUID;
 
 import static org.assertj.core.api.BDDAssertions.then;
@@ -33,7 +33,7 @@ class StatsControllerTest {
     @Autowired
     private JacksonTester<WeeklyStats> weeklyStatsJacksonTester;
     @Autowired
-    private JacksonTester<Set<Emotion>> emotionsListJacksonTester;
+    private JacksonTester<List<Emotion>> emotionsListJacksonTester;
 
     @Test
     void whenGetWeeklyStatsThenResponseOk() throws Exception {
@@ -59,7 +59,7 @@ class StatsControllerTest {
     void whenGetTopLoggedEmotionsThenResponseOk() throws Exception {
         // given
         String userId = UUID.randomUUID().toString();
-        Set<Emotion> topEmotions = Set.of(
+        List<Emotion> topEmotions = List.of(
                 Emotion.CONTENT,
                 Emotion.PEACEFUL,
                 Emotion.PASSIONATE,

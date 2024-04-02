@@ -10,18 +10,13 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.Period;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import static java.util.stream.Collectors.counting;
+import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
 @Service
 public class EmotionStatsServiceImpl implements EmotionStatsService {
 
-    public static final int TOP_EMOTIONS_LIMIT = 5;
     private final EmotionEntryRepository entryRepository;
 
     @Override
@@ -33,16 +28,12 @@ public class EmotionStatsServiceImpl implements EmotionStatsService {
     }
 
     @Override
-    public Set<Emotion> getLastWeekMostLoggedEmotions(String userId) {
+    public List<Emotion> getLastWeekMostLoggedEmotions(String userId) {
         return entryRepository
-                .findTopRepeatedEmotionEntriesGropedByEmotionsDesc(userId, LocalDateTime.now().minus(Period.ofWeeks(1)))
+                .findTopRepeatedEmotionEntriesGropedByEmotionsDesc(
+                        userId, LocalDateTime.now().minus(Period.ofWeeks(1)))
                 .stream()
-                .map(EmotionEntry::getEmotion)
-                .collect(Collectors.groupingBy(e -> e, counting()))
-                .entrySet().stream()
-                .sorted(Map.Entry.comparingByValue())
-                .map(Map.Entry::getKey)
                 .limit(TOP_EMOTIONS_LIMIT)
-                .collect(Collectors.toSet());
+                .toList();
     }
 }

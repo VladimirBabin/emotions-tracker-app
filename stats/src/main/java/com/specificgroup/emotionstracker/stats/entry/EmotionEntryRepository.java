@@ -8,8 +8,9 @@ import java.util.List;
 
 public interface EmotionEntryRepository extends CrudRepository<EmotionEntry, Long> {
     /**
-     * Retrieves emotions for user after given date time.
+     * Retrieves most logged emotions for user after given date time.
      */
-    @Query("SELECT e FROM EmotionEntry e GROUP BY e.emotion ORDER BY e.emotion DESC")
-    List<EmotionEntry> findTopRepeatedEmotionEntriesGropedByEmotionsDesc(String userId, LocalDateTime dateTime);
+    @Query("SELECT e.emotion FROM EmotionEntry e WHERE e.userId = ?1 AND e.dateTime > ?2 " +
+            "GROUP BY e.emotion ORDER BY COUNT(e.emotion) DESC")
+    List<Emotion> findTopRepeatedEmotionEntriesGropedByEmotionsDesc(String userId, LocalDateTime dateTime);
 }
