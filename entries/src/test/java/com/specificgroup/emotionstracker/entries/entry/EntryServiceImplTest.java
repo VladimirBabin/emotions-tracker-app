@@ -4,7 +4,6 @@ import com.specificgroup.emotionstracker.entries.entry.domain.Emotion;
 import com.specificgroup.emotionstracker.entries.entry.domain.Entry;
 import com.specificgroup.emotionstracker.entries.entry.domain.State;
 import com.specificgroup.emotionstracker.entries.entry.dto.EntryDto;
-import org.assertj.core.api.BDDAssertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -53,8 +52,8 @@ class EntryServiceImplTest {
         Entry entry = entriesService.acceptNewEntry(entryDto);
 
         // then
-        BDDAssertions.then(entry.getState()).isEqualTo(State.BAD);
-        BDDAssertions.then(entry.getUserId()).isEqualTo(userId);
+        then(entry.getState()).isEqualTo(State.BAD);
+        then(entry.getUserId()).isEqualTo(userId);
         verify(entriesRepository).save(entry);
         verify(entriesEventPublisher).stateLogged(entry);
     }

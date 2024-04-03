@@ -83,7 +83,7 @@ class AlertControllerTest {
                 .andReturn().getResponse();
 
         // then
-         then(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+        then(response.getStatus()).isEqualTo(HttpStatus.OK.value());
         then(response.getContentAsString())
                 .isEqualTo(alertsJacksonTester.write(List.of()).getJson());
     }
