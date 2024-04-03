@@ -1,6 +1,3 @@
-// Import the library
-import Datetime from 'react-datetime';
-
 import {getAuthToken} from "./AuthApiClient";
 
 class EntriesApiClient {
@@ -25,7 +22,7 @@ class EntriesApiClient {
                      state: string,
                      emotions: [],
                      comment: string,
-                     dateTime: Datetime): Promise<Response> {
+                     dateTime: string): Promise<Response> {
         return fetch(EntriesApiClient.SERVER_URL + EntriesApiClient.POST_STATE,
             {
                 method: 'POST',

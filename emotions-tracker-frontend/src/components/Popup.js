@@ -6,6 +6,7 @@ import {DemoContainer} from '@mui/x-date-pickers/internals/demo';
 import {LocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider';
 import {AdapterDayjs} from '@mui/x-date-pickers/AdapterDayjs';
 import { MobileDateTimePicker } from '@mui/x-date-pickers/MobileDateTimePicker';
+import dayjs from "dayjs";
 
 function Popup(props) {
 
@@ -52,6 +53,7 @@ function Popup(props) {
                             <DemoContainer components={['DateTimePicker', 'DateTimePicker']}>
                                 <MobileDateTimePicker
                                     label="Choose date and time"
+                                    maxDateTime={dayjs()}
                                     onChange={(newDate) => setDate(newDate)}
                                 />
                             </DemoContainer>

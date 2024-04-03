@@ -1,6 +1,5 @@
 import {getAuthToken} from "./AuthApiClient";
 
-
 class StatsApiClient {
     static SERVER_URL = 'http://localhost:8000';
 
