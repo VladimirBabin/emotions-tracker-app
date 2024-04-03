@@ -12,8 +12,8 @@ In particular, it focuses on such concepts as _**event-driven architecture,
 service discovery, routing, load balancing and traceability**_. 
 
 - [Features](#features)
+- [Stack](#stack)
 - [Installation](#installation)
-- [Stack description](#Stack description)
 
 ## Features
 
@@ -34,7 +34,7 @@ attention and alert you about that after detection some event or pattern.
 To read more info about the currently available alerts, please refer to the 
 [alerts README file](./alerts/README.md). 
 
-## Stack description
+## Stack
 
 ### Backend
 The backend stack base is Java 21 and SpringBoot 3.2.3. Maven of version 3.9.6
