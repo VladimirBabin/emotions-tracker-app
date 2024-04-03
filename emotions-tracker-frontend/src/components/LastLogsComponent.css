@@ -1,9 +1,13 @@
-.state-log-div {
-    text-align: center;
-    padding: 5px;
-    margin: 10px;
+.last-entry-div {
     border-style: solid;
     border-width: 2px;
+    padding: 5px;
+    margin: 10px;
     border-radius: 10px;
+}
+
+.state-log-div {
+    text-align: center;
     display: flex;
+    align-items: flex-end;
 }

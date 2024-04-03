@@ -1,8 +1,5 @@
-package com.specificgroup.emotionstracker.entries.state;
+package com.specificgroup.emotionstracker.entries.entry;
 
-import com.specificgroup.emotionstracker.entries.entry.EmotionLoggedEvent;
-import com.specificgroup.emotionstracker.entries.entry.EntriesEventPublisher;
-import com.specificgroup.emotionstracker.entries.entry.StateLoggedEvent;
 import com.specificgroup.emotionstracker.entries.entry.domain.Emotion;
 import com.specificgroup.emotionstracker.entries.entry.domain.Entry;
 import com.specificgroup.emotionstracker.entries.entry.domain.State;
@@ -44,7 +41,7 @@ class EntryEventPublisherTest {
     void whenStateLoggedAndEmotionsNotLoggedThenStateEventPublished() {
         // given
         String userId = UUID.randomUUID().toString();
-        Entry entry = new Entry(1L, userId, State.OK, null, null);
+        Entry entry = new Entry(1L, userId, State.OK, null, null, null);
         StateLoggedEvent expected = stateLoggedEvent(State.OK, userId);
 
         // when
@@ -66,7 +63,7 @@ class EntryEventPublisherTest {
         // given
         String userId = UUID.randomUUID().toString();
         Set<Emotion> emotions = Set.of(Emotion.HOPEFUL, Emotion.CONTENT, Emotion.PASSIONATE);
-        Entry entry = new Entry(1L, userId, State.OK, emotions, null);
+        Entry entry = new Entry(1L, userId, State.OK, emotions, null, null);
         StateLoggedEvent expectedStateEvent = stateLoggedEvent(State.OK, userId);
         Set<EmotionLoggedEvent> expectedEmotions = Set.of(
                 emotionLoggedEvent(Emotion.HOPEFUL, userId),
@@ -104,7 +101,7 @@ class EntryEventPublisherTest {
         // given
         String userId = UUID.randomUUID().toString();
         Set<Emotion> emotions = Set.of(Emotion.ANGRY);
-        Entry entry = new Entry(1L, userId, State.BAD, emotions, null);
+        Entry entry = new Entry(1L, userId, State.BAD, emotions, null, null);
         StateLoggedEvent expectedState = stateLoggedEvent(State.BAD, userId);
         EmotionLoggedEvent expectedEmotion = emotionLoggedEvent(Emotion.ANGRY, userId);
 

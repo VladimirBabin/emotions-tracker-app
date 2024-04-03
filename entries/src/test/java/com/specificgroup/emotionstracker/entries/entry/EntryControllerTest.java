@@ -1,6 +1,5 @@
-package com.specificgroup.emotionstracker.entries.state;
+package com.specificgroup.emotionstracker.entries.entry;
 
-import com.specificgroup.emotionstracker.entries.entry.EntriesService;
 import com.specificgroup.emotionstracker.entries.entry.domain.Emotion;
 import com.specificgroup.emotionstracker.entries.entry.domain.Entry;
 import com.specificgroup.emotionstracker.entries.entry.domain.State;
@@ -51,8 +50,8 @@ class EntryControllerTest {
         String userId = UUID.randomUUID().toString();
         LocalDateTime dateTime = LocalDateTime.now();
         Set<Emotion> emotions = Set.of(Emotion.CONTENT, Emotion.HAPPY);
-        EntryDto entryDto = new EntryDto(userId, State.GOOD, emotions, dateTime);
-        Entry expectedEntry = new Entry(1L, userId, State.GOOD, emotions, dateTime);
+        EntryDto entryDto = new EntryDto(userId, State.GOOD, emotions,null, dateTime);
+        Entry expectedEntry = new Entry(1L, userId, State.GOOD, emotions, null, dateTime);
         given(entriesService.acceptNewEntry(entryDto))
                 .willReturn(expectedEntry);
 
@@ -71,7 +70,7 @@ class EntryControllerTest {
     void whenPostInvalidStateLogThenBadRequest() throws Exception {
         // given
         String userId = UUID.randomUUID().toString();
-        EntryDto entryDto = new EntryDto(userId, null, null, LocalDateTime.now());
+        EntryDto entryDto = new EntryDto(userId, null, null, null, LocalDateTime.now());
 
         // when
         MockHttpServletResponse response = mvc.perform(
@@ -90,9 +89,11 @@ class EntryControllerTest {
         String userId = UUID.randomUUID().toString();
         Entry log1 = new Entry(1L, userId, State.GOOD,
                 Set.of(Emotion.PEACEFUL, Emotion.HAPPY),
+                null,
                 LocalDateTime.now());
         Entry log2 = new Entry(2L, userId, State.BAD,
                 Set.of(Emotion.ANGRY, Emotion.HOPEFUL),
+                null,
                 LocalDateTime.now());
         List<Entry> entries = List.of(log1, log2);
         given(entriesService.getLastLogsForUser(userId))

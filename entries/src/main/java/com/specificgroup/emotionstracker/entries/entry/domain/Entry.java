@@ -25,6 +25,7 @@ public class Entry {
 
     @ElementCollection(targetClass = Emotion.class, fetch = FetchType.LAZY)
     private Set<Emotion> emotions;
+    private String comment;
     @EqualsAndHashCode.Exclude
     private LocalDateTime dateTime;
 }

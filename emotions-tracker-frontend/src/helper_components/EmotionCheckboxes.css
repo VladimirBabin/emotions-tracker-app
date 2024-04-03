@@ -1,0 +1,9 @@
+.checkbox-div {
+    display: inline-table;
+    justify-content: center;
+    align-items: center;
+    margin-left: 2.5%;
+    margin-bottom: 2%;
+    width: 30%;
+    min-width: 120px;
+}

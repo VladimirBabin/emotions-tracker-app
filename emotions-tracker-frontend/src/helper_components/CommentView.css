@@ -1,0 +1,12 @@
+.comment-view-input {
+    width: 98%;
+    border-style: solid;
+    border-radius: 10px;
+    display: flex;
+    font-size: 18px;
+    font-family: Calibri, cursive;
+    font-weight: normal;
+    margin: 8px;
+    text-align: left;
+    padding: 8px;
+}

@@ -5,6 +5,7 @@ import LogsDateTimeView from "../helper_components/LogsDateTimeView";
 import StateView from "../helper_components/StateView";
 import EmotionsView from "../helper_components/EmotionsView";
 import {getUserId} from "../services/AuthApiClient";
+import CommentView from "../helper_components/CommentView";
 
 export class LastLogsComponent extends React.Component {
 
@@ -67,10 +68,13 @@ export class LastLogsComponent extends React.Component {
         return (
             <div>
                 {this.state.lastEntries.map(logs =>
-                    <div className="state-log-div" key={logs.id}>
-                        <LogsDateTimeView value={logs.dateTime}/>
-                        <StateView value={logs.state}/>
-                        <EmotionsView emotions={logs.emotions}/>
+                    <div className="last-entry-div" key={logs.id}>
+                        <div className="state-log-div" key={logs.id}>
+                            <LogsDateTimeView value={logs.dateTime}/>
+                            <StateView value={logs.state}/>
+                            <EmotionsView emotions={logs.emotions}/>
+                        </div>
+                        {logs.comment === null ? "" : <CommentView comment={logs.comment}/>}
                     </div>)}
             </div>
         );

@@ -1,9 +1,5 @@
-package com.specificgroup.emotionstracker.entries.state;
+package com.specificgroup.emotionstracker.entries.entry;
 
-import com.specificgroup.emotionstracker.entries.entry.EntriesEventPublisher;
-import com.specificgroup.emotionstracker.entries.entry.EntriesRepository;
-import com.specificgroup.emotionstracker.entries.entry.EntriesService;
-import com.specificgroup.emotionstracker.entries.entry.EntriesServiceImpl;
 import com.specificgroup.emotionstracker.entries.entry.domain.Emotion;
 import com.specificgroup.emotionstracker.entries.entry.domain.Entry;
 import com.specificgroup.emotionstracker.entries.entry.domain.State;
@@ -49,7 +45,7 @@ class EntryServiceImplTest {
         // given
         String userId = UUID.randomUUID().toString();
         Set<Emotion> emotions = Set.of(Emotion.HAPPY, Emotion.CONTENT);
-        EntryDto entryDto = new EntryDto(userId, State.BAD, emotions, LocalDateTime.now());
+        EntryDto entryDto = new EntryDto(userId, State.BAD, emotions, null, LocalDateTime.now());
         given(entriesRepository.save(any()))
                 .will(returnsFirstArg());
 
@@ -70,9 +66,11 @@ class EntryServiceImplTest {
         String userId = UUID.randomUUID().toString();
         Entry log1 = new Entry(1L, userId, State.GOOD,
                 Set.of(Emotion.PEACEFUL, Emotion.HAPPY),
+                "comment1",
                 LocalDateTime.now());
         Entry log2 = new Entry(2L, userId, State.BAD,
                 Set.of(Emotion.ANGRY, Emotion.HOPEFUL),
+                "comment2",
                 LocalDateTime.now());
         List<Entry> entries = List.of(log1, log2);
         given(entriesRepository.findTop10ByUserIdOrderByDateTimeDesc(userId))

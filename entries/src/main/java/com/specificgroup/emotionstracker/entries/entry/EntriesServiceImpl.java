@@ -23,6 +23,7 @@ public class EntriesServiceImpl implements EntriesService {
                 entryDto.getUserId(),
                 entryDto.getState(),
                 entryDto.getEmotions(),
+                entryDto.getComment(),
                 entryDto.getDateTime() == null ?
                 LocalDateTime.now() :
                 entryDto.getDateTime());

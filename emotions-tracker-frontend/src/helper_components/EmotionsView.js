@@ -6,7 +6,7 @@ const EmotionsView = ({emotions}) => {
 
     return (
         <div className="emotions-view-div">{emotions.map(e =>
-            <EmotionView keyValue={e} emotion={e} />)}
+            <EmotionView key={e} emotion={e} />)}
         </div>
     );
 };

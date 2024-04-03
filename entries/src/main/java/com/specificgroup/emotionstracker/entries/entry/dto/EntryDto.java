@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 import java.util.Set;
 
 /**
- * State log coming from a user
+ * Entry log coming from a user
  */
 @Value
 public class EntryDto {
@@ -18,5 +18,6 @@ public class EntryDto {
     @NotNull
     State state;
     Set<Emotion> emotions;
+    String comment;
     LocalDateTime dateTime;
 }

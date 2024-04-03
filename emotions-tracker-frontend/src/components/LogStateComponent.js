@@ -1,10 +1,10 @@
 import * as React from "react";
 import EntriesApiClient from "../services/EntriesApiClient";
-import RadioButton from "../helper_components/RadioButton";
-import Checkbox from "../helper_components/Checkbox"
 import './LogStateComponent.css'
 import {getUserId} from "../services/AuthApiClient";
 import FormDateTimeView from "../helper_components/FormDateTimeView";
+import EmotionCheckboxes from "../helper_components/EmotionCheckboxes";
+import StateRadioButtons from "../helper_components/StateRadioButtons";
 
 class LogStateComponent extends React.Component {
 
@@ -14,6 +14,7 @@ class LogStateComponent extends React.Component {
         this.state = {
             state: '',
             emotions: [],
+            comment: '',
             message: '',
         };
         this.handleSubmitResult = this.handleSubmitResult.bind(this);
@@ -44,10 +45,10 @@ class LogStateComponent extends React.Component {
         event.preventDefault();
         const dateTime = this.props.date === null ? null :
             this.props.date.format('YYYY-MM-DDTHH:mm:ss').toString();
-        console.log(dateTime);
         EntriesApiClient.sendState(getUserId(),
             this.state.state,
             this.state.emotions,
+            this.state.comment,
             dateTime)
             .then(res => {
                 if (res.ok) {
@@ -79,141 +80,26 @@ class LogStateComponent extends React.Component {
                             <div className="state-title">
                                 <h6>{this.props.date === null ? "How are you?" : "How were you?"}</h6>
                             </div>
-                            <div className="radiobutton-div">
-                                <RadioButton
-                                    text="Awful"
-                                    onChange={this.handleSetChange}
-                                    value="AWFUL"
-                                />
-                                <RadioButton
-                                    text="Bad"
-                                    onChange={this.handleSetChange}
-                                    value="BAD"
-                                />
-                                <RadioButton
-                                    text="Ok"
-                                    onChange={this.handleSetChange}
-                                    value="OK"
-                                />
-                                <RadioButton
-                                    text="Good"
-                                    onChange={this.handleSetChange}
-                                    value="GOOD"
-                                />
-                                <RadioButton
-                                    text="Excellent"
-                                    onChange={this.handleSetChange}
-                                    value="EXCELLENT"
-                                />
-                            </div>
+                            <StateRadioButtons handleRadiobutton={this.handleSetChange}/>
                         </div>
                         <div className="state-div">
                             <div className="state-title">
                                 <h6>{this.props.date === null ? "How do you feel?" : "How did you feel?"}</h6>
                             </div>
-                            <div className="checkbox-div">
-                                <Checkbox
-                                    text="Happy"
-                                    onChange={this.handleCheckbox}
-                                    value="HAPPY"
-                                />
-                                <Checkbox
-                                    text="Indifferent"
-                                    onChange={this.handleCheckbox}
-                                    value="INDIFFERENT"
-                                />
-                                <Checkbox
-                                    text="Sad"
-                                    onChange={this.handleCheckbox}
-                                    value="SAD"
-                                />
-                                <Checkbox
-                                    text="Excited"
-                                    onChange={this.handleCheckbox}
-                                    value="EXCITED"
-                                />
-                                <Checkbox
-                                    text="Peaceful"
-                                    onChange={this.handleCheckbox}
-                                    value="PEACEFUL"
-                                />
-                                <Checkbox
-                                    text="Anxious"
-                                    onChange={this.handleCheckbox}
-                                    value="ANXIOUS"
-                                />
+                            <EmotionCheckboxes handleCheckbox={this.handleCheckbox}/>
+                        </div>
+                        <div className="state-div">
+                            <div className="state-title">
+                                <h6>Quick note:</h6>
                             </div>
-                            <div className="checkbox-div">
-                                <Checkbox
-                                    text="Satisfied"
-                                    onChange={this.handleCheckbox}
-                                    value="SATISFIED"
-                                />
-                                <Checkbox
-                                    text="Content"
-                                    onChange={this.handleCheckbox}
-                                    value="CONTENT"
-                                />
-                                <Checkbox
-                                    text="Drained"
-                                    onChange={this.handleCheckbox}
-                                    value="DRAINED"
-                                />
-                                <Checkbox
-                                    text="Passionate"
-                                    onChange={this.handleCheckbox}
-                                    value="PASSIONATE"
-                                />
-                                <Checkbox
-                                    text="Stressed"
-                                    onChange={this.handleCheckbox}
-                                    value="STRESSED"
-                                />
-                                <Checkbox
-                                    text="Angry"
-                                    onChange={this.handleCheckbox}
-                                    value="ANGRY"
-                                />
-                            </div>
-                            <div className="checkbox-div">
-                                <Checkbox
-                                    text="Tired"
-                                    onChange={this.handleCheckbox}
-                                    value="TIRED"
-                                />
-                                <Checkbox
-                                    text="Hopeful"
-                                    onChange={this.handleCheckbox}
-                                    value="HOPEFUL"
-                                />
-                                <Checkbox
-                                    text="Irritated"
-                                    onChange={this.handleCheckbox}
-                                    value="IRRITATED"
-                                />
-                                <Checkbox
-                                    text="Surprised"
-                                    onChange={this.handleCheckbox}
-                                    value="SURPRISED"
-                                />
-                                <Checkbox
-                                    text="Scared"
-                                    onChange={this.handleCheckbox}
-                                    value="SCARED"
-                                />
-                                <Checkbox
-                                    text="Jealous"
-                                    onChange={this.handleCheckbox}
-                                    value="JEALOUS"
-                                />
-                            </div>
+                            <input className="comment-input" type="text" name="comment" placeholder="Add note..."
+                                   onChange={this.handleSetChange}/>
                         </div>
                     </label>
                     <br/>
                     <div align="center">
                         <input type="submit" value="Submit"/>
                     </div>
-
                 </form>
                 <br/>
                 <div>

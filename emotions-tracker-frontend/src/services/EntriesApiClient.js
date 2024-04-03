@@ -24,6 +24,7 @@ class EntriesApiClient {
     static sendState(userId: number,
                      state: string,
                      emotions: [],
+                     comment: string,
                      dateTime: Datetime): Promise<Response> {
         return fetch(EntriesApiClient.SERVER_URL + EntriesApiClient.POST_STATE,
             {
@@ -37,6 +38,7 @@ class EntriesApiClient {
                         userId: userId,
                         state: state,
                         emotions: emotions,
+                        comment: comment,
                         dateTime: dateTime
                     }
                 )

@@ -16,7 +16,6 @@ public class EntriesEventPublisher {
     private final String emotionsTopicExchange;
     private final String triggeringStateRoutingKey;
     private final String triggeringEmotionRoutingKey;
-
     private final String nonTriggeringStateRoutingKey;
     private final String nonTriggeringEmotionRoutingKey;
 
@@ -56,7 +55,7 @@ public class EntriesEventPublisher {
      * Publishes emotion logged events for every separate emotion.
      * Publishes triggering emotions with a separate routing key.
      *
-     * @param entry EntryLog object.
+     * @param entry Entry object.
      */
     private void emotionsLogged(Entry entry) {
         entry.getEmotions().forEach(emotion -> {
