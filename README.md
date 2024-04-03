@@ -66,27 +66,8 @@ running `node --version` and `npm --version` and install if necessary.
 
 ### Authentication
 
-The main branch includes a JWT authentication feature with asymmetric signing 
-algorithm. In order to use the app, pair of public and private keys should be 
-generated for the authentication service and the public key should be
-copied into the following services: alerts, entries and stats. 
-The path for the key/keys should be `src/main/resources/certs`.
-
-To generate the keys, you can use open ssl tool:
-- From the indicated directory
-in authentication service run `openssl genrsa -out keypair.pem 2048` to
-generate the initial key;
-- Run `openssl rsa -in keyp[air.pem -pubout -out public.pem` to generate the
-public key;
-- Run `openssl pkcs8 -topk8 -inform PEM -outform PEM -nocrypt -in keypair.pem -out private.pem`
-to generate the private key;
-- Delete the initial `keypair.pem` file;
-- Copy the `public.pem` key to the corresponding directories in alerts, entries 
-and stats services.
-
-You can also check out the **symmetric-key** branch if you'd like to avoid the
-mentioned steps.
-
+The current branch has JWT authentication feature with symmetric signing 
+algorithm with key predefined in the AuthProvider classes.
 
 ### With Docker
 
