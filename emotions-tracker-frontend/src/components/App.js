@@ -18,11 +18,13 @@ class App extends React.Component {
     };
 
     login = () => {
+        window.localStorage.setItem('loggedIn', null);
         this.updateMessage('');
         this.setState({componentToShow: "login"});
     };
 
     logout = () => {
+        window.localStorage.setItem('loggedIn', null);
         this.updateMessage('');
         this.setState({componentToShow: "welcome"});
     };
@@ -51,6 +53,7 @@ class App extends React.Component {
         this.sendLogin(username, password).then(
             response => {
                 this.setState({componentToShow: "appContent"});
+                localStorage.setItem('loggedIn', 1);
                 setAuthToken(response.token);
                 setUserId(response.id);
             }).catch(error => error !== null ?
@@ -81,6 +84,7 @@ class App extends React.Component {
         window.localStorage.clear();
         this.sendRegister(firstName, lastName, login, password).then(response => {
             this.setState({componentToShow: "appContent"});
+            window.localStorage.setItem('loggedIn', '1');
             setAuthToken(response.token);
             setUserId(response.id);
         }).catch(error => error.then(e => {
@@ -104,9 +108,10 @@ class App extends React.Component {
                 <div className="container-fluid" style={{marginTop: "3%"}}>
                     <div className="row">
                         <div className="col">
-                            {this.state.componentToShow === "welcome" && <WelcomeContent/>}
+                            {window.localStorage.getItem('loggedIn') === null
+                                && <WelcomeContent/>}
                             <ErrorMessage message={this.state.message}/>
-                            {this.state.componentToShow === "appContent" && <AppContent/>}
+                            {window.localStorage.getItem('loggedIn') === '1' && <AppContent/>}
                             {this.state.componentToShow === "login"
                                 && <LoginForm onLogin={this.onLogin} onRegister={this.onRegister}/>}
                         </div>
