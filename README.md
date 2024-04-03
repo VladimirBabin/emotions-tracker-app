@@ -13,7 +13,7 @@ service discovery, routing, load balancing and traceability**_.
 
 - [Features](#features)
 - [Installation](#installation)
-- [Stack description](#stack description)
+- [Stack description](#Stack description)
 
 ## Features
 
