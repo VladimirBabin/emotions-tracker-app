@@ -74,7 +74,9 @@ export class LastLogsComponent extends React.Component {
                             <StateView value={logs.state}/>
                             <EmotionsView emotions={logs.emotions}/>
                         </div>
-                        {logs.comment === null ? "" : <CommentView comment={logs.comment}/>}
+                        {(logs.comment === null || logs.comment === "")
+                            ? ""
+                            : <CommentView comment={logs.comment}/>}
                     </div>)}
             </div>
         );
