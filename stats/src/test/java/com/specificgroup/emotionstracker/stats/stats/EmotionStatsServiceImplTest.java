@@ -28,7 +28,7 @@ class EmotionStatsServiceImplTest {
     private EmotionStatsService service;
 
     @Mock
-    EmotionEntryRepository entryRepository;
+    private EmotionEntryRepository entryRepository;
 
     @BeforeEach
     void setUp() {

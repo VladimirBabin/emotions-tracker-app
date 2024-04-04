@@ -27,9 +27,9 @@ class StatsControllerTest {
     @Autowired
     private MockMvc mvc;
     @MockBean
-    StateStatsService stateService;
+    private StateStatsService stateService;
     @MockBean
-    EmotionStatsService emotionService;
+    private EmotionStatsService emotionService;
     @Autowired
     private JacksonTester<WeeklyStats> weeklyStatsJacksonTester;
     @Autowired

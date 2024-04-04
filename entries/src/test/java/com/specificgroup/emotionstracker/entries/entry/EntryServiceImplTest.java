@@ -23,9 +23,7 @@ import static org.mockito.BDDMockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class EntryServiceImplTest {
-
     private EntriesService entriesService;
-
     @Mock
     private EntriesRepository entriesRepository;
     @Mock

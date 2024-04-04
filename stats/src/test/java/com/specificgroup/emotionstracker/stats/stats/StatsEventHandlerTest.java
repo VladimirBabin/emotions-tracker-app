@@ -24,10 +24,10 @@ class StatsEventHandlerTest {
     private StatsEventHandler eventHandler;
 
     @Mock
-    StateStatsService stateService;
+    private StateStatsService stateService;
 
     @Mock
-    EmotionStatsService emotionService;
+    private EmotionStatsService emotionService;
 
     @BeforeEach
     void setUp() {

@@ -28,7 +28,7 @@ class StateStatsServiceImplTest {
     private StateStatsService service;
 
     @Mock
-    StateEntryRepository entryRepository;
+    private StateEntryRepository entryRepository;
 
     @BeforeEach
     void setUp() {
