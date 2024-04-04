@@ -32,7 +32,8 @@
     border-style: hidden;
     border-radius: 5px;
     margin: 5px;
-    text-indent: 5px;
+    padding-left: 8px;
+    padding-right: 8px;
 }
 
 .comment-input:hover {

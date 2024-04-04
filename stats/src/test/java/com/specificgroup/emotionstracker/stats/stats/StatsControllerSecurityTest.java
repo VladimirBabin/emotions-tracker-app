@@ -100,7 +100,7 @@ class StatsControllerSecurityTest {
                 .withIssuer("john_doe")
                 .withAudience(userId)
                 .withIssuedAt(now)
-                .withExpiresAt(new Date(now.getTime() + 120))
+                .withExpiresAt(new Date(now.getTime() + 10000))
                 .sign(Algorithm.RSA256(rsaPublicKey.publicKey(), rsaPrivateKey.privateKey()));
     }
 }
