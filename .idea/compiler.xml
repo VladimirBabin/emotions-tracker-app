@@ -15,6 +15,9 @@
         <module name="authentication" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="entrylogging" target="19" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
