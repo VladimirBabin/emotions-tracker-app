@@ -1,11 +1,12 @@
 package com.specificgroup.emotionstracker.alerts;
 
-import com.specificgroup.emotionstracker.alerts.configuration.RsaKey;
+import com.specificgroup.emotionstracker.alerts.configuration.RsaPrivateKey;
+import com.specificgroup.emotionstracker.alerts.configuration.RsaPublicKey;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 
-@EnableConfigurationProperties(RsaKey.class)
+@EnableConfigurationProperties({RsaPublicKey.class, RsaPrivateKey.class})
 @SpringBootApplication
 public class AlertsApplication {
 

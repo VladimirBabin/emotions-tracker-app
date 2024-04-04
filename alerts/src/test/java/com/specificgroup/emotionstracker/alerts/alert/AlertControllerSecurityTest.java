@@ -1,13 +1,12 @@
-package com.specificgroup.emotionstracker.entries.entry;
+package com.specificgroup.emotionstracker.alerts.alert;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.specificgroup.emotionstracker.entries.configuration.RsaPrivateKey;
-import com.specificgroup.emotionstracker.entries.configuration.RsaPublicKey;
-import com.specificgroup.emotionstracker.entries.entry.domain.Emotion;
-import com.specificgroup.emotionstracker.entries.entry.domain.Entry;
-import com.specificgroup.emotionstracker.entries.entry.domain.State;
-import com.specificgroup.emotionstracker.entries.entry.dto.EntryDto;
+import com.specificgroup.emotionstracker.alerts.alert.domain.EmotionAlertType;
+import com.specificgroup.emotionstracker.alerts.alert.domain.StateAlertType;
+import com.specificgroup.emotionstracker.alerts.configuration.RsaPrivateKey;
+import com.specificgroup.emotionstracker.alerts.configuration.RsaPublicKey;
+import com.specificgroup.emotionstracker.alerts.configuration.UserAuthProvider;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.json.AutoConfigureJsonTesters;
@@ -17,51 +16,48 @@ import org.springframework.boot.test.json.JacksonTester;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 import static org.assertj.core.api.BDDAssertions.then;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 @AutoConfigureJsonTesters
 @SpringBootTest
 @AutoConfigureMockMvc
-public class EntryControllerSecurityTest {
+class AlertControllerSecurityTest {
     @Autowired
     private MockMvc mvc;
+    @Autowired
+    private RsaPublicKey rsaPublicKey;
+
+    @Autowired
+    private RsaPrivateKey rsaPrivateKey;
     @MockBean
-    private EntriesService entriesService;
+    private StateAlertService stateAlertService;
+    @MockBean
+    private EmotionAlertService emotionAlertService;
+    @MockBean
+    private UserAuthProvider userAuthProvider;
+
     @Autowired
-    RsaPublicKey rsaPublicKey;
-    @Autowired
-    RsaPrivateKey rsaPrivateKey;
-    @Autowired
-    private JacksonTester<EntryDto> entryDtoJacksonTester;
-    @Autowired
-    private JacksonTester<Entry> entryJacksonTester;
+    private JacksonTester<List<String>> alertsJacksonTester;
     @Test
     void whenNoTokenPresentThenPostRequestFailsWithUnauthorized() throws Exception {
         // given
         String userId = UUID.randomUUID().toString();
-        LocalDateTime dateTime = LocalDateTime.now();
-        Set<Emotion> emotions = Set.of(Emotion.CONTENT, Emotion.HAPPY);
-        EntryDto entryDto = new EntryDto(userId, State.GOOD, emotions,null, dateTime);
-        Entry expectedEntry = new Entry(1L, userId, State.GOOD, emotions, null, dateTime);
-        given(entriesService.acceptNewEntry(entryDto))
-                .willReturn(expectedEntry);
+        List<String> states = List.of(StateAlertType.LOW_STATE_TWICE_IN_TWO_DAYS.getDescription());
+        given(stateAlertService.getLastAddedStateAlerts(userId))
+                .willReturn(states);
 
         // when
         MockHttpServletResponse response = mvc.perform(
-                        post("/entries").with(csrf()).contentType(MediaType.APPLICATION_JSON)
-                                .content(entryDtoJacksonTester.write(entryDto).getJson()))
+                        get("/alerts/recent").with(csrf()).param("userId", userId))
                 .andReturn().getResponse();
 
         // then
@@ -69,26 +65,28 @@ public class EntryControllerSecurityTest {
     }
 
     @Test
-    void whenTokenPresentThenPostRequestSuccessful() throws Exception {
+    void whenTokenPresentThenGetRequestSuccessful() throws Exception {
         // given
+        UsernamePasswordAuthenticationToken authentication
+                = new UsernamePasswordAuthenticationToken("john_doe", null, Collections.emptyList());
         String userId = UUID.randomUUID().toString();
         String token = createToken(userId);
-
-        EntryDto entryDto = new EntryDto(userId, State.GOOD, null,null, null);
-        Entry expectedEntry = new Entry(1L, userId, State.GOOD, null, null, null);
-        given(entriesService.acceptNewEntry(entryDto))
-                .willReturn(expectedEntry);
+        List<String> emotions = List.of(EmotionAlertType.STRESSED_ONCE_A_WEEK.getDescription());
+        given(emotionAlertService.getLastAddedEmotionAlerts(userId))
+                .willReturn(emotions);
+        given(userAuthProvider.validateToken(token, Optional.of(userId)))
+                .willReturn(authentication);
 
         // when
         MockHttpServletResponse response = mvc.perform(
-                        post("/entries").with(csrf()).contentType(MediaType.APPLICATION_JSON)
-                                .content(entryDtoJacksonTester.write(entryDto).getJson())
+                        get("/alerts/recent").with(csrf()).param("userId", userId)
                                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + token))
                 .andReturn().getResponse();
 
         // then
         then(response.getStatus()).isEqualTo(HttpStatus.OK.value());
-        then(response.getContentAsString()).isEqualTo(entryJacksonTester.write(expectedEntry).getJson());
+        then(response.getContentAsString()).isEqualTo(
+                alertsJacksonTester.write(emotions).getJson());
     }
 
     private String createToken(String userId) {

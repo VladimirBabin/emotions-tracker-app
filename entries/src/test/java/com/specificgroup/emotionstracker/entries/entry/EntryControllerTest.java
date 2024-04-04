@@ -36,9 +36,9 @@ class EntryControllerTest {
     private EntriesService entriesService;
 
     @Autowired
-    private JacksonTester<EntryDto> stateLogDTOJacksonTester;
+    private JacksonTester<EntryDto> entryDtoJacksonTester;
     @Autowired
-    private JacksonTester<Entry> stateLogJacksonTester;
+    private JacksonTester<Entry> entryJacksonTester;
     @Autowired
     private JacksonTester<List<Entry>> lastLoggedStatesJacksonTester;
 
@@ -56,12 +56,12 @@ class EntryControllerTest {
         // when
         MockHttpServletResponse response = mvc.perform(
                         post("/entries").contentType(MediaType.APPLICATION_JSON)
-                                .content(stateLogDTOJacksonTester.write(entryDto).getJson()))
+                                .content(entryDtoJacksonTester.write(entryDto).getJson()))
                 .andReturn().getResponse();
 
         // then
         then(response.getStatus()).isEqualTo(HttpStatus.OK.value());
-        then(response.getContentAsString()).isEqualTo(stateLogJacksonTester.write(expectedEntry).getJson());
+        then(response.getContentAsString()).isEqualTo(entryJacksonTester.write(expectedEntry).getJson());
     }
 
     @Test
@@ -73,7 +73,7 @@ class EntryControllerTest {
         // when
         MockHttpServletResponse response = mvc.perform(
                         post("/entries").contentType(MediaType.APPLICATION_JSON)
-                                .content(stateLogDTOJacksonTester.write(entryDto).getJson()))
+                                .content(entryDtoJacksonTester.write(entryDto).getJson()))
                 .andReturn().getResponse();
 
         // then

@@ -1,11 +1,12 @@
 package com.specificgroup.emotionstracker.stats;
 
-import com.specificgroup.emotionstracker.stats.configuration.RsaKey;
+import com.specificgroup.emotionstracker.stats.configuration.RsaPrivateKey;
+import com.specificgroup.emotionstracker.stats.configuration.RsaPublicKey;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 
-@EnableConfigurationProperties(RsaKey.class)
+@EnableConfigurationProperties({RsaPrivateKey.class, RsaPublicKey.class})
 @SpringBootApplication
 public class StatsApplication {
 

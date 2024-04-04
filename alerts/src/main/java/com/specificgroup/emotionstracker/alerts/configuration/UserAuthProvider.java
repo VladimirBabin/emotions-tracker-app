@@ -17,8 +17,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Component
 public class UserAuthProvider {
-
-    private final RsaKey key;
+    private final RsaPublicKey key;
 
     public Authentication validateToken(String token, Optional<String> userId) {
         JWTVerifier verifier = JWT.require(Algorithm.RSA256(key.publicKey())).build();
