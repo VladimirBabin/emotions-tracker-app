@@ -76,7 +76,7 @@ To generate the keys, you can use open ssl tool:
 - From the indicated directory
 in authentication service run `openssl genrsa -out keypair.pem 2048` to
 generate the initial key;
-- Run `openssl rsa -in keyp[air.pem -pubout -out public.pem` to generate the
+- Run `openssl rsa -in keypair.pem -pubout -out public.pem` to generate the
 public key;
 - Run `openssl pkcs8 -topk8 -inform PEM -outform PEM -nocrypt -in keypair.pem -out private.pem`
 to generate the private key;
