@@ -30,10 +30,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 @WebMvcTest
 @AutoConfigureMockMvc(addFilters = false)
 class EntryControllerTest {
-
     @Autowired
     private MockMvc mvc;
-    
     @MockBean
     private EntriesService entriesService;
 
