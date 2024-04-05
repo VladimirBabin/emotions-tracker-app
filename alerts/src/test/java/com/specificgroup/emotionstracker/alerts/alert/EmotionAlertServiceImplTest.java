@@ -83,6 +83,7 @@ class EmotionAlertServiceImplTest {
         String userId = UUID.randomUUID().toString();
         EmotionLoggedEvent event = new EmotionLoggedEvent(1L, userId, Emotion.SCARED, LocalDateTime.now());
         EmotionEntry emotionEntry = new EmotionEntry(null,
+                event.getEntryId(),
                 event.getUserId(),
                 event.getEmotion(),
                 event.getDateTime());
@@ -102,8 +103,8 @@ class EmotionAlertServiceImplTest {
         String userId = UUID.randomUUID().toString();
         EmotionLoggedEvent event = new EmotionLoggedEvent(1L, userId, Emotion.DRAINED, LocalDateTime.now());
         List<EmotionEntry> foundLogs = List.of(
-                new EmotionEntry(1L, userId, Emotion.DRAINED, LocalDateTime.now()),
-                new EmotionEntry(2L, userId, Emotion.DRAINED, LocalDateTime.now())
+                new EmotionEntry(1L, 1L, userId, Emotion.DRAINED, LocalDateTime.now()),
+                new EmotionEntry(2L, 1L, userId, Emotion.DRAINED, LocalDateTime.now())
         );
         given(entryRepository.findByUserIdAndEmotionOrderByDateTime(userId, Emotion.DRAINED))
                 .willReturn(foundLogs);
@@ -126,8 +127,8 @@ class EmotionAlertServiceImplTest {
         String userId = UUID.randomUUID().toString();
         EmotionLoggedEvent event = new EmotionLoggedEvent(1L, userId, Emotion.SCARED, LocalDateTime.now());
         List<EmotionEntry> foundLogs = List.of(
-                new EmotionEntry(1L, userId, Emotion.SCARED, LocalDateTime.now()),
-                new EmotionEntry(2L, userId, Emotion.SCARED, LocalDateTime.now())
+                new EmotionEntry(1L, 1L, userId, Emotion.SCARED, LocalDateTime.now()),
+                new EmotionEntry(2L, 1L, userId, Emotion.SCARED, LocalDateTime.now())
         );
         given(entryRepository.findByUserIdAndEmotionOrderByDateTime(userId, Emotion.SCARED))
                 .willReturn(foundLogs);
@@ -174,5 +175,15 @@ class EmotionAlertServiceImplTest {
         verify(alertRepository, never()).saveAll(any());
     }
 
+    @Test
+    void whenRemoveEntryDataThenRepositoryCalledToDeleteAllByEntryId() {
+        // given
+        Long entryId = 1L;
 
+        // when
+        alertService.removeEntryRelatedData(entryId);
+
+        // then
+        verify(entryRepository).deleteAllByEntryId(entryId);
+    }
 }

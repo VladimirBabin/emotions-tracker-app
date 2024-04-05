@@ -55,7 +55,7 @@ class EntryServiceImplTest {
         then(entry.getState()).isEqualTo(State.BAD);
         then(entry.getUserId()).isEqualTo(userId);
         verify(entriesRepository).save(entry);
-        verify(entriesEventPublisher).stateLogged(entry);
+        verify(entriesEventPublisher).entryLogged(entry);
     }
 
 
@@ -80,5 +80,18 @@ class EntryServiceImplTest {
 
         // then
         then(entryLogsResult).isEqualTo(entries);
+    }
+
+    @Test
+    void whenRemoveByIdCalledRemovedFromRepositoryAndRemovedEventPublished() {
+        // given
+        Long entryId = 1L;
+
+        // when
+        entriesService.removeEntryById(entryId);
+
+        // then
+        verify(entriesRepository).deleteById(entryId);
+        entriesEventPublisher.entryRemoved(entryId);
     }
 }

@@ -2,6 +2,7 @@ package com.specificgroup.emotionstracker.entries.entry;
 
 import com.specificgroup.emotionstracker.entries.entry.domain.Emotion;
 import com.specificgroup.emotionstracker.entries.entry.domain.Entry;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
  * Publisher of state logged events based on AmqpTemplate high-level implementation.
  */
 @Service
+@Slf4j
 public class EntriesEventPublisher {
     private final AmqpTemplate amqpTemplate;
     private final String statesTopicExchange;
@@ -18,6 +20,7 @@ public class EntriesEventPublisher {
     private final String triggeringEmotionRoutingKey;
     private final String nonTriggeringStateRoutingKey;
     private final String nonTriggeringEmotionRoutingKey;
+    private final String removedTopicExchange;
 
 
     public EntriesEventPublisher(AmqpTemplate amqpTemplate,
@@ -26,7 +29,8 @@ public class EntriesEventPublisher {
                                  @Value("${amqp.routing-key.triggering-state}") String triggeringStateRoutingKey,
                                  @Value("${amqp.routing-key.triggering-emotion}") String triggeringEmotionRoutingKey,
                                  @Value("${amqp.routing-key.non-triggering-state}") String nonTriggeringStateRoutingKey,
-                                 @Value("${amqp.routing-key.non-triggering-emotion}") String nonTriggeringEmotionRoutingKey) {
+                                 @Value("${amqp.routing-key.non-triggering-emotion}") String nonTriggeringEmotionRoutingKey,
+                                 @Value("${amqp.exchange.removed-entry}") String removedTopicExchange) {
         this.amqpTemplate = amqpTemplate;
         this.statesTopicExchange = statesTopicExchange;
         this.emotionsTopicExchange = emotionsTopicExchange;
@@ -34,10 +38,18 @@ public class EntriesEventPublisher {
         this.triggeringEmotionRoutingKey = triggeringEmotionRoutingKey;
         this.nonTriggeringStateRoutingKey = nonTriggeringStateRoutingKey;
         this.nonTriggeringEmotionRoutingKey = nonTriggeringEmotionRoutingKey;
+        this.removedTopicExchange = removedTopicExchange;
     }
 
-    public void stateLogged(Entry entry) {
+    /**
+     * Publishes state logged events with a corresponding routing key.
+     *
+     * @param entry Entry object.
+     */
+    public void entryLogged(Entry entry) {
         StateLoggedEvent stateLoggedEvent = buildStateLoggedEvent(entry);
+
+        log.info("Publisher: handling event with id {}", stateLoggedEvent.getEntryId());
 
         amqpTemplate.convertAndSend(statesTopicExchange,
                 entry.getState().isAlertTriggering() ?
@@ -52,8 +64,7 @@ public class EntriesEventPublisher {
     }
 
     /**
-     * Publishes emotion logged events for every separate emotion.
-     * Publishes triggering emotions with a separate routing key.
+     * Publishes emotion logged events with a corresponding routing key
      *
      * @param entry Entry object.
      */
@@ -82,5 +93,13 @@ public class EntriesEventPublisher {
                 entry.getUserId(),
                 entry.getState(),
                 entry.getDateTime());
+    }
+
+    /**
+     * Informs that entry was removed
+     * @param entryId id of removed entry.
+     */
+    public void entryRemoved(Long entryId) {
+        amqpTemplate.convertAndSend(removedTopicExchange, "", entryId);
     }
 }

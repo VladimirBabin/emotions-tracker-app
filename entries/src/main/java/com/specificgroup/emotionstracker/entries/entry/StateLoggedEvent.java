@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Value
 public class StateLoggedEvent {
 
-    long stateLogId;
+    long entryId;
     String userId;
     State state;
     LocalDateTime dateTime;

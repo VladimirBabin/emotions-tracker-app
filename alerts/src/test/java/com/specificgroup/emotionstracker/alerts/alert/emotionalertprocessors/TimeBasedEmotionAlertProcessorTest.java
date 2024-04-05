@@ -41,11 +41,12 @@ class TimeBasedEmotionAlertProcessorTest {
     void whenEligibleForAlertAndNotReceivedYetThenAlertPresent() {
         // given
         String userId = UUID.randomUUID().toString();
-        EmotionEntry emotionEntry1 = new EmotionEntry(1L, userId, Emotion.STRESSED, nowMinusCustomDays(1));
-        EmotionEntry emotionEntry2 = new EmotionEntry(1L, userId, Emotion.STRESSED, nowMinusCustomDays(5));
-        EmotionEntry emotionEntry3 = new EmotionEntry(1L, userId, Emotion.STRESSED, nowMinusCustomDays(3));
-        EmotionEntry emotionEntry4 = new EmotionEntry(1L, userId, Emotion.STRESSED, nowMinusCustomDays(4));
-        EmotionEntry emotionEntry5 = new EmotionEntry(1L, userId, Emotion.STRESSED, nowMinusCustomDays(6));
+        Long entryId =  1L;
+        EmotionEntry emotionEntry1 = new EmotionEntry(1L, entryId, userId, Emotion.STRESSED, nowMinusCustomDays(1));
+        EmotionEntry emotionEntry2 = new EmotionEntry(1L, entryId, userId, Emotion.STRESSED, nowMinusCustomDays(5));
+        EmotionEntry emotionEntry3 = new EmotionEntry(1L, entryId, userId, Emotion.STRESSED, nowMinusCustomDays(3));
+        EmotionEntry emotionEntry4 = new EmotionEntry(1L, entryId, userId, Emotion.STRESSED, nowMinusCustomDays(4));
+        EmotionEntry emotionEntry5 = new EmotionEntry(1L, entryId, userId, Emotion.STRESSED, nowMinusCustomDays(6));
 
         List<EmotionEntry> emotionEntries = List.of(emotionEntry1, emotionEntry2, emotionEntry3, emotionEntry4, emotionEntry5);
 
@@ -61,10 +62,11 @@ class TimeBasedEmotionAlertProcessorTest {
     void whenNotEligibleForAlertOptionalEmpty() {
         // given
         String userId = UUID.randomUUID().toString();
-        EmotionEntry emotionEntry1 = new EmotionEntry(1L, userId, Emotion.STRESSED, nowMinusCustomDays(1));
-        EmotionEntry emotionEntry2 = new EmotionEntry(1L, userId, Emotion.STRESSED, nowMinusCustomDays(5));
-        EmotionEntry emotionEntry3 = new EmotionEntry(1L, userId, Emotion.STRESSED, nowMinusCustomDays(3));
-        EmotionEntry emotionEntry4 = new EmotionEntry(1L, userId, Emotion.STRESSED, nowMinusCustomDays(4));
+        Long entryId =  1L;
+        EmotionEntry emotionEntry1 = new EmotionEntry(1L, entryId, userId, Emotion.STRESSED, nowMinusCustomDays(1));
+        EmotionEntry emotionEntry2 = new EmotionEntry(1L, entryId, userId, Emotion.STRESSED, nowMinusCustomDays(5));
+        EmotionEntry emotionEntry3 = new EmotionEntry(1L, entryId, userId, Emotion.STRESSED, nowMinusCustomDays(3));
+        EmotionEntry emotionEntry4 = new EmotionEntry(1L, entryId, userId, Emotion.STRESSED, nowMinusCustomDays(4));
 
         List<EmotionEntry> emotionEntries = List.of(emotionEntry1, emotionEntry2, emotionEntry3, emotionEntry4);
 
@@ -80,11 +82,12 @@ class TimeBasedEmotionAlertProcessorTest {
     void whenAlreadyReceivedAlertInSevenDaysOptionalEmpty() {
         // given
         String userId = UUID.randomUUID().toString();
-        EmotionEntry emotionEntry1 = new EmotionEntry(1L, userId, Emotion.STRESSED, nowMinusCustomDays(1));
-        EmotionEntry emotionEntry2 = new EmotionEntry(1L, userId, Emotion.STRESSED, nowMinusCustomDays(5));
-        EmotionEntry emotionEntry3 = new EmotionEntry(1L, userId, Emotion.STRESSED, nowMinusCustomDays(3));
-        EmotionEntry emotionEntry4 = new EmotionEntry(1L, userId, Emotion.STRESSED, nowMinusCustomDays(4));
-        EmotionEntry emotionEntry5 = new EmotionEntry(1L, userId, Emotion.STRESSED, nowMinusCustomDays(6));
+        Long entryId =  1L;
+        EmotionEntry emotionEntry1 = new EmotionEntry(1L, entryId, userId, Emotion.STRESSED, nowMinusCustomDays(1));
+        EmotionEntry emotionEntry2 = new EmotionEntry(1L, entryId, userId, Emotion.STRESSED, nowMinusCustomDays(5));
+        EmotionEntry emotionEntry3 = new EmotionEntry(1L, entryId, userId, Emotion.STRESSED, nowMinusCustomDays(3));
+        EmotionEntry emotionEntry4 = new EmotionEntry(1L, entryId, userId, Emotion.STRESSED, nowMinusCustomDays(4));
+        EmotionEntry emotionEntry5 = new EmotionEntry(1L, entryId, userId, Emotion.STRESSED, nowMinusCustomDays(6));
 
         List<EmotionEntry> emotionEntries = List.of(emotionEntry1, emotionEntry2, emotionEntry3, emotionEntry4, emotionEntry5);
 

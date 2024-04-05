@@ -9,4 +9,6 @@ public interface EmotionEntryRepository extends CrudRepository<EmotionEntry, Lon
      * Retrieves all the emotions logs for user identified by user id.
      */
     List<EmotionEntry> findByUserIdAndEmotionOrderByDateTime(String userId, Emotion emotion);
+
+    void deleteAllByEntryId(Long entryId);
 }

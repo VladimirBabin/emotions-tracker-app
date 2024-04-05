@@ -62,7 +62,32 @@ class AlertEventHandlerTest {
     }
 
     @Test
-    void whenExceptionArisesInStateServiceThenCorrectAMQPExceptionThrows() {
+    void whenEntryRemovedThenServiceCalledToRemoveRelatedData() {
+        // given
+        Long entryId = 1L;
+
+        // when
+        alertEventHandler.handleRemovedEntry(entryId);
+
+        // then
+        verify(emotionAlertService).removeEntryRelatedData(entryId);
+        verify(stateAlertService).removeEntryRelatedData(entryId);
+    }
+
+    @Test
+    void whenExceptionOnRemovingEntryDataThenCorrectAMQPExceptionThrown() {
+        // given
+        Long entryId = 1L;
+        doThrow(new RuntimeException("exception message"))
+                .when(emotionAlertService).removeEntryRelatedData(entryId);
+
+        // then
+        assertThatExceptionOfType(AmqpRejectAndDontRequeueException.class)
+                .isThrownBy(() -> alertEventHandler.handleRemovedEntry(entryId));
+    }
+
+    @Test
+    void whenExceptionArisesInStateServiceThenCorrectAMQPExceptionThrown() {
         // given
         String userId = UUID.randomUUID().toString();
         StateLoggedEvent event = new StateLoggedEvent(1L, userId, State.AWFUL, LocalDateTime.now());
@@ -75,7 +100,7 @@ class AlertEventHandlerTest {
     }
 
     @Test
-    void whenExceptionArisesInEmotionServiceThenCorrectAMQPExceptionThrows() {
+    void whenExceptionArisesInEmotionServiceThenCorrectAMQPExceptionThrown() {
         // given
         String userId = UUID.randomUUID().toString();
         EmotionLoggedEvent event = new EmotionLoggedEvent(1L, userId, Emotion.SCARED, LocalDateTime.now());
@@ -86,4 +111,5 @@ class AlertEventHandlerTest {
         assertThatExceptionOfType(AmqpRejectAndDontRequeueException.class)
                 .isThrownBy(() -> alertEventHandler.handleNewEmotionLogged(event));
     }
+
 }

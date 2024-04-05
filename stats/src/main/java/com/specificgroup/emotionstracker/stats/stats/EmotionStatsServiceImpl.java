@@ -4,6 +4,7 @@ import com.specificgroup.emotionstracker.stats.entry.Emotion;
 import com.specificgroup.emotionstracker.stats.entry.EmotionEntry;
 import com.specificgroup.emotionstracker.stats.entry.EmotionEntryRepository;
 import com.specificgroup.emotionstracker.stats.entry.EmotionLoggedEvent;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -19,9 +20,11 @@ public class EmotionStatsServiceImpl implements EmotionStatsService {
 
     private final EmotionEntryRepository entryRepository;
 
+    @Transactional
     @Override
     public void newEmotionLogForUser(EmotionLoggedEvent event) {
         entryRepository.save(new EmotionEntry(null,
+                event.getEntryId(),
                 event.getUserId(),
                 event.getEmotion(),
                 event.getDateTime()));
@@ -35,5 +38,11 @@ public class EmotionStatsServiceImpl implements EmotionStatsService {
                 .stream()
                 .limit(TOP_EMOTIONS_LIMIT)
                 .toList();
+    }
+
+    @Transactional
+    @Override
+    public void removeEntryRelatedData(Long entryId) {
+        entryRepository.deleteAllByEntryId(entryId);
     }
 }

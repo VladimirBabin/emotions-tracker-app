@@ -16,4 +16,11 @@ public interface StateAlertService {
      * @param stateLoggedEvent event containing data about state logged.
      */
     void newTriggeringStateForUser(StateLoggedEvent stateLoggedEvent);
+
+    /**
+     * Removes entry-related logged states from entry repository.
+     * The alerts from alert repository aren't deleted because we don't want to show them again after they were shown.
+     * @param entryId id of the entry
+     */
+    void removeEntryRelatedData(Long entryId);
 }

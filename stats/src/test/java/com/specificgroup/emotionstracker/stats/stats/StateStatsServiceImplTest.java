@@ -41,6 +41,7 @@ class StateStatsServiceImplTest {
         String userId = UUID.randomUUID().toString();
         StateLoggedEvent event = new StateLoggedEvent(1L, userId, State.GOOD, LocalDateTime.now());
         StateEntry stateEntry = new StateEntry(null,
+                event.getEntryId(),
                 event.getUserId(),
                 event.getState(),
                 event.getDateTime());
@@ -58,9 +59,9 @@ class StateStatsServiceImplTest {
         String userId = UUID.randomUUID().toString();
         given(entryRepository.findAllByUserIdAndDateTimeAfter(eq(userId), any(LocalDateTime.class)))
                 .willReturn(List.of(
-                        new StateEntry(null, null, State.BAD,null),
-                        new StateEntry(null, null, State.GOOD,null),
-                        new StateEntry(null, null, State.EXCELLENT,null)
+                        new StateEntry(null, null, null, State.BAD,null),
+                        new StateEntry(null, null, null, State.GOOD,null),
+                        new StateEntry(null, null, null, State.EXCELLENT,null)
                 ));
 
         // when
@@ -71,5 +72,17 @@ class StateStatsServiceImplTest {
         then(statsForUser.getBadState()).isEqualTo(BigDecimal.valueOf(33.3));
         then(statsForUser.getGoodState()).isEqualTo(BigDecimal.valueOf(33.3));
         then(statsForUser.getExcellentState()).isEqualTo(BigDecimal.valueOf(33.3));
+    }
+
+    @Test
+    void whenRemoveEntryDataThenRepositoryCalledToDeleteAllByEntryId() {
+        // given
+        Long entryId = 1L;
+
+        // when
+        service.removeEntryRelatedData(entryId);
+
+        // then
+        verify(entryRepository).deleteAllByEntryId(entryId);
     }
 }

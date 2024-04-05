@@ -16,4 +16,11 @@ public interface EmotionAlertService {
      * @param emotionLoggedEvent event containing data about emotion logged.
      */
     void newTriggeringEmotionForUser(EmotionLoggedEvent emotionLoggedEvent);
+
+    /**
+     * Removes entry-related logged emotions from entry repository.
+     * The alerts from alert repository aren't deleted because we don't want to show them again after they were shown.
+     * @param entryId id of the entry
+     */
+    void removeEntryRelatedData(Long entryId);
 }

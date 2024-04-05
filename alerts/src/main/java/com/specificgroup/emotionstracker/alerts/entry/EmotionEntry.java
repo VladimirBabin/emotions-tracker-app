@@ -21,6 +21,7 @@ public class EmotionEntry {
     @Id
     @GeneratedValue
     private Long id;
+    private Long entryId;
     private String userId;
     private Emotion emotion;
     @EqualsAndHashCode.Exclude

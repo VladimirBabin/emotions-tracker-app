@@ -18,13 +18,16 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
 import static org.assertj.core.api.BDDAssertions.then;
+import static org.mockito.BDDMockito.anyLong;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.mockito.BDDMockito.verify;
+import static org.mockito.BDDMockito.never;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
 @AutoConfigureJsonTesters
 @WebMvcTest
@@ -43,7 +46,7 @@ class EntryControllerTest {
     private JacksonTester<List<Entry>> lastLoggedStatesJacksonTester;
 
     @Test
-    void whenPostValidStateLogThenResponseOk() throws Exception {
+    void whenPostValidEntryThenResponseOk() throws Exception {
         // given
         String userId = UUID.randomUUID().toString();
         LocalDateTime dateTime = LocalDateTime.now();
@@ -65,7 +68,7 @@ class EntryControllerTest {
     }
 
     @Test
-    void whenPostInvalidStateLogThenBadRequest() throws Exception {
+    void whenPostInvalidEntryThenBadRequest() throws Exception {
         // given
         String userId = UUID.randomUUID().toString();
         EntryDto entryDto = new EntryDto(userId, null, null, null, LocalDateTime.now());
@@ -82,7 +85,7 @@ class EntryControllerTest {
 
 
     @Test
-    void whenGetLastLoggedStateForExistingUserThenResponseOk() throws Exception {
+    void whenGetLastLoggedEntriesForExistingUserThenResponseOk() throws Exception {
         // given
         String userId = UUID.randomUUID().toString();
         Entry log1 = new Entry(1L, userId, State.GOOD,
@@ -106,5 +109,42 @@ class EntryControllerTest {
         then(response.getStatus()).isEqualTo(HttpStatus.OK.value());
         then(response.getContentAsString()).isEqualTo(
                 lastLoggedStatesJacksonTester.write(entries).getJson());
+    }
+
+    @Test
+    void whenDeleteEntryThenEntryServiceRemoveEntryMethodCalled() throws Exception {
+        // given
+        Long entryId = 1L;
+        Entry entry = new Entry(entryId, null, null, null, null, null);
+        given(entriesService.findByEntryId(entryId))
+                .willReturn(Optional.of(entry));
+
+        // when
+        MockHttpServletResponse response = mvc.perform(
+                        delete("/entries").param("entryId", String.valueOf(entryId)))
+                .andReturn().getResponse();
+
+        // then
+        verify(entriesService).findByEntryId(entryId);
+        verify(entriesService).removeEntryById(entryId);
+        then(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+    }
+
+    @Test
+    void whenDeleteNonExistentEntryNotFoundStatus() throws Exception {
+        // given
+        Long entryId = 1L;
+        given(entriesService.findByEntryId(entryId))
+                .willReturn(Optional.empty());
+
+        // when
+        MockHttpServletResponse response = mvc.perform(
+                        delete("/entries").param("entryId", String.valueOf(entryId)))
+                .andReturn().getResponse();
+
+        // then
+        verify(entriesService).findByEntryId(entryId);
+        verify(entriesService, never()).removeEntryById(anyLong());
+        then(response.getStatus()).isEqualTo(HttpStatus.NOT_FOUND.value());
     }
 }

@@ -89,6 +89,7 @@ class StateAlertServiceImplTest {
         String userId = UUID.randomUUID().toString();
         StateLoggedEvent event = new StateLoggedEvent(1L, userId, State.AWFUL, LocalDateTime.now());
         StateEntry stateEntry = new StateEntry(null,
+                event.getEntryId(),
                 event.getUserId(),
                 event.getState(),
                 event.getDateTime());
@@ -106,8 +107,8 @@ class StateAlertServiceImplTest {
         String userId = UUID.randomUUID().toString();
         StateLoggedEvent event = new StateLoggedEvent(1L, userId, State.AWFUL, LocalDateTime.now());
         List<StateEntry> foundLogs = List.of(
-                new StateEntry(1L, userId, State.BAD, LocalDateTime.now()),
-                new StateEntry(2L, userId, State.BAD, LocalDateTime.now())
+                new StateEntry(1L, 1L, userId, State.BAD, LocalDateTime.now()),
+                new StateEntry(2L, 1L, userId, State.BAD, LocalDateTime.now())
         );
         given(entryRepository.findByUserIdOrderByDateTime(userId))
                 .willReturn(foundLogs);
@@ -147,5 +148,17 @@ class StateAlertServiceImplTest {
 
         // then
         verify(alertRepository, never()).saveAll(any());
+    }
+
+    @Test
+    void whenRemoveEntryDataThenRepositoryCalledToDeleteAllByEntryId() {
+        // given
+        Long entryId = 1L;
+
+        // when
+        alertService.removeEntryRelatedData(entryId);
+
+        // then
+        verify(entryRepository).deleteAllByEntryId(entryId);
     }
 }

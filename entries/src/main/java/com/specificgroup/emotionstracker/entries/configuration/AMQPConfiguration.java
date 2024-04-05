@@ -1,6 +1,7 @@
 package com.specificgroup.emotionstracker.entries.configuration;
 
 import org.springframework.amqp.core.ExchangeBuilder;
+import org.springframework.amqp.core.FanoutExchange;
 import org.springframework.amqp.core.TopicExchange;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,6 +22,11 @@ public class AMQPConfiguration {
     @Bean
     public TopicExchange emotionsTopicExchange(@Value("${amqp.exchange.emotions}") String exchangeName) {
         return ExchangeBuilder.topicExchange(exchangeName).durable(true).build();
+    }
+
+    @Bean
+    public FanoutExchange removedEntriesExchange(@Value("${amqp.exchange.removed-entry}") String exchangeName) {
+        return ExchangeBuilder.fanoutExchange(exchangeName).durable(true).build();
     }
 
     @Bean

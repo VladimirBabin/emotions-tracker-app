@@ -85,4 +85,29 @@ class StatsEventHandlerTest {
         assertThatExceptionOfType(AmqpRejectAndDontRequeueException.class)
                 .isThrownBy(() -> eventHandler.handleNewEmotionLogged(event));
     }
+
+    @Test
+    void whenEntryRemovedThenServiceCalledToRemoveRelatedData() {
+        // given
+        Long entryId = 1L;
+
+        // when
+        eventHandler.handleRemovedEntry(entryId);
+
+        // then
+        verify(emotionService).removeEntryRelatedData(entryId);
+        verify(stateService).removeEntryRelatedData(entryId);
+    }
+
+    @Test
+    void whenExceptionOnRemovingEntryDataThenCorrectAMQPExceptionThrown() {
+        // given
+        Long entryId = 1L;
+        doThrow(new RuntimeException("exception message"))
+                .when(emotionService).removeEntryRelatedData(entryId);
+
+        // then
+        assertThatExceptionOfType(AmqpRejectAndDontRequeueException.class)
+                .isThrownBy(() -> eventHandler.handleRemovedEntry(entryId));
+    }
 }

@@ -41,4 +41,17 @@ public class AlertEventHandler {
             throw new AmqpRejectAndDontRequeueException(e);
         }
     }
+
+    @RabbitListener(queues = "${amqp.queue.removed-entry}")
+    void handleRemovedEntry(Long entryId) {
+        log.info("Entry {} removed", entryId);
+        try {
+            emotionAlertService.removeEntryRelatedData(entryId);
+            stateAlertService.removeEntryRelatedData(entryId);
+        } catch (Exception e) {
+            log.error("Error when removing entry related data", e);
+            // Avoids the event to be re-queues and reprocessed.
+            throw new AmqpRejectAndDontRequeueException(e);
+        }
+    }
 }

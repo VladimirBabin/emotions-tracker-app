@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -34,7 +35,8 @@ public class EntriesServiceImpl implements EntriesService {
         Entry storedLog = entriesRepository.save(entry);
 
         // publishing an event of logged state to notify subscribers
-        entriesEventPublisher.stateLogged(entry);
+        log.info("Publishing entry with id {}", storedLog.getId());
+        entriesEventPublisher.entryLogged(storedLog);
 
         return storedLog;
     }
@@ -44,5 +46,16 @@ public class EntriesServiceImpl implements EntriesService {
         List<Entry> lastLogs = entriesRepository.findTop10ByUserIdOrderByDateTimeDesc(userId);
         log.info("Found last logs: {}", lastLogs);
         return lastLogs;
+    }
+
+    @Override
+    public void removeEntryById(Long entryId) {
+        entriesRepository.deleteById(entryId);
+        entriesEventPublisher.entryRemoved(entryId);
+    }
+
+    @Override
+    public Optional<Entry> findByEntryId(Long entryId) {
+        return entriesRepository.findById(entryId);
     }
 }

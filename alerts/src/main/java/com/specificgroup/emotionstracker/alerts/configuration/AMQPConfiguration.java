@@ -21,11 +21,17 @@ public class AMQPConfiguration {
     @Value("${amqp.exchange.emotions}")
     String emotionsExchangeName;
 
+    @Value("${amqp.exchange.removed-entry}")
+    String removedEntriesExchange;
+
     @Value("${amqp.queue.alert-states}")
     String alertStateQueueName;
 
     @Value("${amqp.queue.alert-emotions}")
     String alertEmotionsQueueName;
+
+    @Value("${amqp.queue.removed-entry}")
+    String removedEntriesQueueName;
 
     @Value("${amqp.routing-key.triggering-state}")
     String triggeringStateRoutingKey;
@@ -44,6 +50,11 @@ public class AMQPConfiguration {
     }
 
     @Bean
+    public FanoutExchange removedEntriesExchange() {
+        return ExchangeBuilder.fanoutExchange(removedEntriesExchange).durable(true).build();
+    }
+
+    @Bean
     public Queue alertStatesQueue() {
         return QueueBuilder.durable(alertStateQueueName).build();
     }
@@ -51,6 +62,11 @@ public class AMQPConfiguration {
     @Bean
     public Queue alertEmotionsQueue() {
         return QueueBuilder.durable(alertEmotionsQueueName).build();
+    }
+
+    @Bean
+    public Queue removedEntriesQueue() {
+        return QueueBuilder.durable(removedEntriesQueueName).build();
     }
 
     @Bean
@@ -65,6 +81,12 @@ public class AMQPConfiguration {
         return BindingBuilder.bind(alertEmotionsQueue())
                 .to(emotionsTopicExchange())
                 .with(triggeringEmotionRoutingKey);
+    }
+
+    @Bean
+    public Binding removedEntries() {
+        return BindingBuilder.bind(removedEntriesQueue())
+                .to(removedEntriesExchange());
     }
 
     @Bean

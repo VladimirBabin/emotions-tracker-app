@@ -19,6 +19,7 @@ public class StateEntry {
     @Id
     @GeneratedValue
     private Long id;
+    private Long entryId;
     private String userId;
     private State state;
     @EqualsAndHashCode.Exclude

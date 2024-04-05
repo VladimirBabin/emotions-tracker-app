@@ -15,4 +15,11 @@ public interface StateStatsService {
      * @return the resulting in query WeeklyStats object.
      */
     WeeklyStats getWeeklyStatsForUser(String userId);
+
+    /**
+     * Removes entry-related logged states from entry repository.
+     * The alerts from alert repository aren't deleted because we don't want to show them again after they were shown.
+     * @param entryId id of the entry
+     */
+    void removeEntryRelatedData(Long entryId);
 }

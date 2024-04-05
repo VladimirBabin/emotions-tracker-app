@@ -45,6 +45,7 @@ spring:
             allowedMethods:
               - 'GET'
               - 'POST'
+              - 'DELETE'
               - 'OPTIONS'
       default-filters:
         - name: Retry

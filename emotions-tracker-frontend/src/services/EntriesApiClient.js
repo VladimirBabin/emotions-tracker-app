@@ -4,7 +4,8 @@ class EntriesApiClient {
     static SERVER_URL = 'http://localhost:8000';
 
     static GET_LAST_STATS_BY_USER_ID = '/entries/last?userId=';
-    static POST_STATE = '/entries';
+    static POST_ENTRY = '/entries';
+    static DELETE_ENTRY = '/entries?entryId=';
 
     static getLastEntries(userId: number): Promise<Response> {
         return fetch(EntriesApiClient.SERVER_URL +
@@ -23,7 +24,8 @@ class EntriesApiClient {
                      emotions: [],
                      comment: string,
                      dateTime: string): Promise<Response> {
-        return fetch(EntriesApiClient.SERVER_URL + EntriesApiClient.POST_STATE,
+        return fetch(EntriesApiClient.SERVER_URL +
+            EntriesApiClient.POST_ENTRY,
             {
                 method: 'POST',
                 headers: new Headers({
@@ -39,6 +41,19 @@ class EntriesApiClient {
                         dateTime: dateTime
                     }
                 )
+            });
+    }
+
+    static deleteEntry(entryId: number) {
+        return fetch(EntriesApiClient.SERVER_URL +
+            EntriesApiClient.DELETE_ENTRY +
+            entryId,
+            {
+                method: 'DELETE',
+                headers: new Headers({
+                    'Authorization': `Bearer ${getAuthToken()}`,
+                    'Content-Type': 'application/json'
+                }),
             });
     }
 }

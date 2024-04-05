@@ -21,13 +21,14 @@ class TimeBasedStateAlertProcessorTest {
     void whenEligibleForAlertAndNotReceivedYetThenAlertPresent() {
         // given
         String userId = UUID.randomUUID().toString();
-        StateEntry stateEntry1 = new StateEntry(1L, userId, State.BAD, nowMinusCustomDays(1));
-        StateEntry stateEntry2 = new StateEntry(2L, userId, State.BAD, nowMinusCustomDays(2));
-        StateEntry stateEntry3 = new StateEntry(3L, userId, State.AWFUL, nowMinusCustomDays(3));
-        StateEntry stateEntry4 = new StateEntry(4L, userId, State.BAD, nowMinusCustomDays(4));
-        StateEntry stateEntry5 = new StateEntry(5L, userId, State.BAD, nowMinusCustomDays(5));
-        StateEntry stateEntry6 = new StateEntry(6L, userId, State.AWFUL, nowMinusCustomDays(6));
-        StateEntry stateEntry7 = new StateEntry(7L, userId, State.BAD, nowMinusCustomDays(6));
+        Long entryId = 1L;
+        StateEntry stateEntry1 = new StateEntry(1L, entryId, userId, State.BAD, nowMinusCustomDays(1));
+        StateEntry stateEntry2 = new StateEntry(2L, entryId, userId, State.BAD, nowMinusCustomDays(2));
+        StateEntry stateEntry3 = new StateEntry(3L, entryId, userId, State.AWFUL, nowMinusCustomDays(3));
+        StateEntry stateEntry4 = new StateEntry(4L, entryId, userId, State.BAD, nowMinusCustomDays(4));
+        StateEntry stateEntry5 = new StateEntry(5L, entryId, userId, State.BAD, nowMinusCustomDays(5));
+        StateEntry stateEntry6 = new StateEntry(6L, entryId, userId, State.AWFUL, nowMinusCustomDays(6));
+        StateEntry stateEntry7 = new StateEntry(7L, entryId, userId, State.BAD, nowMinusCustomDays(6));
         List<StateEntry> stateEntries = List.of(stateEntry1, stateEntry2, stateEntry3, stateEntry4, stateEntry5, stateEntry6, stateEntry7);
 
         // when
@@ -41,12 +42,13 @@ class TimeBasedStateAlertProcessorTest {
     void whenNotEligibleForAlertOptionalEmpty() {
         // given
         String userId = UUID.randomUUID().toString();
-        StateEntry stateEntry1 = new StateEntry(1L, userId, State.BAD, nowMinusCustomDays(1));
-        StateEntry stateEntry2 = new StateEntry(2L, userId, State.BAD, nowMinusCustomDays(2));
-        StateEntry stateEntry3 = new StateEntry(3L, userId, State.AWFUL, nowMinusCustomDays(3));
-        StateEntry stateEntry4 = new StateEntry(4L, userId, State.BAD, nowMinusCustomDays(4));
-        StateEntry stateEntry5 = new StateEntry(5L, userId, State.BAD, nowMinusCustomDays(5));
-        StateEntry stateEntry6 = new StateEntry(6L, userId, State.AWFUL, nowMinusCustomDays(6));
+        Long entryId = 1L;
+        StateEntry stateEntry1 = new StateEntry(1L, entryId, userId, State.BAD, nowMinusCustomDays(1));
+        StateEntry stateEntry2 = new StateEntry(2L, entryId, userId, State.BAD, nowMinusCustomDays(2));
+        StateEntry stateEntry3 = new StateEntry(3L, entryId, userId, State.AWFUL, nowMinusCustomDays(3));
+        StateEntry stateEntry4 = new StateEntry(4L, entryId, userId, State.BAD, nowMinusCustomDays(4));
+        StateEntry stateEntry5 = new StateEntry(5L, entryId, userId, State.BAD, nowMinusCustomDays(5));
+        StateEntry stateEntry6 = new StateEntry(6L, entryId, userId, State.AWFUL, nowMinusCustomDays(6));
         List<StateEntry> stateEntries = List.of(stateEntry1, stateEntry2, stateEntry3, stateEntry4, stateEntry5, stateEntry6);
 
         // when
@@ -60,13 +62,14 @@ class TimeBasedStateAlertProcessorTest {
     void whenAlreadyReceivedAlertInSevenDaysOptionalEmpty() {
         // given
         String userId = UUID.randomUUID().toString();
-        StateEntry stateEntry1 = new StateEntry(1L, userId, State.BAD, nowMinusCustomDays(1));
-        StateEntry stateEntry2 = new StateEntry(2L, userId, State.BAD, nowMinusCustomDays(2));
-        StateEntry stateEntry3 = new StateEntry(3L, userId, State.AWFUL, nowMinusCustomDays(3));
-        StateEntry stateEntry4 = new StateEntry(4L, userId, State.BAD, nowMinusCustomDays(4));
-        StateEntry stateEntry5 = new StateEntry(5L, userId, State.BAD, nowMinusCustomDays(5));
-        StateEntry stateEntry6 = new StateEntry(6L, userId, State.AWFUL, nowMinusCustomDays(6));
-        StateEntry stateEntry7 = new StateEntry(7L, userId, State.BAD, nowMinusCustomDays(6));
+        Long entryId = 1L;
+        StateEntry stateEntry1 = new StateEntry(1L, entryId, userId, State.BAD, nowMinusCustomDays(1));
+        StateEntry stateEntry2 = new StateEntry(2L, entryId, userId, State.BAD, nowMinusCustomDays(2));
+        StateEntry stateEntry3 = new StateEntry(3L, entryId, userId, State.AWFUL, nowMinusCustomDays(3));
+        StateEntry stateEntry4 = new StateEntry(4L, entryId, userId, State.BAD, nowMinusCustomDays(4));
+        StateEntry stateEntry5 = new StateEntry(5L, entryId, userId, State.BAD, nowMinusCustomDays(5));
+        StateEntry stateEntry6 = new StateEntry(6L, entryId, userId, State.AWFUL, nowMinusCustomDays(6));
+        StateEntry stateEntry7 = new StateEntry(7L, entryId, userId, State.BAD, nowMinusCustomDays(6));
         List<StateEntry> stateEntries = List.of(stateEntry1, stateEntry2, stateEntry3, stateEntry4, stateEntry5, stateEntry6, stateEntry7);
 
         // when

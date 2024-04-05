@@ -19,4 +19,11 @@ public interface EmotionStatsService {
      * for given period of time defined in implementation.
      */
     List<Emotion> getLastWeekMostLoggedEmotions(String userId);
+
+    /**
+     * Removes entry-related logged emotions from entry repository.
+     * The alerts from alert repository aren't deleted because we don't want to show them again after they were shown.
+     * @param entryId id of the entry
+     */
+    void removeEntryRelatedData(Long entryId);
 }

@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.amqp.core.AmqpTemplate;
 
@@ -16,6 +15,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import static org.assertj.core.api.BDDAssertions.then;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
@@ -34,7 +34,8 @@ class EntryEventPublisherTest {
                 "state.triggering",
                 "emotion.triggering",
                 "state.non-triggering",
-                "emotion.non-triggering");
+                "emotion.non-triggering",
+                "removed-test.topic");
     }
 
     @Test
@@ -45,7 +46,7 @@ class EntryEventPublisherTest {
         StateLoggedEvent expected = stateLoggedEvent(State.OK, userId);
 
         // when
-        entriesEventPublisher.stateLogged(entry);
+        entriesEventPublisher.entryLogged(entry);
 
         // then
         var exchangeCaptor = ArgumentCaptor.forClass(String.class);
@@ -71,7 +72,7 @@ class EntryEventPublisherTest {
                 emotionLoggedEvent(Emotion.PASSIONATE, userId));
 
         // when
-        entriesEventPublisher.stateLogged(entry);
+        entriesEventPublisher.entryLogged(entry);
 
         // then
         var stateExchangeCaptor = ArgumentCaptor.forClass(String.class);
@@ -82,9 +83,9 @@ class EntryEventPublisherTest {
         var emotionRoutingKeyCaptor = ArgumentCaptor.forClass(String.class);
         var emotionEventCaptor = ArgumentCaptor.forClass(EmotionLoggedEvent.class);
 
-        verify(amqpTemplate, Mockito.times(1))
+        verify(amqpTemplate, times(1))
                 .convertAndSend(stateExchangeCaptor.capture(), stateRoutingKeyCaptor.capture(), stateEventCaptor.capture());
-        verify(amqpTemplate, Mockito.times(3))
+        verify(amqpTemplate, times(3))
                 .convertAndSend(emotionExchangeCaptor.capture(), emotionRoutingKeyCaptor.capture(), emotionEventCaptor.capture());
         then(stateExchangeCaptor.getValue()).isEqualTo("states-test.topic");
         then(stateRoutingKeyCaptor.getValue()).isEqualTo("state.non-triggering");
@@ -106,7 +107,7 @@ class EntryEventPublisherTest {
         EmotionLoggedEvent expectedEmotion = emotionLoggedEvent(Emotion.ANGRY, userId);
 
         // when
-        entriesEventPublisher.stateLogged(entry);
+        entriesEventPublisher.entryLogged(entry);
 
         // then
         var stateExchangeCaptor = ArgumentCaptor.forClass(String.class);
@@ -117,17 +118,35 @@ class EntryEventPublisherTest {
         var emotionRoutingKeyCaptor = ArgumentCaptor.forClass(String.class);
         var emotionEventCaptor = ArgumentCaptor.forClass(EmotionLoggedEvent.class);
 
-        verify(amqpTemplate, Mockito.times(1))
+        verify(amqpTemplate, times(1))
                 .convertAndSend(stateExchangeCaptor.capture(), stateRoutingKeyCaptor.capture(), stateEventCaptor.capture());
         then(stateExchangeCaptor.getValue()).isEqualTo("states-test.topic");
         then(stateRoutingKeyCaptor.getValue()).isEqualTo("state.triggering");
         then(stateEventCaptor.getValue()).isEqualTo(expectedState);
 
-        verify(amqpTemplate, Mockito.times(1))
+        verify(amqpTemplate, times(1))
                 .convertAndSend(emotionExchangeCaptor.capture(), emotionRoutingKeyCaptor.capture(), emotionEventCaptor.capture());
         then(emotionExchangeCaptor.getValue()).isEqualTo("emotions-test.topic");
         then(emotionRoutingKeyCaptor.getValue()).isEqualTo("emotion.triggering");
         then(emotionEventCaptor.getValue()).isEqualTo(expectedEmotion);
+    }
+
+    @Test
+    void whenEntryRemovedEventThenPublished() {
+        // given
+        Long entryId = 1L;
+
+        // when
+        entriesEventPublisher.entryRemoved(entryId);
+
+        // then
+        var exchangeCaptor = ArgumentCaptor.forClass(String.class);
+        var entryIdCaptor = ArgumentCaptor.forClass(Long.class);
+        verify(amqpTemplate, times(1))
+                .convertAndSend(exchangeCaptor.capture(), entryIdCaptor.capture());
+        then(exchangeCaptor.getValue()).isEqualTo("removed-test.topic");
+        then(entryIdCaptor.getValue()).isEqualTo(1L);
+
     }
 
     private static StateLoggedEvent stateLoggedEvent(State state, String userId) {

@@ -11,4 +11,6 @@ public interface StateEntryRepository extends CrudRepository<StateEntry, Long> {
      * Retrieves state logs for user identified by user id after given date time.
      */
     List<StateEntry> findAllByUserIdAndDateTimeAfter(String userId, LocalDateTime dateTime);
+
+    void deleteAllByEntryId(Long entryId);
 }

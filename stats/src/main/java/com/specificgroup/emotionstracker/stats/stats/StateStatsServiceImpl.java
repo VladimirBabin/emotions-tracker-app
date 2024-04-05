@@ -4,6 +4,7 @@ import com.specificgroup.emotionstracker.stats.entry.State;
 import com.specificgroup.emotionstracker.stats.entry.StateEntry;
 import com.specificgroup.emotionstracker.stats.entry.StateEntryRepository;
 import com.specificgroup.emotionstracker.stats.entry.StateLoggedEvent;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -20,9 +21,11 @@ public class StateStatsServiceImpl implements StateStatsService {
 
     private final StateEntryRepository entryRepository;
 
+    @Transactional
     @Override
     public void newStateLogForUser(StateLoggedEvent event) {
         entryRepository.save(new StateEntry(null,
+                event.getEntryId(),
                 event.getUserId(),
                 event.getState(),
                 event.getDateTime()));
@@ -36,6 +39,12 @@ public class StateStatsServiceImpl implements StateStatsService {
                         LocalDateTime.now().minus(Period.ofWeeks(1)));
 
         return countStatsForUser(entries);
+    }
+
+    @Transactional
+    @Override
+    public void removeEntryRelatedData(Long entryId) {
+        entryRepository.deleteAllByEntryId(entryId);
     }
 
     private WeeklyStats countStatsForUser(List<StateEntry> entries) {

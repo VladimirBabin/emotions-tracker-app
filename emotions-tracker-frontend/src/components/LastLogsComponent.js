@@ -40,6 +40,16 @@ export class LastLogsComponent extends React.Component {
         );
     }
 
+    sendDeleteRequest(entryId: number): void {
+        return EntriesApiClient.deleteEntry(entryId).then(
+            res => {
+                if (!res.ok) {
+                    console.log("Error on deleting the entry " + entryId);
+                }
+            }
+        )
+    }
+
     updateLastEntries(lastEntries) {
         this.setState({
             lastEntries: lastEntries,
@@ -58,6 +68,12 @@ export class LastLogsComponent extends React.Component {
         });
     }
 
+    deleteEntry(id) {
+        this.sendDeleteRequest(id);
+        this.refreshLastEntries();
+        this.props.setStatsRefresh(true);
+    }
+
 
     render() {
         if (this.state.serverError) {
@@ -67,16 +83,21 @@ export class LastLogsComponent extends React.Component {
         }
         return (
             <div>
-                {this.state.lastEntries.map(logs =>
-                    <div className="last-entry-div" key={logs.id}>
-                        <div className="state-log-div" key={logs.id}>
-                            <LogsDateTimeView value={logs.dateTime}/>
-                            <StateView value={logs.state}/>
-                            <EmotionsView emotions={logs.emotions}/>
+                {this.state.lastEntries.map(entry =>
+                    <div className="last-entry-div" key={entry.id}>
+                        <div className="state-log-div" key={entry.id}>
+                            <LogsDateTimeView value={entry.dateTime}/>
+                            <StateView value={entry.state}/>
+                            <EmotionsView emotions={entry.emotions}/>
                         </div>
-                        {(logs.comment === null || logs.comment === "")
+                        {(entry.comment === null || entry.comment === "")
                             ? ""
-                            : <CommentView comment={logs.comment}/>}
+                            : <CommentView comment={entry.comment}/>}
+                        <button onClick={() => this.deleteEntry(entry.id)} className="x-button">
+                            <svg className="x-button-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" display="visible">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
                     </div>)}
             </div>
         );

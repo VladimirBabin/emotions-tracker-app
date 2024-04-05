@@ -6,6 +6,7 @@ import com.specificgroup.emotionstracker.alerts.alert.emotionalertprocessors.Emo
 import com.specificgroup.emotionstracker.alerts.entry.EmotionEntry;
 import com.specificgroup.emotionstracker.alerts.entry.EmotionEntryRepository;
 import com.specificgroup.emotionstracker.alerts.entry.EmotionLoggedEvent;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -42,14 +43,22 @@ public class EmotionAlertServiceImpl implements EmotionAlertService {
                 .toList();
     }
 
+    @Transactional
     @Override
     public void newTriggeringEmotionForUser(EmotionLoggedEvent event) {
         entryRepository.save(new EmotionEntry(null,
+                event.getEntryId(),
                 event.getUserId(),
                 event.getEmotion(),
                 event.getDateTime()));
 
         processForEmotionAlerts(event);
+    }
+
+    @Transactional
+    @Override
+    public void removeEntryRelatedData(Long entryId) {
+        entryRepository.deleteAllByEntryId(entryId);
     }
 
     private void processForEmotionAlerts(EmotionLoggedEvent event) {

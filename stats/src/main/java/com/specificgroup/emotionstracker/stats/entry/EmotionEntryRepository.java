@@ -13,4 +13,6 @@ public interface EmotionEntryRepository extends CrudRepository<EmotionEntry, Lon
     @Query("SELECT e.emotion FROM EmotionEntry e WHERE e.userId = ?1 AND e.dateTime > ?2 " +
             "GROUP BY e.emotion ORDER BY COUNT(e.emotion) DESC")
     List<Emotion> findTopRepeatedEmotionEntriesGropedByEmotionsDesc(String userId, LocalDateTime dateTime);
+
+    void deleteAllByEntryId(Long entryId);
 }

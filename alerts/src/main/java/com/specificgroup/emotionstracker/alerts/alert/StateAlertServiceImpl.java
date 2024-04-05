@@ -4,6 +4,7 @@ import com.specificgroup.emotionstracker.alerts.alert.statealertprocessors.State
 import com.specificgroup.emotionstracker.alerts.alert.domain.StateAlert;
 import com.specificgroup.emotionstracker.alerts.alert.domain.StateAlertType;
 import com.specificgroup.emotionstracker.alerts.entry.*;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -41,14 +42,22 @@ public class StateAlertServiceImpl implements StateAlertService {
                 .toList();
     }
 
+    @Transactional
     @Override
     public void newTriggeringStateForUser(StateLoggedEvent event) {
         entryRepository.save(new StateEntry(null,
+                event.getEntryId(),
                 event.getUserId(),
                 event.getState(),
                 event.getDateTime()));
 
         processForStateAlerts(event);
+    }
+
+    @Transactional
+    @Override
+    public void removeEntryRelatedData(Long entryId) {
+        entryRepository.deleteAllByEntryId(entryId);
     }
 
     private void processForStateAlerts(StateLoggedEvent event) {

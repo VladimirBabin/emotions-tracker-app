@@ -41,6 +41,7 @@ class EmotionStatsServiceImplTest {
         String userId = UUID.randomUUID().toString();
         EmotionLoggedEvent event = new EmotionLoggedEvent(1L, userId, PEACEFUL, LocalDateTime.now());
         EmotionEntry emotionEntry = new EmotionEntry(null,
+                event.getEntryId(),
                 event.getUserId(),
                 event.getEmotion(),
                 event.getDateTime());
@@ -98,5 +99,17 @@ class EmotionStatsServiceImplTest {
         // then
         verify(entryRepository).findTopRepeatedEmotionEntriesGropedByEmotionsDesc(eq(userId), any(LocalDateTime.class));
         then(emotions).isEqualTo(expected);
+    }
+
+    @Test
+    void whenRemoveEntryDataThenRepositoryCalledToDeleteAllByEntryId() {
+        // given
+        Long entryId = 1L;
+
+        // when
+        service.removeEntryRelatedData(entryId);
+
+        // then
+        verify(entryRepository).deleteAllByEntryId(entryId);
     }
 }

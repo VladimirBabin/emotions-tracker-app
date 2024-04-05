@@ -4,6 +4,7 @@ import com.specificgroup.emotionstracker.entries.entry.domain.Entry;
 import com.specificgroup.emotionstracker.entries.entry.dto.EntryDto;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface EntriesService {
 
@@ -18,4 +19,7 @@ public interface EntriesService {
      */
     List<Entry> getLastLogsForUser(String userId);
 
+    void removeEntryById(Long entryId);
+
+    Optional<Entry> findByEntryId(Long entryId);
 }
