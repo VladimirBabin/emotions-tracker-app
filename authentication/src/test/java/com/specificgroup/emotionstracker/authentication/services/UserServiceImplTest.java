@@ -31,13 +31,13 @@ class UserServiceImplTest {
     private UserService userService;
 
     @Mock
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     @Mock
-    UserMapper userMapper;
+    private UserMapper userMapper;
 
     @Mock
-    PasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder;
 
     @BeforeEach
     void setUp() {

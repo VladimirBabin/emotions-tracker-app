@@ -35,7 +35,6 @@ class AlertControllerSecurityTest {
     private MockMvc mvc;
     @Autowired
     private RsaPublicKey rsaPublicKey;
-
     @Autowired
     private RsaPrivateKey rsaPrivateKey;
     @MockBean
@@ -44,7 +43,6 @@ class AlertControllerSecurityTest {
     private EmotionAlertService emotionAlertService;
     @MockBean
     private UserAuthProvider userAuthProvider;
-
     @Autowired
     private JacksonTester<List<String>> alertsJacksonTester;
     @Test

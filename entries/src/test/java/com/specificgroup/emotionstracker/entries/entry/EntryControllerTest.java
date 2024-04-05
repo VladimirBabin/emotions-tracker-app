@@ -37,7 +37,6 @@ class EntryControllerTest {
     private MockMvc mvc;
     @MockBean
     private EntriesService entriesService;
-
     @Autowired
     private JacksonTester<EntryDto> entryDtoJacksonTester;
     @Autowired

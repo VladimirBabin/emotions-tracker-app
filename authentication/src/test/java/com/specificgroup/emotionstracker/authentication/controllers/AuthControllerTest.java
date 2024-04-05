@@ -42,7 +42,6 @@ class AuthControllerTest {
     private JacksonTester<ErrorDto> errorJacksonTester;
     @Autowired
     private JacksonTester<CredentialsDto> credentialsDtoJacksonTester;
-
     @Autowired
     private JacksonTester<SignUpDto> signUpDtoJacksonTester;
 

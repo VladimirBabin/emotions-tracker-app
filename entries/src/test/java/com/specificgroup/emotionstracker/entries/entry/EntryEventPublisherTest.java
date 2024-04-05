@@ -22,9 +22,8 @@ import static org.mockito.Mockito.verify;
 class EntryEventPublisherTest {
 
     private EntriesEventPublisher entriesEventPublisher;
-
     @Mock
-    AmqpTemplate amqpTemplate;
+    private AmqpTemplate amqpTemplate;
 
     @BeforeEach
     void setUp() {

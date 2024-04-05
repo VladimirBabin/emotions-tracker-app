@@ -34,15 +34,15 @@ class StatsControllerSecurityTest {
     @Autowired
     private MockMvc mvc;
     @MockBean
-    StateStatsService stateService;
+    private StateStatsService stateService;
     @MockBean
-    EmotionStatsService emotionService;
+    private EmotionStatsService emotionService;
     @MockBean
     private UserAuthProvider userAuthProvider;
     @Autowired
-    RsaPrivateKey rsaPrivateKey;
+    private RsaPrivateKey rsaPrivateKey;
     @Autowired
-    RsaPublicKey rsaPublicKey;
+    private RsaPublicKey rsaPublicKey;
     @Autowired
     private JacksonTester<List<Emotion>> emotionsListJacksonTester;
 

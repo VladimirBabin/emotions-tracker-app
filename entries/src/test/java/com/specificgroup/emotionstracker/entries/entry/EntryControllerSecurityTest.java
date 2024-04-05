@@ -34,15 +34,15 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 @AutoConfigureJsonTesters
 @SpringBootTest
 @AutoConfigureMockMvc
-public class EntryControllerSecurityTest {
+class EntryControllerSecurityTest {
     @Autowired
     private MockMvc mvc;
     @MockBean
     private EntriesService entriesService;
     @Autowired
-    RsaPublicKey rsaPublicKey;
+    private RsaPublicKey rsaPublicKey;
     @Autowired
-    RsaPrivateKey rsaPrivateKey;
+    private RsaPrivateKey rsaPrivateKey;
     @Autowired
     private JacksonTester<EntryDto> entryDtoJacksonTester;
     @Autowired
