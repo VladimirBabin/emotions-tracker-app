@@ -140,10 +140,12 @@ class EntryEventPublisherTest {
 
         // then
         var exchangeCaptor = ArgumentCaptor.forClass(String.class);
+        var routingCaptor = ArgumentCaptor.forClass(String.class);
         var entryIdCaptor = ArgumentCaptor.forClass(Long.class);
         verify(amqpTemplate, times(1))
-                .convertAndSend(exchangeCaptor.capture(), entryIdCaptor.capture());
+                .convertAndSend(exchangeCaptor.capture(), routingCaptor.capture(), entryIdCaptor.capture());
         then(exchangeCaptor.getValue()).isEqualTo("removed-test.topic");
+        then(routingCaptor.getValue()).isEqualTo("");
         then(entryIdCaptor.getValue()).isEqualTo(1L);
 
     }
