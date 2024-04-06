@@ -13,6 +13,7 @@
 }
 
 .x-button {
+    float: right;
     background: white;
     color: #333;
     border: none;

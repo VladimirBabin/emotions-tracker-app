@@ -10,10 +10,10 @@ services:
     networks:
       - microservices
 
-  frontend:
-    build: ./../emotions-tracker-frontend
-    ports:
-      - '3000:80'
+#  frontend:
+#    build: ./../emotions-tracker-frontend
+#    ports:
+#      - '3000:80'
 
   consul-dev:
     image: consul:1.14.8
@@ -45,7 +45,7 @@ services:
     networks:
       - microservices
     volumes:
-      - /db:/usr/src/alerts/BOOT-INF/classes/db
+      - db:/usr/src/alerts/BOOT-INF/classes/db
 
   authentication:
     build: ./../authentication
@@ -58,7 +58,7 @@ services:
     networks:
       - microservices
     volumes:
-      - /db:/usr/src/authentication/BOOT-INF/classes/db
+      - db:/usr/src/authentication/BOOT-INF/classes/db
 
   entries:
     build: ./../entries
@@ -71,7 +71,7 @@ services:
     networks:
       - microservices
     volumes:
-      - /db:/usr/src/entries/BOOT-INF/classes/db
+      - db:/usr/src/entries/BOOT-INF/classes/db
 
   stats:
     build: ./../stats
@@ -84,7 +84,7 @@ services:
     networks:
       - microservices
     volumes:
-      - /db:/usr/src/stats/BOOT-INF/classes/db
+      - db:/usr/src/stats/BOOT-INF/classes/db
 
   gateway:
     build: ./../gateway
@@ -113,6 +113,5 @@ services:
 networks:
   microservices:
     driver: bridge
-
 volumes:
   db:

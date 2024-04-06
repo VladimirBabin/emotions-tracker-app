@@ -85,6 +85,11 @@ export class LastLogsComponent extends React.Component {
             <div>
                 {this.state.lastEntries.map(entry =>
                     <div className="last-entry-div" key={entry.id}>
+                        <button onClick={() => this.deleteEntry(entry.id)} className="x-button">
+                            <svg className="x-button-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" display="visible">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
                         <div className="state-log-div" key={entry.id}>
                             <LogsDateTimeView value={entry.dateTime}/>
                             <StateView value={entry.state}/>
@@ -93,11 +98,7 @@ export class LastLogsComponent extends React.Component {
                         {(entry.comment === null || entry.comment === "")
                             ? ""
                             : <CommentView comment={entry.comment}/>}
-                        <button onClick={() => this.deleteEntry(entry.id)} className="x-button">
-                            <svg className="x-button-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" display="visible">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                            </svg>
-                        </button>
+
                     </div>)}
             </div>
         );
