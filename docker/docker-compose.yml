@@ -10,10 +10,10 @@ services:
     networks:
       - microservices
 
-#  frontend:
-#    build: ./../emotions-tracker-frontend
-#    ports:
-#      - '3000:80'
+  frontend:
+    build: ./../emotions-tracker-frontend
+    ports:
+      - '3000:80'
 
   consul-dev:
     image: consul:1.14.8

@@ -19,11 +19,13 @@ export class LastLogsComponent extends React.Component {
 
     componentDidMount() {
         this.refreshLastEntries();
+        setTimeout(this.refreshLastEntries.bind(this), 100);
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (this.props.statsRefresh === true) {
             this.refreshLastEntries();
+            setTimeout(this.refreshLastEntries.bind(this), 100);
             this.props.setStatsRefresh(false);
         }
     }

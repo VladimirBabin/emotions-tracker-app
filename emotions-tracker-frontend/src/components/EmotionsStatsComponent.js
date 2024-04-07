@@ -15,12 +15,14 @@ export class EmotionsStatsComponent extends React.Component {
     }
 
     componentDidMount() {
-        this.refreshEmotions();
+        setTimeout(this.refreshEmotions.bind(this), 50);
+        setTimeout(this.refreshEmotions.bind(this), 150);
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (this.props.statsRefresh === true) {
-            this.refreshEmotions();
+            setTimeout(this.refreshEmotions.bind(this), 50);
+            setTimeout(this.refreshEmotions.bind(this), 150);
             this.props.setStatsRefresh(false);
         }
     }

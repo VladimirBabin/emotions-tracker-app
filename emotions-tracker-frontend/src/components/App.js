@@ -18,13 +18,13 @@ class App extends React.Component {
     };
 
     login = () => {
-        window.localStorage.setItem('loggedIn', null);
+        window.localStorage.setItem('loggedIn', '');
         this.updateMessage('');
         this.setState({componentToShow: "login"});
     };
 
     logout = () => {
-        window.localStorage.setItem('loggedIn', null);
+        window.localStorage.setItem('loggedIn', '');
         this.updateMessage('');
         this.setState({componentToShow: "welcome"});
     };
@@ -53,10 +53,10 @@ class App extends React.Component {
         this.sendLogin(username, password).then(
             response => {
                 this.setState({componentToShow: "appContent"});
-                localStorage.setItem('loggedIn', 1);
+                localStorage.setItem('loggedIn', 'true');
                 setAuthToken(response.token);
                 setUserId(response.id);
-            }).catch(error => error !== null ?
+            }).catch(error => error instanceof Promise ?
             error.then(e => {
                 this.setState({componentToShow: "welcome"});
                 this.updateMessage("Login error: " + (e.message !== '' ?
@@ -84,7 +84,7 @@ class App extends React.Component {
         window.localStorage.clear();
         this.sendRegister(firstName, lastName, login, password).then(response => {
             this.setState({componentToShow: "appContent"});
-            window.localStorage.setItem('loggedIn', '1');
+            window.localStorage.setItem('loggedIn', 'true');
             setAuthToken(response.token);
             setUserId(response.id);
         }).catch(error => error.then(e => {
@@ -108,10 +108,11 @@ class App extends React.Component {
                 <div className="container-fluid" style={{marginTop: "3%"}}>
                     <div className="row">
                         <div className="col">
-                            {window.localStorage.getItem('loggedIn') === null
+                            {(window.localStorage.getItem('loggedIn') === ''
+                                && this.state.componentToShow === 'welcome')
                                 && <WelcomeContent/>}
                             <ErrorMessage message={this.state.message}/>
-                            {window.localStorage.getItem('loggedIn') === '1' && <AppContent/>}
+                            {window.localStorage.getItem('loggedIn') === 'true' && <AppContent/>}
                             {this.state.componentToShow === "login"
                                 && <LoginForm onLogin={this.onLogin} onRegister={this.onRegister}/>}
                         </div>

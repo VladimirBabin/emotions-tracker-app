@@ -24,12 +24,14 @@ class WeeklyStateStatsComponent extends React.Component {
     }
 
     componentDidMount() {
-        this.refreshStats();
+        setTimeout(this.refreshStats.bind(this), 50);
+        setTimeout(this.refreshStats.bind(this), 150);
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (this.props.statsRefresh === true) {
-            this.refreshStats();
+            setTimeout(this.refreshStats.bind(this), 50);
+            setTimeout(this.refreshStats.bind(this), 150);
             this.props.setStatsRefresh(false);
         }
     }
