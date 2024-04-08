@@ -9,11 +9,13 @@ for tracking emotions based on microservice architecture. The aim of the project
 was to study patterns of microservice architecture and get a hands-on 
 practice with developing resilient and scalable microservices applications. 
 In particular, it focuses on such concepts as _**event-driven architecture, 
-service discovery, routing, load balancing, and traceability**_. 
+service discovery, routing, load balancing, externalized configuration,
+logs centralization, and traceability**_. 
 
 - [Features](#features)
 - [Stack](#stack)
 - [Installation](#installation)
+- [Achievements](#achievements)
 
 ## Features
 
@@ -41,8 +43,8 @@ The backend stack base is Java 21 and SpringBoot 3.2.3. Maven of version 3.9.6
 is used for build automation.
 Additional technologies used are:
 - RabbitMQ as a message broker;
-- Consul for implementing gateway, service discovery, load balancing
-and externalized configuration patterns;
+- Consul for implementing service discovery, load balancing
+and externalized configuration;
 
 ### Frontend
 The frontend is created with React framework and includes libraries:
@@ -116,4 +118,51 @@ instructions for your OS;
 - Start each of the backend services from your IDE by starting the application 
 or simply run `./mvnw spring-boot:run` from each of the
 services directories.
+
+## Achievements
+
+There were quite a few new take-outs for me. I’ve learned what event-driven 
+architecture is and how it’s different from a monolith. In my application, 
+the event-driven system built on communication between services via message 
+broker has contributed to loose coupling between microservices, the system’s 
+scalability, and resilience. 
+
+Together with the benefits of microservices architecture comes higher complexity. 
+To manage the system in new circumstances, I’ve also implemented such patterns as: 
+- Gateway, allowing the client, or frontend service in my case, to communicate with
+the backend system as a whole;
+The gateway microservice, responsible for this functionality, opens a port on
+localhost:8000 and redirects the calls from the frontend to the relevant service.
+Apart from routing configuration, it contains CORS settings, restricting allowed
+requests to frontend origin and setting allowed HTTP methods. 
+- Service discovery, enabling the services to register and be tracked as part of 
+the whole system;
+- Load balancing, for balancing the load between the services, so that the system
+can become truly scalable;
+I've decided to use Consul because of its robustness and high compatibility with
+Spring Cloud. As a part of the system, Consul allows server-side service discovery
+approach and integrates with Spring Boot by keeping track of services' health status
+via the endpoints provided by Spring Boot Actuator.
+As for load balancing, I've taken advantage of the Spring Cloud Consul Discovery
+library, which allowed me to implement this feature by including the load balancer
+configurations in the Gateway microservice properties. 
+- Externalised configuration, for keeping the configuration properties in one place
+and avoiding duplication;
+In the current implementation, Consul takes responsibility for centralised configuration
+by importing a JSON file with encoded configuration. This way I was able to add the 
+Docker configuration and set the hostname for RabbitMQ and unique instance identifiers
+for running services.
+- Logs centralisation and distributed tracing, to make tracking of what’s happening
+across the system easier and lower complexity;
+The app has an additional logs microservice to keep track of logs in one place and
+enable distributed tracing. The logs from each of the services are appended by the
+log4j logger and sent to the logs RabbitMQ queue, which is then parsed by the logs
+service together with span ID and trace ID passed together with MDC
+(Mapped Diagnostic Context).
+- Containerisation, for running the system in multiple environments and avoiding
+going through multiple installation steps.
+
+Although the frontend part wasn’t the focus of the task, I also gained some 
+experience in developing a frontend application with React, preserving loose 
+coupling between components and services allowing reusability and high maintainability.
 
